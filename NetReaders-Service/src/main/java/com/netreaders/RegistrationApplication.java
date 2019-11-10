@@ -1,13 +1,15 @@
-package com.netreaders;
+package com.netreaders.registration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class NetReadersApplication {
+public class RegistrationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NetReadersApplication.class, args);
+		SpringApplication.run(RegistrationApplication.class, args);
 	}
+
 
 }
