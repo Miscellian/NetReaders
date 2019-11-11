@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS photos CASCADE;
 
 CREATE TABLE photos (
 	photo_id SERIAL PRIMARY KEY,
-	download_url TEXT,
+	link TEXT
 );
 
 CREATE TABLE users(
