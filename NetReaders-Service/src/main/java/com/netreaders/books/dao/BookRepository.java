@@ -48,14 +48,14 @@ public class BookRepository implements BookDataStore {
 	}
 	
 	private List<Book> executeQuery(String query, Object[] args){
-		return template.query(query,args,
+		return template.query(query,
 				(rs, rowNum) ->
 				new Book(rs.getInt("book_id"),
 						rs.getString("title"),
 						rs.getInt("photo"),
 						rs.getString("description"),
 						rs.getDate("release_date"),
-						rs.getString("book_language")));
+						rs.getString("book_language")),args);
 	}
 
 }

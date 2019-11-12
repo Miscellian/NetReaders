@@ -6,5 +6,5 @@ import com.netreaders.models.Genre;
 public interface GenreDataStore {
 	Collection<Genre> getAll();
 	Genre getById(int id);
-	Genre getByBookId(int id);
+	Collection<Genre> getByBookId(int id);
 }

@@ -32,13 +32,13 @@ public class AuthorRepository implements AuthorDataStore {
 		return author;
 	}
 	
-	public Author getByBookId(int id) {
-		String query = "select a.author_id, a.author_name from authors a " + 
+	public Collection<Author> getByBookId(int id) {
+		String query = "select distinct a.author_id, a.author_name from authors a " + 
 				"inner join book_author ba on ba.author_id = a.author_id " + 
 				"where ba.book_id = ?";
-		Author author = template.queryForObject(query, new Object[]{id},
+		List<Author> authors = template.query(query, new Object[]{id},
 				(rs, rowNum) -> new Author(rs.getInt("author_id"),rs.getString("author_name")));
-		return author;
+		return authors;
 	}
 
 }

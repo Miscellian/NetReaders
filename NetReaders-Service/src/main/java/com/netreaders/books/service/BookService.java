@@ -36,10 +36,9 @@ public class BookService {
 			int numericAmount = Integer.parseInt(amount);
 			int numericOffset = Integer.parseInt(offset);
 			Collection<Book> books = bookRepository.findBooksByGenre(numericGenreId, numericAmount, numericOffset);
-			Genre genre = genreRepository.getById(numericGenreId);
 			Collection<BookDto> bookDtos = books.stream()
 					.map(book -> new BookDto(
-									genre,
+									genreRepository.getByBookId(book.getId()),
 									authorRepository.getByBookId(book.getId()),
 									book)
 					).collect(Collectors.toCollection(ArrayList::new));
@@ -62,7 +61,7 @@ public class BookService {
 			Collection<BookDto> bookDtos = books.stream()
 					.map(book -> new BookDto(
 									genreRepository.getByBookId(book.getId()),
-									author,
+									authorRepository.getByBookId(book.getId()),
 									book)
 					).collect(Collectors.toCollection(ArrayList::new));
 			message.setObj(bookDtos);
@@ -98,9 +97,9 @@ public class BookService {
 		try{
 			int numericId = Integer.parseInt(id);
 			Book book = bookRepository.findBookById(numericId);
-			Genre genre = genreRepository.getByBookId(book.getId());
-			Author author = authorRepository.getByBookId(book.getId());
-			message.setObj(new BookDto(genre, author, book));
+			message.setObj(new BookDto(genreRepository.getByBookId(book.getId()),
+										authorRepository.getByBookId(book.getId()),
+										book));
 		} catch(NumberFormatException e) {
 			message.setSuccessful(false);
 			message.setErrorMessage(e.getMessage());

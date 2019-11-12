@@ -33,13 +33,13 @@ public class GenreRepository implements GenreDataStore{
 		return genre;
 	}
 
-	public Genre getByBookId(int id) {
-		String query = "select g.genre_id, g.genre_name from genres g " + 
+	public Collection<Genre> getByBookId(int id) {
+		String query = "select distinct g.genre_id, g.genre_name from genres g " + 
 				"inner join book_genre bg on bg.genre_id = g.genre_id " + 
 				"where bg.book_id = ?";
-		Genre genre = template.queryForObject(query, new Object[]{id},
+		List<Genre> genres = template.query(query, new Object[]{id},
 				(rs, rowNum) -> new Genre(rs.getInt("genre_id"),rs.getString("genre_name")));
-		return genre;
+		return genres;
 	}
 		
 }
