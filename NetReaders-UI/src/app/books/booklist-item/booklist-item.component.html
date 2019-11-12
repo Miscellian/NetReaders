@@ -1,0 +1,42 @@
+<div class="divContainer" id="main">
+  <div class="photoContainer">
+    <div class="photoDiv">
+      <img src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+    </div>
+  </div>
+  <div class="alldataContainer">
+    <div class="dataContainer">
+
+      <div class="dataDiv">
+        <div class="data">
+          <h1>{{book.name}}</h1>
+        </div>
+        <div class="data">
+            <h2>{{book.author}}</h2>
+        </div>
+        <div class="data">
+            <h2>{{book.announcementDate|date}}</h2>
+        </div>
+        <div class="data">
+            <h2>{{book.genre}}</h2>
+        </div>
+      </div>
+
+      <div class="btnContainer">
+        <button>Want to read</button>
+
+        <div>
+          <h3>Rating</h3>
+          <h5>imagine stars here</h5>
+        </div>
+      </div>
+
+  </div>
+    <div id="descriptionContainer">
+      <h2>Description</h2>
+      <hr>
+      <span id="description">{{book.description}}</span>
+    </div>
+
+  </div>
+</div>
