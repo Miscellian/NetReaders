@@ -1,14 +1,14 @@
-package com.netreaders.genres.controller;
-import java.util.Collection;
+package com.netreaders.controller;
 
+import com.netreaders.models.Genre;
+import com.netreaders.models.ResponseMessage;
+import com.netreaders.service.GenreService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.netreaders.models.Genre;
-import com.netreaders.models.ResponseMessage;
-import com.netreaders.genres.service.GenreService;
+
+import java.util.Collection;
 
 @RestController
 public class GenreController {

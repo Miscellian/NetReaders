@@ -1,16 +1,11 @@
-package com.netreaders.authors.controller;
+package com.netreaders.controller;
 
-import java.util.Collection;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.netreaders.authors.service.AuthorService;
 import com.netreaders.models.Author;
 import com.netreaders.models.ResponseMessage;
+import com.netreaders.service.AuthorService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 public class AuthorController {

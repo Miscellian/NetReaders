@@ -1,16 +1,14 @@
-package com.netreaders.books.controller;
+package com.netreaders.controller;
 
-import java.util.Collection;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.netreaders.dto.BookDto;
+import com.netreaders.models.ResponseMessage;
+import com.netreaders.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.netreaders.books.dto.BookDto;
-import com.netreaders.books.service.BookService;
-import com.netreaders.models.ResponseMessage;
+import java.util.Collection;
 
 @RestController
 public class BookController {
