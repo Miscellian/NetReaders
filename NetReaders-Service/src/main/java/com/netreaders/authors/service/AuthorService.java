@@ -1,5 +1,6 @@
 package com.netreaders.authors.service;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.netreaders.authors.dao.interfaces.AuthorDataStore;
 import com.netreaders.models.Author;
 import com.netreaders.models.ResponseMessage;
+import com.netreaders.services.ResponseMessagePrepearer;
 
 @Service
 public class AuthorService {
@@ -16,8 +18,14 @@ public class AuthorService {
 		this.authorRepository = authorRepository;
 	}
 	
-	public Collection<Author> getAll() {
-		return authorRepository.getAll();
+	public ResponseMessage<Collection<Author>> getAll() {
+		ResponseMessage<Collection<Author>> message = new ResponseMessage<>();
+		try {
+			message.setObj(authorRepository.getAll());
+		} catch(SQLException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+		}
+		return message;
 	}
 	
 	public ResponseMessage<Author> getById(String id) {
@@ -27,8 +35,9 @@ public class AuthorService {
 			int numericId = Integer.parseInt(id);
 			message.setObj(authorRepository.getById(numericId));
 		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid author id");
+		} catch(SQLException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
 		}
 		return message;
 	}

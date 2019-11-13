@@ -23,18 +23,14 @@ public class AuthorController {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("api/authors")
-	public Collection<Author> GetAllGenres() {
+	public ResponseMessage<Collection<Author>> GetAllGenres() {
 		return authorService.getAll();
 	}
 	
 	@GetMapping(value = "api/authors/{id}")
 	@ResponseBody
-	public Author GetGenreById(@PathVariable String id) {
+	public ResponseMessage<Author> GetGenreById(@PathVariable String id) {
 		ResponseMessage<Author> response = authorService.getById(id);
-		if(response.isSuccessful()) {
-			return response.getObj();
-		} else {
-			return null;
-		}
+		return response;
 	}
 }

@@ -22,50 +22,34 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "api/books/{id}")
-		public BookDto GetGenreById(@PathVariable String id) {
+		public ResponseMessage<BookDto> GetGenreById(@PathVariable String id) {
 			ResponseMessage<BookDto> response = bookService.findBookById(id);
-			if(response.isSuccessful()) {
-				return response.getObj();
-			} else {
-				return null;
-			}
+			return response;
 		}
 		@GetMapping(value = "api/books/range")
-		public Collection<BookDto> GetById(
+		public ResponseMessage<Collection<BookDto>> GetById(
 				@RequestParam(name = "amount",defaultValue = "0") String amount,
 				@RequestParam(name = "offset",defaultValue = "0") String offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.getById(amount, offset);
-			if(response.isSuccessful()) {
-				return response.getObj();
-			} else {
-				return null;
-			}
+			return response;
 		}
 		
 		@GetMapping(value = "api/books/bygenre")
-		public Collection<BookDto> GetByGenre(
+		public ResponseMessage<Collection<BookDto>> GetByGenre(
 				@RequestParam(name = "genreid",defaultValue = "0") String genreid,
 				@RequestParam(name = "amount",defaultValue = "0") String amount,
 				@RequestParam(name = "offset",defaultValue = "0") String offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByGenre(genreid, amount, offset);
-			if(response.isSuccessful()) {
-				return response.getObj();
-			} else {
-				return null;
-			}
+			return response;
 		}
 		
 		@GetMapping(value = "api/books/byauthor")
-		public Collection<BookDto> GetByAuthor(
+		public ResponseMessage<Collection<BookDto>> GetByAuthor(
 				@RequestParam(name = "authorid",defaultValue = "0") String authorid,
 				@RequestParam(name = "amount",defaultValue = "0") String amount,
 				@RequestParam(name = "offset",defaultValue = "0") String offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByAuthor(authorid, amount, offset);
-			if(response.isSuccessful()) {
-				return response.getObj();
-			} else {
-				return null;
-			}
+			return response;
 		}
 		
 }

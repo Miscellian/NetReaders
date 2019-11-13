@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.stereotype.Service;
 import com.netreaders.genres.dao.interfaces.GenreDataStore;
 import com.netreaders.models.*;
+import com.netreaders.services.ResponseMessagePrepearer;
 
 @Service
 public class GenreService {
@@ -14,8 +15,14 @@ public class GenreService {
 		this.genreRepository = genreRepository;
 	}
 	
-	public Collection<Genre> getAll() {
-		return genreRepository.getAll();
+	public ResponseMessage<Collection<Genre>> getAll() {
+		ResponseMessage<Collection<Genre>> message = new ResponseMessage<>();
+		try{
+			message.setObj(genreRepository.getAll());
+		} catch(Exception e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+		} 
+		return message;
 	}
 	
 	public ResponseMessage<Genre> getById(String id) {
@@ -25,9 +32,10 @@ public class GenreService {
 			int numericId = Integer.parseInt(id);
 			message.setObj(genreRepository.getById(numericId));
 		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
-		}
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid Genre id");
+		} catch(Exception e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+		} 
 		return message;
 	}
 }

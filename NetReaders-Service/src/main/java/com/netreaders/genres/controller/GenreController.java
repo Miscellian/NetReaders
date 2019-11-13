@@ -17,20 +17,15 @@ public class GenreController {
 	public GenreController(GenreService genreService) {
 		this.genreService = genreService;
 	}
-
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("api/genres")
-	public Collection<Genre> GetAllGenres() {
+	public ResponseMessage<Collection<Genre>> GetAllGenres() {
 		return genreService.getAll();
 	}
 	
 	@GetMapping(value = "api/genres/{id}")
-	public Genre GetGenreById(@PathVariable String id) {
+	public ResponseMessage<Genre> GetGenreById(@PathVariable String id) {
 		ResponseMessage<Genre> response = genreService.getById(id);
-		if(response.isSuccessful()) {
-			return response.getObj();
-		} else {
-			return null;
-		}
+		return response;
 	}
 }

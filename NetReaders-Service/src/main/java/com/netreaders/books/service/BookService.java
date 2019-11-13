@@ -10,8 +10,8 @@ import com.netreaders.books.dao.interfaces.*;
 import com.netreaders.books.dto.BookDto;
 import com.netreaders.genres.dao.interfaces.GenreDataStore;
 import com.netreaders.authors.dao.interfaces.AuthorDataStore;
-import com.netreaders.books.dao.*;
 import com.netreaders.models.*;
+import com.netreaders.services.ResponseMessagePrepearer;
 
 @Service
 public class BookService {
@@ -29,6 +29,17 @@ public class BookService {
 	}
 
 	
+	private BookDto tryCreateBookDto(Book book) throws RuntimeException{
+		try {
+		return new BookDto(
+					genreRepository.getByBookId(book.getId()),
+					authorRepository.getByBookId(book.getId()),
+					book);
+		}catch(SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
 	public ResponseMessage<Collection<BookDto>> findBooksByGenre(String genre_id, String amount, String offset){
 		ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
 		try{
@@ -37,16 +48,16 @@ public class BookService {
 			int numericOffset = Integer.parseInt(offset);
 			Collection<Book> books = bookRepository.findBooksByGenre(numericGenreId, numericAmount, numericOffset);
 			Collection<BookDto> bookDtos = books.stream()
-					.map(book -> new BookDto(
-									genreRepository.getByBookId(book.getId()),
-									authorRepository.getByBookId(book.getId()),
-									book)
-					).collect(Collectors.toCollection(ArrayList::new));
+					.map(this::tryCreateBookDto)
+					.collect(Collectors.toCollection(ArrayList::new));
 			message.setObj(bookDtos);
-		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
-		} 
+		}  catch(NumberFormatException e) {
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
+		} catch(SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		} catch(RuntimeException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+		}
 		return message;
 	}
 	
@@ -57,17 +68,16 @@ public class BookService {
 			int numericAmount = Integer.parseInt(amount);
 			int numericOffset = Integer.parseInt(offset);
 			Collection<Book> books = bookRepository.findBooksByAuthor(numericAuthorId, numericAmount, numericOffset);
-			Author author = authorRepository.getById(numericAuthorId);
 			Collection<BookDto> bookDtos = books.stream()
-					.map(book -> new BookDto(
-									genreRepository.getByBookId(book.getId()),
-									authorRepository.getByBookId(book.getId()),
-									book)
-					).collect(Collectors.toCollection(ArrayList::new));
+					.map(this::tryCreateBookDto)
+					.collect(Collectors.toCollection(ArrayList::new));
 			message.setObj(bookDtos);
 		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
+		} catch(SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		} catch(RuntimeException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
 		}
 		return message;
 	}
@@ -79,15 +89,15 @@ public class BookService {
 			int numericOffset = Integer.parseInt(offset);
 			Collection<Book> books = bookRepository.getById(numericAmount, numericOffset);
 			Collection<BookDto> bookDtos = books.stream()
-					.map(book -> new BookDto(
-										genreRepository.getByBookId(book.getId()),
-										authorRepository.getByBookId(book.getId()),
-										book)
-					).collect(Collectors.toCollection(ArrayList::new));
+					.map(this::tryCreateBookDto)
+					.collect(Collectors.toCollection(ArrayList::new));
 			message.setObj(bookDtos);
 		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
+		} catch(SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		} catch(RuntimeException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
 		}
 		return message;
 	}
@@ -97,12 +107,13 @@ public class BookService {
 		try{
 			int numericId = Integer.parseInt(id);
 			Book book = bookRepository.findBookById(numericId);
-			message.setObj(new BookDto(genreRepository.getByBookId(book.getId()),
-										authorRepository.getByBookId(book.getId()),
-										book));
+			message.setObj(tryCreateBookDto(book));
 		} catch(NumberFormatException e) {
-			message.setSuccessful(false);
-			message.setErrorMessage(e.getMessage());
+			ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
+		} catch(SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		} catch(RuntimeException e) {
+			ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
 		}
 		return message;
 	}
