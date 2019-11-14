@@ -4,35 +4,42 @@
       <img src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
     </div>
     <div>
-      <h3>Rating</h3>
-      <h5>imagine stars here</h5>
-    </div>
-    <div>
-      <h3>buttons?</h3>
+      <div class="rate">
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1" title="text">1 star</label>
+      </div>
     </div>
   </div>
   <div class="alldataContainer">
     <div class="dataContainer">
 
       <div class="dataDiv">
-        <div class="data">
-          <h1>{{book.title}}</h1>
+        <div id="book-title">
+          <h1>{{book.name}}></h1>
         </div>
         <div class="data">
-            <h2>{{authors}}</h2>
+            <h2>{{book.author}}</h2>
         </div>
         <div class="data">
-            <h2>{{book.release_date|date}}</h2>
+            <h2>Announcement date: {{book.announcementDate|date}}</h2>
         </div>
         <div class="data">
-            <h2>{{genres}}</h2>
+            <h2>Genres: {{book.genre}}</h2>
         </div>
       </div>
 
       <div class="btnContainer">
-        <button>Want to read</button>
-        <button>Favourites</button>
-        <button>Download</button>
+        <a class="button">Want to read</a>
+        <a class="button">Add to favorites/Remove</a>
+        <a class="button">Download</a>
       </div>
   </div>
     <div id="descriptionContainer">
