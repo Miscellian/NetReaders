@@ -75,9 +75,7 @@ public class BookService {
             message.setObj(bookDtos);
         } catch (NumberFormatException e) {
             ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | SQLException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -95,9 +93,7 @@ public class BookService {
             message.setObj(bookDtos);
         } catch (NumberFormatException e) {
             ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (SQLException | RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -111,12 +107,25 @@ public class BookService {
             message.setObj(tryCreateBookDto(book));
         } catch (NumberFormatException e) {
             ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (SQLException | RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
     }
+    
+    public ResponseMessage<Collection<BookDto>> getByName(String name) {
+    	ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
+        try {
+        	Collection<Book> books = bookDao.getByName(name.toLowerCase());
+        	Collection<BookDto> bookDtos = books.stream()
+                    .map(this::tryCreateBookDto)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            message.setObj(bookDtos);
+        }  catch (SQLException | RuntimeException e) {
+            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+        }
+        return message;
+    }
+
 
 }

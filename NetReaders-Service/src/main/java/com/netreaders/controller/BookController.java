@@ -42,9 +42,9 @@ public class BookController {
 		@GetMapping(value = "bygenre")
 		@CrossOrigin(origins = "http://localhost:8080")
 		public ResponseMessage<Collection<BookDto>> GetByGenre(
-				@RequestParam(name = "genreid",defaultValue = "0") String genreid,
-				@RequestParam(name = "amount",defaultValue = "0") String amount,
-				@RequestParam(name = "offset",defaultValue = "0") String offset) {
+				@RequestParam(name = "id") String genreid,
+				@RequestParam(name = "amount") String amount,
+				@RequestParam(name = "offset") String offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByGenre(genreid, amount, offset);
 			return response;
 		}
@@ -52,10 +52,18 @@ public class BookController {
 		@GetMapping(value = "byauthor")
 		@CrossOrigin(origins = "http://localhost:8080")
 		public ResponseMessage<Collection<BookDto>> GetByAuthor(
-				@RequestParam(name = "authorid",defaultValue = "0") String authorid,
-				@RequestParam(name = "amount",defaultValue = "0") String amount,
-				@RequestParam(name = "offset",defaultValue = "0") String offset) {
+				@RequestParam(name = "id") String authorid,
+				@RequestParam(name = "amount") String amount,
+				@RequestParam(name = "offset") String offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByAuthor(authorid, amount, offset);
+			return response;
+		}
+		
+		@GetMapping(value = "byname")
+		@CrossOrigin(origins = "http://localhost:8080")
+		public ResponseMessage<Collection<BookDto>> GetByName(
+				@RequestParam(name = "name") String name) {
+			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name);
 			return response;
 		}
 		

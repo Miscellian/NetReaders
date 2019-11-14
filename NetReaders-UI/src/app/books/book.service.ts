@@ -15,8 +15,13 @@ export class BookService {
     return this.httpClient.get<ResponseMessage<BookDto>>(`http://localhost:8080/api/books/${id}`);
   }
 
-  getByAuthor(id: number): Observable<ResponseMessage<BookDto>> {
-    const params = new HttpParams().set('id', id.toString());
-    return this.httpClient.get<ResponseMessage<BookDto>>(`localhost:8080/api/books/byathor`, {params});
+  getByAuthor(arg: string): Observable<ResponseMessage<BookDto[]>> {
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byauthor?id=${arg}&amount=5&offset=0`);
+  }
+  getByGenre(arg: string): Observable<ResponseMessage<BookDto[]>> {
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/bygenre?id=${arg}&amount=5&offset=0`);
+  }
+  getByName(name: string): Observable<ResponseMessage<BookDto[]>> {
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byname?name=${name}&amount=5&offset=0`);
   }
 }

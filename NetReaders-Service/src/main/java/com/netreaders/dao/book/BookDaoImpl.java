@@ -157,7 +157,7 @@ public class BookDaoImpl implements BookDao {
             log.info(String.format("Dont find any book by genreId '%d'", genre_id));
             return null;
         } else {
-            log.info(String.format("Find %d book(s) by genreId '%f'", books.size(), genre_id));
+            log.info(String.format("Find %d book(s) by genreId '%d'", books.size(), genre_id));
             return books;
         }
     }
@@ -191,4 +191,20 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
+
+	@Override
+	public Collection<Book> getByName(String name) throws SQLException {
+		
+		String sql_query = env.getProperty("book.getByName");
+		
+		List<Book> books = template.query(sql_query, bookMapper, name);
+		
+		if (books.isEmpty()) {
+            log.info(String.format("Didn't find any books with name like '%s'", name));
+            return null;
+        } else {
+            log.info(String.format("Found %d book(s) with name like '%s'", books.size(), name));
+            return books;
+        }
+	}
 }

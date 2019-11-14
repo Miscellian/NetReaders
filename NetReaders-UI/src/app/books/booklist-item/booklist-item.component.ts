@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BookDto } from '../../model';
+import { Component, OnInit, Input } from '@angular/core';
+import { BookDto, Book } from '../../model';
 import { BookService } from '../book.service';
 
 @Component({
@@ -8,10 +8,16 @@ import { BookService } from '../book.service';
   styleUrls: ['./booklist-item.component.css']
 })
 export class BooklistItemComponent implements OnInit {
-  books: BookDto[];
-  constructor(private bookService: BookService) { }
+  @Input() public bookdto: BookDto;
+  book: Book;
+  genres: string;
+  authors: string;
+  constructor() { }
 
   ngOnInit() {
+    this.authors = this.bookdto.authors.map(a => a.name).join(', ');
+    this.genres = this.bookdto.genres.map(g => g.name).join(', ');
+    this.book = this.bookdto.book;
   }
 
 }
