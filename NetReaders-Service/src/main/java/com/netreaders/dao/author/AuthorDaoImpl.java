@@ -140,7 +140,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
         String sql_query = env.getProperty("author.getByBookId");
 
-        List<Author> authors = template.query(sql_query, authorMapper);
+        List<Author> authors = template.query(sql_query, authorMapper, id);
 
         if (authors.isEmpty()) {
             log.info(String.format("Dont find any author by bookID '%d'", id));

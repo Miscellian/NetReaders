@@ -9,6 +9,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/authors")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthorController {
 	
 	private final AuthorService authorService;
@@ -17,7 +18,6 @@ public class AuthorController {
 		this.authorService = authorService;
 	}
 
-	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("all")
 	public ResponseMessage<Collection<Author>> GetAllAuthors() {
 		return authorService.getAll();

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BookDto } from '../../model';
+import { BookService } from '../book.service';
 
 @Component({
   selector: 'app-booklist-item',
@@ -6,8 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./booklist-item.component.css']
 })
 export class BooklistItemComponent implements OnInit {
-
-  constructor() { }
+  books: BookDto[];
+  constructor(private bookService: BookService) { }
 
   ngOnInit() {
   }
