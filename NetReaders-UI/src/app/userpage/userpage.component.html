@@ -18,7 +18,7 @@
                                     <h6>
                                         Super Admin
                                     </h6>
-                                    <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                                    <p class="profile-permission">PERMISSIONS : <span>announcement, book overview, review</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Admins</a>
@@ -36,17 +36,9 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work tab-pane fade show active">
-                                <div class="row">
-                                        <div class="col-md-6">
-                                            <label>User Id</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>Anna123</p>
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label>Name</label>
+                                            <label>UserName</label>
                                         </div>
                                         <div class="col-md-6">
                                             <p>Anna Brown</p>
@@ -67,30 +59,24 @@
                             <table class="table table-hover">
                                <thead>
                                     <tr>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
+                                        <th>User Name</th>
                                         <th>Email</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
+                                    <ul>
+                                        <li *ngFor="let admin of adminList">
                                     <tr>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>john@example.com</td>
+                                        <td>{{admin.username}}</td>
+                                        <td>{{admin.email}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Mary</td>
-                                        <td>Moe</td>
-                                        <td>mary@example.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>July</td>
-                                        <td>Dooley</td>
-                                        <td>july@example.com</td>
-                                    </tr>
+                                </li>
+                                </ul>
+                                    
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary btn-block">Add new admin</button>
+                            <button routerLink="/newadmin" type="button" class="btn btn-primary btn-block">Add new admin</button>
                         </div>
                     </div>
                 </div>

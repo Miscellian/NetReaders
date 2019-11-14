@@ -1,10 +1,14 @@
 nav{
     font-family: 'Lato', sans-serif;
-    background-color: #2D1F8C;
+    background-color: #68C5FA;
 }
 
 .logo {
     color: #fff;
     font-family: 'cabin', sans-serif;
     font-size: 1.5em;
+}
+
+button {
+    background-color: #007BFF;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
+import {FakeAdmin, fakeAdminList} from './fakeAdmin';
+import {AdminServiceService} from '../admin-service.service';
 @Component({
   selector: 'app-userpage',
   templateUrl: './userpage.component.html',
@@ -7,9 +8,12 @@ import * as $ from 'jquery';
 })
 export class UserpageComponent implements OnInit {
 
-  constructor() { }
+  adminList: FakeAdmin[];
+  constructor(private adminService: AdminServiceService) {
+  }
 
   ngOnInit() {
+    this.adminList = this.adminService.getAllAdmins();
   }
 
 }
