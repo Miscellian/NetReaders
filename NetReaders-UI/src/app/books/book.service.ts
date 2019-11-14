@@ -12,16 +12,16 @@ export class BookService {
   constructor(private httpClient: HttpClient) { }
 
   getById(id: number): Observable<ResponseMessage<BookDto>> {
-    return this.httpClient.get<ResponseMessage<BookDto>>(`http://localhost:8080/api/books/${id}`);
+    return this.httpClient.get<ResponseMessage<BookDto>>(`https://netreaders.herokuapp.com/api/books/${id}`);
   }
 
   getByAuthor(arg: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byauthor?id=${arg}&amount=5&offset=0`);
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`https://netreaders.herokuapp.com/api/books/byauthor?id=${arg}&amount=5&offset=0`);
   }
   getByGenre(arg: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/bygenre?id=${arg}&amount=5&offset=0`);
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`https://netreaders.herokuapp.com/api/books/bygenre?id=${arg}&amount=5&offset=0`);
   }
   getByName(name: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byname?name=${name}&amount=5&offset=0`);
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`https://netreaders.herokuapp.com/api/books/byname?name=${name}&amount=5&offset=0`);
   }
 }
