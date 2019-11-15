@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Log4j
@@ -40,6 +41,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
+        // save object into DB and return auto generated PK via KeyHolder
+        // or throws DuplicateKeyException if record exist in table
         try {
             template.update(new PreparedStatementCreator() {
                 @Override
@@ -57,7 +60,7 @@ public class AuthorDaoImpl implements AuthorDao {
                 newId = holder.getKey().intValue();
             }
             author.setId(newId);
-            log.info(String.format("Create a new author with id '%s'", newId));
+            log.debug(String.format("Create a new author with id '%s'", newId));
 
             return author;
 
@@ -72,12 +75,11 @@ public class AuthorDaoImpl implements AuthorDao {
         String sql_query = env.getProperty("author.read");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
-
         if (authors.isEmpty()) {
-            log.info(String.format("Dont find any author by id '%s'", id));
+            log.debug(String.format("Dont find any author by id '%s'", id));
             return null;
         } else if (authors.size() == 1) {
-            log.info(String.format("Find a author by id '%s'", id));
+            log.debug(String.format("Find a author by id '%s'", id));
             return authors.get(0);
         } else {
             log.error(String.format("Find more than one author by id '%s'", id));
@@ -89,14 +91,13 @@ public class AuthorDaoImpl implements AuthorDao {
     public void update(Author author) throws SQLException {
 
         String sql_query = env.getProperty("author.update");
+
         long id = author.getId();
-
         int recordCount = template.update(sql_query, author.getName(), id);
-
         if (recordCount == 0) {
-            log.info(String.format("Dont update any author by id '%d'", id));
+            log.debug(String.format("Dont update any author by id '%d'", id));
         } else if (recordCount == 1) {
-            log.info(String.format("Update author by id '%d'", id));
+            log.debug(String.format("Update author by id '%d'", id));
         } else {
             log.error(String.format("Update more than one author by id '%d'", id));
             throw new SQLException("Internal sql exception");
@@ -110,11 +111,10 @@ public class AuthorDaoImpl implements AuthorDao {
 
         long id = author.getId();
         int recordCount = template.update(sql_query, id);
-
         if (recordCount == 0) {
-            log.info(String.format("Dont delete any author by id '%d'", id));
+            log.debug(String.format("Dont delete any author by id '%d'", id));
         } else if (recordCount == 1) {
-            log.info(String.format("Delete author by id '%d'", id));
+            log.debug(String.format("Delete author by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one author by id '%d'", id));
             throw new SQLException("Internal sql exception");
@@ -126,12 +126,11 @@ public class AuthorDaoImpl implements AuthorDao {
         String sql_query = env.getProperty("author.readAll");
 
         List<Author> authors = template.query(sql_query, authorMapper);
-
         if (authors.isEmpty()) {
-            log.info("Dont find any author");
-            return null;
+            log.debug("Dont find any author");
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d author(s)", authors.size()));
+            log.debug(String.format("Find %d author(s)", authors.size()));
             return authors;
         }
     }
@@ -141,12 +140,11 @@ public class AuthorDaoImpl implements AuthorDao {
         String sql_query = env.getProperty("author.getByBookId");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
-
         if (authors.isEmpty()) {
-            log.info(String.format("Dont find any author by bookID '%d'", id));
-            return null;
+            log.debug(String.format("Dont find any author by bookID '%d'", id));
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d author(s) by bookID '%d'", authors.size(), id));
+            log.debug(String.format("Find %d author(s) by bookID '%d'", authors.size(), id));
             return authors;
         }
     }
