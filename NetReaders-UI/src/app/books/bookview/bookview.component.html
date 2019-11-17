@@ -1,0 +1,52 @@
+<div class="divContainer" id="main">
+  <div class="photoContainer">
+    <div class="photoDiv">
+      <img src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+    </div>
+    <div>
+      <div class="rate">
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1" title="text">1 star</label>
+      </div>
+    </div>
+  </div>
+  <div class="alldataContainer">
+    <div class="dataContainer">
+
+      <div class="dataDiv">
+        <div id="book-title">
+          <h1>{{book.title}}</h1>
+        </div>
+        <div class="data">
+            <h2>{{authors}}</h2>
+        </div>
+        <div class="data">
+            <h2>Announcement date: {{book.release_date|date}}</h2>
+        </div>
+        <div class="data">
+            <h2>Genres: {{genres}}</h2>
+        </div>
+      </div>
+
+      <div class="btnContainer">
+        <a class="button">Want to read</a>
+        <a class="button">Add to favorites/Remove</a>
+        <a class="button">Download</a>
+      </div>
+  </div>
+    <div id="descriptionContainer">
+      <h2>Description</h2>
+      <hr/>
+      <span id="description">{{book.description}}</span>
+    </div>
+
+  </div>
+</div>

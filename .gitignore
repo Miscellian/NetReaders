@@ -1,8 +1,9 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+#!**/src/main/**
+#!**/src/test/**
+**/static/*
 
 ### STS ###
 .apt_generated
@@ -12,6 +13,9 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.attach_pid*
+.editorconfig
+.externalToolBuilders
 
 ### IntelliJ IDEA ###
 .idea
@@ -28,4 +32,22 @@ target/
 build/
 
 ### VS Code ###
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+/dist
+/tmp
+/out-tsc
+
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+npm-debug.log
+yarn-error.log
+
+node/
+node_modules/

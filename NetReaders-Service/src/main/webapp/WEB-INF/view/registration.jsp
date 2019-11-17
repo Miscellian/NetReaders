@@ -1,6 +1,8 @@
+<%@ page isELIgnored="false"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="req" value="${pageContext.request}" />
 
 <html>
 <head>
@@ -19,6 +21,7 @@
 </head>
 <body>
 
+	
 	<div id="register" style="margin-top: 50px"
 		class="mainbox col-md-4 col-md-offset-2 col-sm-6 col-sm-offset-2">
 
