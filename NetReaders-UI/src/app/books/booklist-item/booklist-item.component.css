@@ -1,0 +1,36 @@
+img#book-title-image {
+    width: 100%;
+  }
+  
+  a.btn {
+    display: block;
+    margin-bottom: 5%;
+    background-color: #007BFF;
+    border-color: #28a745;
+    font-size:x-large
+  }
+  
+  a.btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  a#book-title {
+    margin-bottom: 5%;
+    text-decoration: none;
+    color: black;
+    font-size: xx-large;
+  }
+  
+  p.header {
+    margin-top: 1%;
+    font-size:large;
+  }
+  
+  div#main {
+    padding: 2%;
+    margin-bottom: 2%;
+    border: .1vw solid #007BFF;
+    border-top-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+  }

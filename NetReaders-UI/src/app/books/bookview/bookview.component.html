@@ -1,52 +1,31 @@
-<div class="divContainer" id="main">
-  <div class="photoContainer">
-    <div class="photoDiv">
-      <img src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+<div class="container" id="main">
+  <div class="row">
+    <div class="col-md-3" id="photo-container">
+      <img class="rounded" id="book-title-image"
+        src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
     </div>
-    <div>
-      <div class="rate">
-        <input type="radio" id="star5" name="rate" value="5" />
-        <label for="star5" title="text">5 stars</label>
-        <input type="radio" id="star4" name="rate" value="4" />
-        <label for="star4" title="text">4 stars</label>
-        <input type="radio" id="star3" name="rate" value="3" />
-        <label for="star3" title="text">3 stars</label>
-        <input type="radio" id="star2" name="rate" value="2" />
-        <label for="star2" title="text">2 stars</label>
-        <input type="radio" id="star1" name="rate" value="1" />
-        <label for="star1" title="text">1 star</label>
+    <div class="row col-md-9">
+      <div class="col-md-8" id="book-data-container">
+        <h1 id="book-title">Harry Potter and the Philosopher`s stone</h1>
+        <p class="header">J. K. Rowling</p>
+        <p class="header">Fantasy</p>
+        <p class="header">Jun 26, 1997</p>
+      </div>
+      <div class="col-md-4" id="side-buttons-container">
+        <a href="#" class="btn btn-info" role="button" id="want-read-button">Want to read</a>
+        <a href="#" class="btn btn-info" role="button" id="favorite-button">Add to Favorites/Remove</a>
+        <a href="#" class="btn btn-info" role="button" id="download-button">Download</a>
+      </div>
+      <div class="col-md-12" id="description-container">
+        <h2>
+          Description
+        </h2>
+          <hr>
+          <p>
+              Harry Potter and the Philosopher`s Stone is the first novel in the Harry Potter series. 
+              The book was first published on 26 June, 1997 by Bloomsbury in London, and was later made into a film of the same name.
+          </p>
       </div>
     </div>
-  </div>
-  <div class="alldataContainer">
-    <div class="dataContainer">
-
-      <div class="dataDiv">
-        <div id="book-title">
-          <h1>{{book.title}}</h1>
-        </div>
-        <div class="data">
-            <h2>{{authors}}</h2>
-        </div>
-        <div class="data">
-            <h2>Announcement date: {{book.release_date|date}}</h2>
-        </div>
-        <div class="data">
-            <h2>Genres: {{genres}}</h2>
-        </div>
-      </div>
-
-      <div class="btnContainer">
-        <a class="button">Want to read</a>
-        <a class="button">Add to favorites/Remove</a>
-        <a class="button">Download</a>
-      </div>
-  </div>
-    <div id="descriptionContainer">
-      <h2>Description</h2>
-      <hr/>
-      <span id="description">{{book.description}}</span>
-    </div>
-
   </div>
 </div>
