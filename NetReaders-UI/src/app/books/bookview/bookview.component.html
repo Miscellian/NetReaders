@@ -6,10 +6,10 @@
     </div>
     <div class="row col-md-9">
       <div class="col-md-8" id="book-data-container">
-        <h1 id="book-title">Harry Potter and the Philosopher`s stone</h1>
-        <p class="header">J. K. Rowling</p>
-        <p class="header">Fantasy</p>
-        <p class="header">Jun 26, 1997</p>
+        <h1 id="book-title">{{book.title}}</h1>
+        <p class="header">{{authors}}</p>
+        <p class="header">{{genres}}</p>
+        <p class="header">{{book.release_date|date}}</p>
       </div>
       <div class="col-md-4" id="side-buttons-container">
         <a href="#" class="btn btn-info" role="button" id="want-read-button">Want to read</a>
@@ -22,8 +22,7 @@
         </h2>
           <hr>
           <p>
-              Harry Potter and the Philosopher`s Stone is the first novel in the Harry Potter series. 
-              The book was first published on 26 June, 1997 by Bloomsbury in London, and was later made into a film of the same name.
+            {{book.description}}
           </p>
       </div>
     </div>
