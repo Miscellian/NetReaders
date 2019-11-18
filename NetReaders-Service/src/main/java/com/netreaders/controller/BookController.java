@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping("/api/books")
 public class BookController {
 
@@ -25,13 +26,13 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "{id}")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<BookDto> GetBookById(@PathVariable String id) {
 			ResponseMessage<BookDto> response = bookService.findBookById(id);
 			return response;
 		}
 		@GetMapping(value = "range")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetById(
 				@RequestParam(name = "amount",defaultValue = "0") String amount,
 				@RequestParam(name = "offset",defaultValue = "0") String offset) {
@@ -40,7 +41,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "bygenre")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByGenre(
 				@RequestParam(name = "id") String genreid,
 				@RequestParam(name = "amount") String amount,
@@ -50,7 +51,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "byauthor")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByAuthor(
 				@RequestParam(name = "id") String authorid,
 				@RequestParam(name = "amount") String amount,
@@ -60,7 +61,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "byname")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByName(
 				@RequestParam(name = "name") String name) {
 			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name);
