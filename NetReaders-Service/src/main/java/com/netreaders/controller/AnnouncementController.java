@@ -25,7 +25,7 @@ public class AnnouncementController {
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<AnnouncementDto> getById(@PathVariable String id) {
+    public ResponseMessage<AnnouncementDto> getById(@PathVariable() Integer id) {
         ResponseMessage<AnnouncementDto> response = announcementService.findAnnouncementById(id);
         return response;
     }
@@ -33,9 +33,9 @@ public class AnnouncementController {
     @GetMapping(value = "bygenre")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseMessage<Collection<AnnouncementDto>> getByGenre(
-            @RequestParam(name = "id") String genreid,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
+            @RequestParam(name = "id") Integer genreid,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
         ResponseMessage<Collection<AnnouncementDto>> response = announcementService.findAnnouncementsByGenre(genreid, amount, offset);
         return response;
     }
@@ -43,9 +43,9 @@ public class AnnouncementController {
     @GetMapping(value = "byauthor")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseMessage<Collection<AnnouncementDto>> getByAuthor(
-            @RequestParam(name = "id") String authorid,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
+            @RequestParam(name = "id") Integer authorid,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
         ResponseMessage<Collection<AnnouncementDto>> response = announcementService.findAnnouncementsByAuthor(authorid, amount, offset);
         return response;
     }

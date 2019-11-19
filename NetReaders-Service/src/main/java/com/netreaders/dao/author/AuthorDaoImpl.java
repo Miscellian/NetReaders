@@ -1,5 +1,6 @@
 package com.netreaders.dao.author;
 
+import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Author;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AuthorDaoImpl implements AuthorDao {
     private AuthorMapper authorMapper;
 
     @Override
-    public Author create(Author author) throws SQLException {
+    public Author create(Author author) throws DataBaseSQLException {
 
         final String sql_query = env.getProperty("author.create");
 
@@ -66,15 +67,18 @@ public class AuthorDaoImpl implements AuthorDao {
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("Author '%s' is already exist", author.getName()));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Author '%s' is already exist", author.getName()));
         }
     }
 
-    public Author getById(Integer id) throws SQLException {
+    public Author getById(Integer id) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("author.read");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
+
+        checkIfCollectionIsNull(authors);
+
         if (authors.isEmpty()) {
             log.debug(String.format("Dont find any author by id '%s'", id));
             return null;
@@ -83,12 +87,12 @@ public class AuthorDaoImpl implements AuthorDao {
             return authors.get(0);
         } else {
             log.error(String.format("Find more than one author by id '%s'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Find more than one author by id '%s'", id));
         }
     }
 
     @Override
-    public void update(Author author) throws SQLException {
+    public void update(Author author) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("author.update");
 
@@ -100,12 +104,12 @@ public class AuthorDaoImpl implements AuthorDao {
             log.debug(String.format("Update author by id '%d'", id));
         } else {
             log.error(String.format("Update more than one author by id '%d'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Update more than one author by id '%d'", id));
         }
     }
 
     @Override
-    public void delete(Author author) throws SQLException {
+    public void delete(Author author) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("author.delete");
 
@@ -117,7 +121,7 @@ public class AuthorDaoImpl implements AuthorDao {
             log.debug(String.format("Delete author by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one author by id '%d'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Delete more than one author by id '%d'", id));
         }
     }
 
@@ -126,6 +130,9 @@ public class AuthorDaoImpl implements AuthorDao {
         String sql_query = env.getProperty("author.readAll");
 
         List<Author> authors = template.query(sql_query, authorMapper);
+
+        checkIfCollectionIsNull(authors);
+
         if (authors.isEmpty()) {
             log.debug("Dont find any author");
             return Collections.emptyList();
@@ -135,17 +142,28 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    public Collection<Author> getByBookId(int id) throws SQLException {
+    public Collection<Author> getByBookId(int id) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("author.getByBookId");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
+
+        checkIfCollectionIsNull(authors);
+
         if (authors.isEmpty()) {
             log.debug(String.format("Dont find any author by bookID '%d'", id));
             return Collections.emptyList();
         } else {
             log.debug(String.format("Find %d author(s) by bookID '%d'", authors.size(), id));
             return authors;
+        }
+    }
+
+    private void checkIfCollectionIsNull(Collection<Author> collection) {
+        if (collection == null) {
+            // unreachable, but who knows (:
+            log.error("Get `null` reference from jdbcTemplate");
+            throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
         }
     }
 }

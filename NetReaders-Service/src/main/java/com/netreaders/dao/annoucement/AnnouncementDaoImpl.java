@@ -1,5 +1,6 @@
 package com.netreaders.dao.annoucement;
 
+import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Announcement;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     private AnnouncementMapper announcementMapper;
 
     @Override
-    public Announcement create(Announcement announcement) throws SQLException {
+    public Announcement create(Announcement announcement) throws DataBaseSQLException {
 
         final String sql_query = env.getProperty("announcement.create");
 
@@ -68,16 +69,19 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("Announcement '%s' is already exist", announcement.getId()));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Announcement '%s' is already exist", announcement.getId()));
         }
     }
 
     @Override
-    public Announcement getById(Integer id) throws SQLException {
+    public Announcement getById(Integer id) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.read");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, id);
+
+        checkIfCollectionIsNull(announcements);
+
         if (announcements.isEmpty()) {
             log.debug(String.format("Dont find any announcement by id '%s'", id));
             return null;
@@ -86,12 +90,12 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             return announcements.get(0);
         } else {
             log.error(String.format("Find more than one announcement by id '%s'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Find more than one announcement by id '%s'", id));
         }
     }
 
     @Override
-    public void update(Announcement announcement) throws SQLException {
+    public void update(Announcement announcement) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.update");
 
@@ -103,12 +107,12 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             log.debug(String.format("Update announcement by id '%d'", id));
         } else {
             log.error(String.format("Update more than one announcement by id '%d'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Update more than one announcement by id '%d'", id));
         }
     }
 
     @Override
-    public void delete(Announcement announcement) throws SQLException {
+    public void delete(Announcement announcement) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.delete");
 
@@ -120,16 +124,19 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             log.debug(String.format("Delete announcement by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one announcement by id '%d'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Delete more than one announcement by id '%d'", id));
         }
     }
 
     @Override
-    public Collection<Announcement> getAll() throws SQLException {
+    public Collection<Announcement> getAll() throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.readAll");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper);
+
+        checkIfCollectionIsNull(announcements);
+
         if (announcements.isEmpty()) {
             log.debug("Dont find any announcement");
             return Collections.emptyList();
@@ -140,11 +147,14 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByGenre(int genre_id, int amount, int offset) throws SQLException {
+    public Collection<Announcement> findAnnouncementsByGenre(int genre_id, int amount, int offset) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, genre_id, amount, offset);
+
+        checkIfCollectionIsNull(announcements);
+
         if (announcements.isEmpty()) {
             log.debug(String.format("Dont find any announcement by genreId '%d'", genre_id));
             return Collections.emptyList();
@@ -155,11 +165,14 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByAuthor(int author_id, int amount, int offset) throws SQLException {
+    public Collection<Announcement> findAnnouncementsByAuthor(int author_id, int amount, int offset) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, author_id, amount, offset);
+
+        checkIfCollectionIsNull(announcements);
+
         if (announcements.isEmpty()) {
             log.debug(String.format("Dont find any announcement by authorID '%d'", author_id));
             return Collections.emptyList();
@@ -171,17 +184,28 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
 
     @Override
-    public Collection<Announcement> getById(int amount, int offset) throws SQLException {
+    public Collection<Announcement> getById(int amount, int offset) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("announcement.getByIdWithOffset");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, amount, offset);
+
+        checkIfCollectionIsNull(announcements);
+
         if (announcements.isEmpty()) {
             log.debug(String.format("Dont find any announcement with offset '%d'", offset));
             return Collections.emptyList();
         } else {
             log.debug(String.format("Find %d announcement(s) with offset '%d'", announcements.size(), offset));
             return announcements;
+        }
+    }
+
+    private void checkIfCollectionIsNull(Collection<Announcement> collection) {
+        if (collection == null) {
+            // unreachable, but who knows (:
+            log.error("Get `null` reference from jdbcTemplate");
+            throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
         }
     }
 }

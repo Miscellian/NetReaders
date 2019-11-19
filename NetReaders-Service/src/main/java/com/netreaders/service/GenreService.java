@@ -1,42 +1,33 @@
 package com.netreaders.service;
 
 import com.netreaders.dao.genres.GenreDao;
+import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Genre;
 import com.netreaders.models.ResponseMessage;
-import com.netreaders.utils.ResponseMessagePrepearer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 @Service
 public class GenreService {
-    private final GenreDao genreDao;
 
-    public GenreService(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
+    @Autowired
+    private GenreDao genreDao;
 
-    public ResponseMessage<Collection<Genre>> getAll() {
+    public ResponseMessage<Collection<Genre>> getAll() throws DataBaseSQLException {
+
         ResponseMessage<Collection<Genre>> message = new ResponseMessage<>();
-        try {
-            message.setObj(genreDao.getAll());
-        } catch (Exception e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
+        message.setObj(genreDao.getAll());
+
         return message;
     }
 
-    public ResponseMessage<Genre> getById(String id) {
-        ResponseMessage<Genre> message = new ResponseMessage<>();
+    public ResponseMessage<Genre> getById(Integer id) throws DataBaseSQLException {
 
-        try {
-            int numericId = Integer.parseInt(id);
-            message.setObj(genreDao.getById(numericId));
-        } catch (NumberFormatException e) {
-            ResponseMessagePrepearer.prepareMessage(message, "Invalid Genre id");
-        } catch (Exception e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
+        ResponseMessage<Genre> message = new ResponseMessage<>();
+        message.setObj(genreDao.getById(id));
+
         return message;
     }
 }

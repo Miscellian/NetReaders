@@ -1,5 +1,6 @@
 package com.netreaders.dao.user;
 
+import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.User;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserDaoImpl implements UserDao {
     private UserMapper userMapper;
 
     @Override
-    public User create(final User user) throws SQLException {
+    public User create(final User user) throws DataBaseSQLException {
 
         final String sql_query = env.getProperty("user.create");
 
@@ -70,16 +71,18 @@ public class UserDaoImpl implements UserDao {
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUserNickname()));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("User '%s' is already exist", user.getUserNickname()));
         }
     }
 
     @Override
-    public User getById(Long id) throws SQLException {
+    public User getById(Long id) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("user.read");
 
         List<User> users = template.query(sql_query, userMapper, id);
+
+        checkIfCollectionIsNull(users);
 
         if (users.isEmpty()) {
             log.debug(String.format("Dont find any user by id '%s'", id));
@@ -89,12 +92,12 @@ public class UserDaoImpl implements UserDao {
             return users.get(0);
         } else {
             log.error(String.format("Find more than one user by id '%s'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Find more than one user by id '%s'", id));
         }
     }
 
     @Override
-    public void update(User user) throws SQLException {
+    public void update(User user) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("user.update");
 
@@ -113,12 +116,12 @@ public class UserDaoImpl implements UserDao {
             log.debug(String.format("Update user by id '%d'", user.getUserId()));
         } else {
             log.error(String.format("Update more than one user by id '%d'", user.getUserId()));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Update more than one user by id '%d'", user.getUserId()));
         }
     }
 
     @Override
-    public void delete(User user) throws SQLException {
+    public void delete(User user) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("user.delete");
 
@@ -131,7 +134,7 @@ public class UserDaoImpl implements UserDao {
             log.debug(String.format("Delete user by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one user by '%d'", id));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Delete more than one user by '%d'", id));
         }
     }
 
@@ -141,6 +144,9 @@ public class UserDaoImpl implements UserDao {
         String sql_query = env.getProperty("user.readAll");
 
         List<User> users = template.query(sql_query, userMapper);
+
+        checkIfCollectionIsNull(users);
+
         if (users.isEmpty()) {
             log.debug("Dont find any user");
             return Collections.emptyList();
@@ -151,11 +157,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByNickname(String nickname) throws SQLException {
+    public User findByNickname(String nickname) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("user.findByNickname");
 
         List<User> users = template.query(sql_query, userMapper, nickname);
+
+        checkIfCollectionIsNull(users);
+
         if (users.isEmpty()) {
             log.debug(String.format("Dont find any user by nickname '%s'", nickname));
             return null;
@@ -164,7 +173,7 @@ public class UserDaoImpl implements UserDao {
             return users.get(0);
         } else {
             log.error(String.format("Find more than one user by nickname '%s'", nickname));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Find more than one user by nickname '%s'", nickname));
         }
     }
 
@@ -174,6 +183,9 @@ public class UserDaoImpl implements UserDao {
         String sql_query = env.getProperty("user.findByFirstName");
 
         List<User> users = template.query(sql_query, userMapper, firstName);
+
+        checkIfCollectionIsNull(users);
+
         if (users.isEmpty()) {
             log.debug(String.format("Dont find any user by first name '%s'", firstName));
             return Collections.emptyList();
@@ -184,7 +196,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteByNickname(String nickname) throws SQLException {
+    public void deleteByNickname(String nickname) throws DataBaseSQLException {
 
         String sql_query = env.getProperty("user.deleteByNickname");
 
@@ -195,7 +207,15 @@ public class UserDaoImpl implements UserDao {
             log.debug(String.format("Delete user by nickname '%s'", recordCount, nickname));
         } else {
             log.error(String.format("Delete more than one user by nickname '%s'", nickname));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Delete more than one user by nickname '%s'", nickname));
+        }
+    }
+
+    private void checkIfCollectionIsNull(Collection<User> collection) {
+        if (collection == null) {
+            // unreachable, but who knows (:
+            log.error("Get `null` reference from jdbcTemplate");
+            throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
         }
     }
 }

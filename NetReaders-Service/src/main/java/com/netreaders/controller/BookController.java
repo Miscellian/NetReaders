@@ -3,13 +3,8 @@ package com.netreaders.controller;
 import com.netreaders.dto.BookDto;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.BookService;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -18,33 +13,30 @@ import java.util.Collection;
 @RequestMapping("/api/books")
 public class BookController {
 
-		private final BookService bookService;
+		@Autowired
+		private BookService bookService;
 
-		public BookController(BookService bookService) {
-			this.bookService = bookService;
-		}
-		
 		@GetMapping(value = "{id}")
 		@CrossOrigin(origins = "http://localhost:8080")
-		public ResponseMessage<BookDto> GetBookById(@PathVariable String id) {
+		public ResponseMessage<BookDto> getBookById(@PathVariable Integer id) {
 			ResponseMessage<BookDto> response = bookService.findBookById(id);
 			return response;
 		}
 		@GetMapping(value = "range")
 		@CrossOrigin(origins = "http://localhost:8080")
-		public ResponseMessage<Collection<BookDto>> GetById(
-				@RequestParam(name = "amount",defaultValue = "0") String amount,
-				@RequestParam(name = "offset",defaultValue = "0") String offset) {
+		public ResponseMessage<Collection<BookDto>> getById(
+				@RequestParam(name = "amount",defaultValue = "0") Integer amount,
+				@RequestParam(name = "offset",defaultValue = "0") Integer offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.getById(amount, offset);
 			return response;
 		}
 		
 		@GetMapping(value = "bygenre")
 		@CrossOrigin(origins = "http://localhost:8080")
-		public ResponseMessage<Collection<BookDto>> GetByGenre(
-				@RequestParam(name = "id") String genreid,
-				@RequestParam(name = "amount") String amount,
-				@RequestParam(name = "offset") String offset) {
+		public ResponseMessage<Collection<BookDto>> getByGenre(
+				@RequestParam(name = "id") Integer genreid,
+				@RequestParam(name = "amount") Integer amount,
+				@RequestParam(name = "offset") Integer offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByGenre(genreid, amount, offset);
 			return response;
 		}
@@ -52,9 +44,9 @@ public class BookController {
 		@GetMapping(value = "byauthor")
 		@CrossOrigin(origins = "http://localhost:8080")
 		public ResponseMessage<Collection<BookDto>> GetByAuthor(
-				@RequestParam(name = "id") String authorid,
-				@RequestParam(name = "amount") String amount,
-				@RequestParam(name = "offset") String offset) {
+				@RequestParam(name = "id") Integer authorid,
+				@RequestParam(name = "amount") Integer amount,
+				@RequestParam(name = "offset") Integer offset) {
 			ResponseMessage<Collection<BookDto>> response = bookService.findBooksByAuthor(authorid, amount, offset);
 			return response;
 		}
