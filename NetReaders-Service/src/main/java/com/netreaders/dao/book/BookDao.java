@@ -13,6 +13,8 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) throws SQLException;
 
     Collection<Book> getById(int amount, int offset) throws SQLException;
-    
+
     Collection<Book> getByName(String name) throws SQLException;
+
+    Collection<Book> getByAnnouncementId(int announcement_id) throws SQLException;
 }

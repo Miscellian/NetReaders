@@ -197,4 +197,19 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
+
+    @Override
+    public Collection<Book> getByAnnouncementId(int id) throws SQLException {
+
+        String sql_query = env.getProperty("book.getByAnnouncementId");
+
+        List<Book> books = template.query(sql_query, bookMapper, id);
+        if (books.isEmpty()) {
+            log.debug(String.format("Dont find any book by announcementID '%d'", id));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Find %d book(s) by announcementID '%d'", books.size(), id));
+            return books;
+        }
+    }
 }
