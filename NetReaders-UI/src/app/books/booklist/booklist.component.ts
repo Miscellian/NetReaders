@@ -23,15 +23,19 @@ export class BooklistComponent implements OnInit {
               public router: Router ) { }
 
   ngOnInit() {
-    this.arg = this.activatedRoute.snapshot.paramMap.get('id');
-    this.funcs[this.activatedRoute.snapshot.data.filter]();
-    this.func().subscribe(response => {
-      if (!response.isSuccessful) {
-        this.router.navigate(['/error']);
-      } else {
-        this.bookdtos = response.obj;
+    this.activatedRoute.params.subscribe(
+      params => {
+        this.arg = params['id'];
+        this.funcs[this.activatedRoute.snapshot.data.filter]();
+        this.func().subscribe(response => {
+          if (!response.isSuccessful) {
+            this.router.navigate(['/error']);
+          } else {
+            this.bookdtos = response.obj;
+          }
+        });
       }
-    });
+    );
   }
 
 }
