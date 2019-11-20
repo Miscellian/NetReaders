@@ -13,10 +13,13 @@ public class AnnouncementMapper implements RowMapper<Announcement> {
 
     @Override
     public Announcement mapRow(ResultSet rs, int rowNum) throws SQLException {
+
         Announcement announcement = new Announcement();
-        announcement.setAnnouncement_date(rs.getDate(1));
-        announcement.setDescription(rs.getString(2));
-        announcement.setPublished(rs.getBoolean(3));
+        announcement.setId(rs.getInt("announcement_id"));
+        announcement.setAnnouncement_date(rs.getDate("announcement_date"));
+        announcement.setDescription(rs.getString("description"));
+        announcement.setPublished(rs.getBoolean("published"));
+
         return announcement;
     }
 

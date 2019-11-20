@@ -22,10 +22,14 @@ public class AnnouncementService {
     @Autowired
     private BookDao bookDao;
 
-    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() throws DataBaseSQLException {
+    public ResponseMessage<Collection<AnnouncementDto>> getAllAnnouncements() throws DataBaseSQLException {
 
-        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
-        message.setObj(announcementDao.getAll());
+        ResponseMessage<Collection<AnnouncementDto>> message = new ResponseMessage<>();
+        Collection<Announcement> announcements = announcementDao.getAll();
+        Collection<AnnouncementDto> announcementDtos = announcements.stream()
+                .map(this::tryCreateAnnouncementDto)
+                .collect(Collectors.toCollection(ArrayList::new));
+        message.setObj(announcementDtos);
 
         return message;
     }

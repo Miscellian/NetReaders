@@ -1,7 +1,6 @@
 package com.netreaders.controller;
 
 import com.netreaders.dto.AnnouncementDto;
-import com.netreaders.models.Announcement;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class AnnouncementController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() {
+    public ResponseMessage<Collection<AnnouncementDto>> getAllAnnouncements() {
         return announcementService.getAllAnnouncements();
     }
 
