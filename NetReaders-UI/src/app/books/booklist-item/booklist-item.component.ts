@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BookDto, Book, Genre, Author } from '../../model';
-import { BookService } from '../book.service';
 
 @Component({
   selector: 'app-booklist-item',

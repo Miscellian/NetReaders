@@ -13,10 +13,10 @@ const routes: Routes = [
   {path: 'books',
     children: [
       {path: ':id', component: BookviewComponent },
-      {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
-      {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
-      {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}},
-      {path: 'range/:id', component: BooklistComponent, data: {filter: 'range'}}
+      {path: 'byauthor/:id/:page', component: BooklistComponent, data: {filter: 'author'}},
+      {path: 'bygenre/:id/:page', component: BooklistComponent, data: {filter: 'genre'}},
+      {path: 'byname/:id/:page', component: BooklistComponent, data: {filter: 'name'}},
+      {path: 'range/:page', component: BooklistComponent, data: {filter: 'range'}}
     ]
   }
 ];
