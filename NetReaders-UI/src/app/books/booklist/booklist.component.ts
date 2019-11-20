@@ -25,6 +25,7 @@ export class BooklistComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit() {
+<<<<<<< HEAD
     this.bookService.getCount().subscribe(response => {
       if (!response.isSuccessful) {
         this.router.navigate(['/error']);
@@ -40,8 +41,21 @@ export class BooklistComponent implements OnInit {
         this.router.navigate(['/error']);
       } else {
         this.bookdtos = response.obj;
+=======
+    this.activatedRoute.params.subscribe(
+      params => {
+        this.arg = params['id'];
+        this.funcs[this.activatedRoute.snapshot.data.filter]();
+        this.func().subscribe(response => {
+          if (!response.isSuccessful) {
+            this.router.navigate(['/error']);
+          } else {
+            this.bookdtos = response.obj;
+          }
+        });
+>>>>>>> c1df63278c3049810abe1eff0c3791c3bdc988da
       }
-    });
+    );
   }
 
 }
