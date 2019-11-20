@@ -68,4 +68,26 @@ public class BookController {
 			return response;
 		}
 		
+		@GetMapping(value = "count")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCount() {
+			ResponseMessage<Integer> response = bookService.getCount();
+			return response;
+		}
+		
+		@GetMapping(value = "countByAuthor")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByAuthor(
+				@RequestParam(name = "id") String authorid) {
+			ResponseMessage<Integer> response = bookService.getCountByAuthor(authorid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByGenre")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByGenre(
+				@RequestParam(name = "id") String genreid) {
+			ResponseMessage<Integer> response = bookService.getCountByGenre(genreid);
+			return response;
+		}
 }

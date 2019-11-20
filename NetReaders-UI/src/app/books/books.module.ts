@@ -4,7 +4,7 @@ import { BookviewComponent } from './bookview/bookview.component';
 import { BooklistComponent } from './booklist/booklist.component';
 import { BooklistItemComponent } from './booklist-item/booklist-item.component';
 import { RouterModule } from '@angular/router';
-
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgbPaginationModule
   ]
 })
 export class BooksModule { }

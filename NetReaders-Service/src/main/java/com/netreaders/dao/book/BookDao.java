@@ -15,4 +15,10 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> getById(int amount, int offset) throws SQLException;
     
     Collection<Book> getByName(String name) throws SQLException;
+    
+    Integer getCount() throws SQLException;
+    
+    Integer getCountByAuthor(int author_id) throws SQLException;
+
+    Integer getCountByGenre(int genre_id) throws SQLException;
 }

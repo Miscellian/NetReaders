@@ -197,4 +197,31 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
+    
+    public Integer getCount() throws SQLException {
+    	String sql_query = env.getProperty("book.getCount");
+    	
+    	Integer count = template.queryForObject(sql_query, Integer.class);
+
+        log.debug(String.format("Found %d books", count));
+        return count;
+    }
+    
+    public Integer getCountByAuthor(int author_id) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByAuthor");
+    	
+    	Integer count = template.queryForObject(sql_query, new Object[] { author_id }, Integer.class);
+
+        log.debug(String.format("Found %d books by authorID '%d' ", count, author_id));
+        return count;
+    }
+    
+    public Integer getCountByGenre(int genre_id) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByGenre");
+    	
+    	Integer count = template.queryForObject(sql_query, new Object[] { genre_id }, Integer.class);
+
+        log.debug(String.format("Found %d books by genreID '%d'", count, genre_id));
+        return count;
+    }
 }

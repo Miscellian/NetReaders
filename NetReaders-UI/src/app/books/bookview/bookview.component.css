@@ -24,10 +24,24 @@ p.header {
   font-size:x-large;
 }
 
+div.header {
+  display: inline;
+}
+
 #description-container {
   margin-top: 5%;
   padding: 2%;
   border: .1vw solid #007BFF;
   border-top-left-radius: 10%;
   border-bottom-right-radius: 10%;
+}
+
+a.author-genre-link {
+  text-decoration: none;
+  font-size: x-large;
+  color: black; 
+}
+
+a.author-genre-link:hover {
+  color: #218838; 
 }

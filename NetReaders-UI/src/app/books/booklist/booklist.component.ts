@@ -10,19 +10,29 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 })
 export class BooklistComponent implements OnInit {
   funcs: any = {
-    genre: () => {this.func = () => this.bookService.getByGenre(this.arg); },
-    author: () => {this.func = () => this.bookService.getByAuthor(this.arg); },
-    name: () => {this.func = () => this.bookService.getByName(this.arg); }
+    genre: () => { this.func = () => this.bookService.getByGenre(this.arg); },
+    author: () => { this.func = () => this.bookService.getByAuthor(this.arg); },
+    name: () => { this.func = () => this.bookService.getByName(this.arg); },
+    range: () => { this.func = () => this.bookService.getByRange(this.arg); }
   };
 
   arg: string;
+  count: number;
   bookdtos: BookDto[];
-  func: any = () => this.bookService.getByAuthor(this.arg);
+  func: any = () => this.bookService.getByRange(this.arg);
   constructor(private bookService: BookService,
-              private activatedRoute: ActivatedRoute,
-              public router: Router ) { }
+    private activatedRoute: ActivatedRoute,
+    public router: Router) { }
 
   ngOnInit() {
+    this.bookService.getCount().subscribe(response => {
+      if (!response.isSuccessful) {
+        this.router.navigate(['/error']);
+      }
+      else {
+        this.count = response.obj;
+      }
+    });
     this.arg = this.activatedRoute.snapshot.paramMap.get('id');
     this.funcs[this.activatedRoute.snapshot.data.filter]();
     this.func().subscribe(response => {

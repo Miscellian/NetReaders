@@ -15,7 +15,8 @@ const routes: Routes = [
       {path: ':id', component: BookviewComponent },
       {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
       {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
-      {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
+      {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}},
+      {path: 'range/:id', component: BooklistComponent, data: {filter: 'range'}}
     ]
   }
 ];

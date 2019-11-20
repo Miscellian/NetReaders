@@ -7,8 +7,13 @@
     <div class="row col-md-9">
       <div class="col-md-8" id="book-data-container">
         <h1 id="book-title">{{book.title}}</h1>
-        <p class="header">{{authors}}</p>
-        <p class="header">{{genres}}</p>
+        <div class="header" *ngFor="let author of authors">
+          <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
+        </div><br />
+
+        <div class="header" *ngFor="let genre of genres">
+          <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
+        </div><br />
         <p class="header">{{book.release_date|date}}</p>
       </div>
       <div class="col-md-4" id="side-buttons-container">
@@ -20,10 +25,10 @@
         <h2>
           Description
         </h2>
-          <hr>
-          <p>
-            {{book.description}}
-          </p>
+        <hr>
+        <p>
+          {{book.description}}
+        </p>
       </div>
     </div>
   </div>
