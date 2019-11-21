@@ -48,6 +48,7 @@ speed-measure-plugin*.json
 
 npm-debug.log
 yarn-error.log
+*.log
 
 node/
 node_modules/

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping("/api/books")
 public class BookController {
 
@@ -25,13 +26,13 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "{id}")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<BookDto> GetBookById(@PathVariable String id) {
 			ResponseMessage<BookDto> response = bookService.findBookById(id);
 			return response;
 		}
 		@GetMapping(value = "range")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetById(
 				@RequestParam(name = "amount",defaultValue = "0") String amount,
 				@RequestParam(name = "offset",defaultValue = "0") String offset) {
@@ -40,7 +41,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "bygenre")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByGenre(
 				@RequestParam(name = "id") String genreid,
 				@RequestParam(name = "amount") String amount,
@@ -50,7 +51,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "byauthor")
-		@CrossOrigin(origins = "http://localhost:8080")
+		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByAuthor(
 				@RequestParam(name = "id") String authorid,
 				@RequestParam(name = "amount") String amount,
@@ -62,9 +63,41 @@ public class BookController {
 		@GetMapping(value = "byname")
 		@CrossOrigin(origins = "http://localhost:8080")
 		public ResponseMessage<Collection<BookDto>> GetByName(
-				@RequestParam(name = "name") String name) {
-			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name);
+				@RequestParam(name = "name") String name,
+				@RequestParam(name = "amount") String amount,
+				@RequestParam(name = "offset") String offset) {
+			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name, amount, offset);
 			return response;
 		}
 		
+		@GetMapping(value = "count")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCount() {
+			ResponseMessage<Integer> response = bookService.getCount();
+			return response;
+		}
+		
+		@GetMapping(value = "countByAuthor")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByAuthor(
+				@RequestParam(name = "id") String authorid) {
+			ResponseMessage<Integer> response = bookService.getCountByAuthor(authorid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByGenre")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByGenre(
+				@RequestParam(name = "id") String genreid) {
+			ResponseMessage<Integer> response = bookService.getCountByGenre(genreid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByName")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByName(
+				@RequestParam(name = "name") String name) {
+			ResponseMessage<Integer> response = bookService.getCountByName(name);
+			return response;
+		}
 }

@@ -4,7 +4,7 @@
   
     <ul class="nav nav-pills">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Books</a>
+          <a class="nav-link active" routerLink="/books/range/1">Books</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Genres</a>
@@ -18,9 +18,9 @@
           <a class="nav-link" href="#">Authors</a>
         </li>
 
-        <form class="form-inline" action="/action_page.php">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-          <button class="btn btn-success" type="submit">Search</button>
+
+        <form class="form-inline" action="getByName($event)">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" #box (keyup.enter)="onEnter(box.value)">
         </form>
         
       </ul>

@@ -140,7 +140,8 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
-
+    
+    @Override
     public Collection<Book> findBooksByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByGenre");
@@ -155,6 +156,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
+    @Override
     public Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByAuthor");
@@ -169,6 +171,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
+    @Override
     public Collection<Book> getById(int amount, int offset) {
 
         String sql_query = env.getProperty("book.getByIdWithOffset");
@@ -184,11 +187,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getByName(String name) throws SQLException {
+    public Collection<Book> getByName(String name, int amount, int offset) throws SQLException {
 
-        String sql_query = env.getProperty("book.getByName");
+        String sql_query = env.getProperty("book.getByNameWithOffset");
 
-        List<Book> books = template.query(sql_query, bookMapper, name);
+        List<Book> books = template.query(sql_query, bookMapper, name, name, amount, offset);
         if (books.isEmpty()) {
             log.debug(String.format("Didn't find any books with name like '%s'", name));
             return Collections.emptyList();
@@ -196,5 +199,45 @@ public class BookDaoImpl implements BookDao {
             log.debug(String.format("Found %d book(s) with name like '%s'", books.size(), name));
             return books;
         }
+    }
+    
+    @Override
+    public Integer getCount() throws SQLException {
+    	String sql_query = env.getProperty("book.getCount");
+    	
+    	Integer count = template.queryForObject(sql_query, Integer.class);
+
+        log.debug(String.format("Found %d books", count));
+        return count;
+    }
+    
+    @Override
+    public Integer getCountByAuthor(int author_id) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByAuthor");
+    	
+    	Integer count = template.queryForObject(sql_query, new Object[] { author_id }, Integer.class);
+
+        log.debug(String.format("Found %d books by authorID '%d' ", count, author_id));
+        return count;
+    }
+    
+    @Override
+    public Integer getCountByGenre(int genre_id) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByGenre");
+    	
+    	Integer count = template.queryForObject(sql_query, new Object[] { genre_id }, Integer.class);
+
+        log.debug(String.format("Found %d books by genreID '%d'", count, genre_id));
+        return count;
+    }
+    
+    @Override
+    public Integer getCountByName(String name) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByName");
+    	
+    	Integer count = template.queryForObject(sql_query, new Object[] { name, name }, Integer.class);
+
+        log.debug(String.format("Found %d books by name '%s'", count, name));
+        return count;
     }
 }

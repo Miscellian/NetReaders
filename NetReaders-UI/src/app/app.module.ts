@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserpageComponent } from './userpage/userpage.component';
 import { AdminslistComponent } from './adminslist/adminslist.component';
-import { SignupComponent} from './signup/signup.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
-import { LoginComponent } from './login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     HttpClientModule,
     BooksModule,
-    CommonModule
+    CommonModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

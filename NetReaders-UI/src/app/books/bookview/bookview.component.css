@@ -1,112 +1,47 @@
-div#main {
-  font-family: arial;
-}
-
-.divContainer {
-  display: flex;
-  width: 80%;
-  margin: 0 auto;
-}
-.photoContainer {
-  width: 25%;
-  text-align: center;
-}
-.photoDiv {
-  padding: 0 10%;
-  margin: 0 auto;
-}
-.alldataContainer {
-  width:75%;
-}
-
-.dataContainer {
+img#book-title-image {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.dataDiv {
-  width: 100%;
-  text-align: left;
-}
-.btnContainer {
-  width: 30%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-#descriptionContainer {
-  margin-top: 3vw;
-  background-color: rgba(217, 203, 4, 0.5);
-  padding: 0.5vw;
 }
 
-h4 {
-  font-style: italic;
+a.btn {
+  display: block;
+  margin-bottom: 5%;
+  background-color: #007BFF;
+  border-color: #28a745;
+  font-size:x-large
 }
 
-img {
-  height: 350px;
-  width: 250px;
+a.btn:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
 }
 
-#description{
-  font-size: 20px;
+h1#book-title {
+  margin-bottom: 5%;
 }
 
-#book-title {
-  font-size: 1vw;
-  align-items: center;
+p.header {
+  margin-top: 1%;
+  font-size:x-large;
 }
 
-.button {
-  font: bold italic 1vw Arial;
+div.header {
+  display: inline;
+}
+
+#description-container {
+  margin-top: 5%;
+  padding: 2%;
+  border: .1vw solid #007BFF;
+  border-top-left-radius: 10%;
+  border-bottom-right-radius: 10%;
+}
+
+a.author-genre-link {
   text-decoration: none;
-  background-color: #D9CB04;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 1.2vw 0 0.8vw 0;
-  height: 1.2vw;
-  margin-top: 1.5vw;
+  font-size: x-large;
+  color: black; 
 }
 
-.button:hover {
-  background-color: #A60311;
-  color: #ffffff;
-}
-.data {
-  margin-top: 2vw;
-}
-
-.rate {
-  padding: 0 5.5vw;
-}
-.rate:not(:checked) > input {
-  position:absolute;
-  top:-9999px;
-}
-.rate:not(:checked) > label {
-  float:right;
-  width:1em;
-  overflow:hidden;
-  white-space:nowrap;
-  cursor:pointer;
-  font-size:30px;
-  color:#ccc;
-}
-.rate:not(:checked) > label:before {
-  content: '★ ';
-}
-.rate > input:checked ~ label {
-  color: #ffc700;    
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-  color: #deb217;  
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-  color: #c59b08;
+a.author-genre-link:hover {
+  color: #218838; 
 }

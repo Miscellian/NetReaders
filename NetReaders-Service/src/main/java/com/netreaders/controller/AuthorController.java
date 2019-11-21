@@ -19,12 +19,13 @@ public class AuthorController {
 	}
 
 	@GetMapping("all")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseMessage<Collection<Author>> GetAllAuthors() {
 		return authorService.getAll();
 	}
 	
 	@GetMapping(value = "{id}")
-	@ResponseBody
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseMessage<Author> GetAuthorById(@PathVariable String id) {
 		ResponseMessage<Author> response = authorService.getById(id);
 		return response;

@@ -12,16 +12,34 @@ export class BookService {
   constructor(private httpClient: HttpClient) { }
 
   getById(id: number): Observable<ResponseMessage<BookDto>> {
-    return this.httpClient.get<ResponseMessage<BookDto>>(`http://localhost:8080/api/books/${id}`);
+    return this.httpClient.get<ResponseMessage<BookDto>>(`http://netreaders.herokuapp.com/api/books/${id}`);
   }
-
-  getByAuthor(arg: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byauthor?id=${arg}&amount=5&offset=0`);
+  getByAuthor(arg: string, page: string): Observable<ResponseMessage<BookDto[]>> {
+    var offset = (Number(page) - 1) * 5;
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://netreaders.herokuapp.com/api/books/byauthor?id=${arg}&amount=5&offset=${offset}`);
   }
-  getByGenre(arg: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/bygenre?id=${arg}&amount=5&offset=0`);
+  getByGenre(arg: string, page: string): Observable<ResponseMessage<BookDto[]>> {
+    var offset = (Number(page) - 1) * 5;
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://netreaders.herokuapp.com/api/books/bygenre?id=${arg}&amount=5&offset=${offset}`);
   }
-  getByName(name: string): Observable<ResponseMessage<BookDto[]>> {
-    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byname?name=${name}&amount=5&offset=0`);
+  getByName(name: string, page: string): Observable<ResponseMessage<BookDto[]>> {
+    var offset = (Number(page) - 1) * 5;
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://netreaders.herokuapp.com/api/books/byname?name=${name}&amount=5&offset=${offset}`);
+  }
+  getByRange(page: string): Observable<ResponseMessage<BookDto[]>> {
+    var offset = (Number(page) - 1) * 5;
+    return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://netreaders.herokuapp.com/api/books/range?amount=5&offset=${offset}`);
+  }
+  getCount(): Observable<ResponseMessage<number>> {
+    return this.httpClient.get<ResponseMessage<number>>(`http://netreaders.herokuapp.com/api/books/count`);
+  }
+  getCountByAuthor(arg: string): Observable<ResponseMessage<number>> {
+    return this.httpClient.get<ResponseMessage<number>>(`http://netreaders.herokuapp.com/api/books/countByAuthor?id=${arg}`);
+  }
+  getCountByGenre(arg: string): Observable<ResponseMessage<number>> {
+    return this.httpClient.get<ResponseMessage<number>>(`http://netreaders.herokuapp.com/api/books/countByGenre?id=${arg}`);
+  }
+  getCountByName(arg: string): Observable<ResponseMessage<number>> {
+    return this.httpClient.get<ResponseMessage<number>>(`http://netreaders.herokuapp.com/api/books/countByName?name=${arg}`);
   }
 }

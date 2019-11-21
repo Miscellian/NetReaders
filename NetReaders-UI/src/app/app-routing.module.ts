@@ -12,16 +12,16 @@ const routes: Routes = [
   {path: '',  redirectTo: '/userpage', pathMatch: 'full' },
   {path: 'userpage', component: UserpageComponent},
   {path: 'newadmin', component: AdminslistComponent},
-  {path: 'signup', component: SignupComponent},
-  {path: 'login', component: LoginComponent},
   {path: 'books',
     children: [
       {path: ':id', component: BookviewComponent },
-      {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
-      {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
-      {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
+      {path: 'byauthor/:id/:page', component: BooklistComponent, data: {filter: 'author'}},
+      {path: 'bygenre/:id/:page', component: BooklistComponent, data: {filter: 'genre'}},
+      {path: 'byname/:id/:page', component: BooklistComponent, data: {filter: 'name'}},
+      {path: 'range/:page', component: BooklistComponent, data: {filter: 'range'}}
     ]
   }
+];
 ];
 
 @NgModule({
