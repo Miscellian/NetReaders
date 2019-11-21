@@ -73,14 +73,50 @@ public class BookService {
         return message;
     }
 
-    public ResponseMessage<Collection<BookDto>> getByName(String name) throws DataBaseSQLException {
+    public ResponseMessage<Collection<BookDto>> getByName(String name, Integer amount, Integer offset) throws DataBaseSQLException {
 
         ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
-        Collection<Book> books = bookDao.getByName(name.toLowerCase());
+        Collection<Book> books = bookDao.getByName(name.toLowerCase(), amount, offset);
         Collection<BookDto> bookDtos = books.stream()
                 .map(this::tryCreateBookDto)
                 .collect(Collectors.toCollection(ArrayList::new));
         message.setObj(bookDtos);
+
+        return message;
+    }
+
+    public ResponseMessage<Integer> getCount() {
+
+        ResponseMessage<Integer> message = new ResponseMessage<>();
+        Integer count = bookDao.getCount();
+        message.setObj(count);
+
+        return message;
+    }
+
+    public ResponseMessage<Integer> getCountByAuthor(Integer id) {
+
+        ResponseMessage<Integer> message = new ResponseMessage<>();
+        Integer count = bookDao.getCountByAuthor(id);
+        message.setObj(count);
+
+        return message;
+    }
+
+    public ResponseMessage<Integer> getCountByGenre(Integer id) {
+
+        ResponseMessage<Integer> message = new ResponseMessage<>();
+        Integer count = bookDao.getCountByGenre(id);
+        message.setObj(count);
+
+        return message;
+    }
+
+    public ResponseMessage<Integer> getCountByName(String name) {
+
+        ResponseMessage<Integer> message = new ResponseMessage<>();
+        Integer count = bookDao.getCountByName(name);
+        message.setObj(count);
 
         return message;
     }
@@ -91,50 +127,5 @@ public class BookService {
                 genreDao.getByBookId(book.getId()),
                 authorDao.getByBookId(book.getId()),
                 book);
-    }
-    public ResponseMessage<Integer> getCount() {
-    	ResponseMessage<Integer> message = new ResponseMessage<>();
-    	try {
-        	Integer count = bookDao.getCount();
-        	message.setObj(count);
-        }  catch (SQLException | RuntimeException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
-        return message;
-    }
-
-    public ResponseMessage<Integer> getCountByAuthor(String id) {
-    	ResponseMessage<Integer> message = new ResponseMessage<>();
-    	try {
-    		int numericId = Integer.parseInt(id);
-        	Integer count = bookDao.getCountByAuthor(numericId);
-        	message.setObj(count);
-        }  catch (SQLException | RuntimeException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
-        return message;
-    }
-
-    public ResponseMessage<Integer> getCountByGenre(String id) {
-    	ResponseMessage<Integer> message = new ResponseMessage<>();
-    	try {
-    		int numericId = Integer.parseInt(id);
-        	Integer count = bookDao.getCountByGenre(numericId);
-        	message.setObj(count);
-        }  catch (SQLException | RuntimeException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
-        return message;
-    }
-
-    public ResponseMessage<Integer> getCountByName(String name) {
-    	ResponseMessage<Integer> message = new ResponseMessage<>();
-    	try {
-        	Integer count = bookDao.getCountByName(name);
-        	message.setObj(count);
-        }  catch (SQLException | RuntimeException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
-        return message;
     }
 }

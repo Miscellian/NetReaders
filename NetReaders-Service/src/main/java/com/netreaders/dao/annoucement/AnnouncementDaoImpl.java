@@ -65,7 +65,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 newId = holder.getKey().intValue();
             }
             announcement.setId(newId);
-            log.debug(String.format("Create a new announcement with id '%s'", newId));
+            log.debug(String.format("Created a new announcement with id '%s'", newId));
 
             return announcement;
 
@@ -85,14 +85,14 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Dont find any announcement by id '%s'", id));
+            log.debug(String.format("Didn't find any announcement by id '%s'", id));
             return null;
         } else if (announcements.size() == 1) {
-            log.debug(String.format("Find a announcement by id '%s'", id));
+            log.debug(String.format("Found a announcement by id '%s'", id));
             return announcements.get(0);
         } else {
-            log.error(String.format("Find more than one announcement by id '%s'", id));
-            throw new DataBaseSQLException(String.format("Find more than one announcement by id '%s'", id));
+            log.error(String.format("Found more than one announcement by id '%s'", id));
+            throw new DataBaseSQLException(String.format("Found more than one announcement by id '%s'", id));
         }
     }
 
@@ -104,12 +104,12 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         long id = announcement.getId();
         int recordCount = template.update(sql_query, id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont update any announcement by id '%d'", id));
+            log.debug(String.format("Didn't update any announcement by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Update announcement by id '%d'", id));
+            log.debug(String.format("Updated announcement by id '%d'", id));
         } else {
-            log.error(String.format("Update more than one announcement by id '%d'", id));
-            throw new DataBaseSQLException(String.format("Update more than one announcement by id '%d'", id));
+            log.error(String.format("Updated more than one announcement by id '%d'", id));
+            throw new DataBaseSQLException(String.format("Updated more than one announcement by id '%d'", id));
         }
     }
 
@@ -121,12 +121,12 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         long id = announcement.getId();
         int recordCount = template.update(sql_query, id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any announcement by id '%d'", id));
+            log.debug(String.format("Didn't delete any announcement by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete announcement by id '%d'", id));
+            log.debug(String.format("Deleted announcement by id '%d'", id));
         } else {
-            log.error(String.format("Delete more than one announcement by id '%d'", id));
-            throw new DataBaseSQLException(String.format("Delete more than one announcement by id '%d'", id));
+            log.error(String.format("Deleted more than one announcement by id '%d'", id));
+            throw new DataBaseSQLException(String.format("Deleted more than one announcement by id '%d'", id));
         }
     }
 
@@ -140,10 +140,10 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug("Dont find any announcement");
+            log.debug("Didn't find any announcement");
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d announcement(s)", announcements.size()));
+            log.debug(String.format("Found %d announcement(s)", announcements.size()));
             return announcements;
         }
     }
@@ -158,10 +158,10 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Dont find any announcement by genreId '%d'", genre_id));
+            log.debug(String.format("Didn't find any announcement by genreId '%d'", genre_id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d announcement(s) by genreId '%d'", announcements.size(), genre_id));
+            log.debug(String.format("Found %d announcement(s) by genreId '%d'", announcements.size(), genre_id));
             return announcements;
         }
     }
@@ -176,10 +176,10 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Dont find any announcement by authorID '%d'", author_id));
+            log.debug(String.format("Didn't find any announcement by authorID '%d'", author_id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d announcement(s) by authorID '%d'", announcements.size(), author_id));
+            log.debug(String.format("Found %d announcement(s) by authorID '%d'", announcements.size(), author_id));
             return announcements;
         }
     }
@@ -195,10 +195,10 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Dont find any announcement with offset '%d'", offset));
+            log.debug(String.format("Didn't find any announcement with offset '%d'", offset));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d announcement(s) with offset '%d'", announcements.size(), offset));
+            log.debug(String.format("Found %d announcement(s) with offset '%d'", announcements.size(), offset));
             return announcements;
         }
     }

@@ -26,8 +26,7 @@ public class AuthorController {
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Author> GetAuthorById(@PathVariable String id) {
+    public ResponseMessage<Author> GetAuthorById(@PathVariable Integer id) {
         return authorService.getById(id);
-        ;
     }
 }

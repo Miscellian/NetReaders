@@ -63,7 +63,7 @@ public class AuthorDaoImpl implements AuthorDao {
                 newId = holder.getKey().intValue();
             }
             author.setId(newId);
-            log.debug(String.format("Create a new author with id '%s'", newId));
+            log.debug(String.format("Created a new author with id '%s'", newId));
 
             return author;
 
@@ -82,14 +82,14 @@ public class AuthorDaoImpl implements AuthorDao {
         checkIfCollectionIsNull(authors);
 
         if (authors.isEmpty()) {
-            log.debug(String.format("Dont find any author by id '%s'", id));
+            log.debug(String.format("Didn't find any author by id '%s'", id));
             return null;
         } else if (authors.size() == 1) {
-            log.debug(String.format("Find a author by id '%s'", id));
+            log.debug(String.format("Found a author by id '%s'", id));
             return authors.get(0);
         } else {
-            log.error(String.format("Find more than one author by id '%s'", id));
-            throw new DataBaseSQLException(String.format("Find more than one author by id '%s'", id));
+            log.error(String.format("Found more than one author by id '%s'", id));
+            throw new DataBaseSQLException(String.format("Found more than one author by id '%s'", id));
         }
     }
 
@@ -101,12 +101,12 @@ public class AuthorDaoImpl implements AuthorDao {
         long id = author.getId();
         int recordCount = template.update(sql_query, author.getName(), id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont update any author by id '%d'", id));
+            log.debug(String.format("Didn't update any author by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Update author by id '%d'", id));
+            log.debug(String.format("Updated author by id '%d'", id));
         } else {
-            log.error(String.format("Update more than one author by id '%d'", id));
-            throw new DataBaseSQLException(String.format("Update more than one author by id '%d'", id));
+            log.error(String.format("Updated more than one author by id '%d'", id));
+            throw new DataBaseSQLException(String.format("Updated more than one author by id '%d'", id));
         }
     }
 
@@ -118,11 +118,11 @@ public class AuthorDaoImpl implements AuthorDao {
         long id = author.getId();
         int recordCount = template.update(sql_query, id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any author by id '%d'", id));
+            log.debug(String.format("Didn't delete any author by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete author by id '%d'", id));
+            log.debug(String.format("Deleted author by id '%d'", id));
         } else {
-            log.error(String.format("Delete more than one author by id '%d'", id));
+            log.error(String.format("Deleted more than one author by id '%d'", id));
             throw new DataBaseSQLException(String.format("Delete more than one author by id '%d'", id));
         }
     }
@@ -136,10 +136,10 @@ public class AuthorDaoImpl implements AuthorDao {
         checkIfCollectionIsNull(authors);
 
         if (authors.isEmpty()) {
-            log.debug("Dont find any author");
+            log.debug("Didn't find any author");
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d author(s)", authors.size()));
+            log.debug(String.format("Found %d author(s)", authors.size()));
             return authors;
         }
     }
@@ -153,10 +153,10 @@ public class AuthorDaoImpl implements AuthorDao {
         checkIfCollectionIsNull(authors);
 
         if (authors.isEmpty()) {
-            log.debug(String.format("Dont find any author by bookID '%d'", id));
+            log.debug(String.format("Didn't find any author by bookID '%d'", id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d author(s) by bookID '%d'", authors.size(), id));
+            log.debug(String.format("Found %d author(s) by bookID '%d'", authors.size(), id));
             return authors;
         }
     }

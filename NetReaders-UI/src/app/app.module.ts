@@ -27,7 +27,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         HttpClientModule,
         BooksModule,
         AnnouncementsModule,
-        CommonModule
+        CommonModule,
         NgbModule
     ],
     providers: [],

@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao {
                 newId = holder.getKey().intValue();
             }
             user.setUserId(newId);
-            log.debug(String.format("Create a new user with id '%s'", newId));
+            log.debug(String.format("Created a new user with id '%s'", newId));
 
             return user;
 
@@ -87,14 +87,14 @@ public class UserDaoImpl implements UserDao {
         checkIfCollectionIsNull(users);
 
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by id '%s'", id));
+            log.debug(String.format("Didn't find any user by id '%s'", id));
             return null;
         } else if (users.size() == 1) {
-            log.debug(String.format("Find a user by id '%s'", id));
+            log.debug(String.format("Found a user by id '%s'", id));
             return users.get(0);
         } else {
-            log.error(String.format("Find more than one user by id '%s'", id));
-            throw new DataBaseSQLException(String.format("Find more than one user by id '%s'", id));
+            log.error(String.format("Found more than one user by id '%s'", id));
+            throw new DataBaseSQLException(String.format("Found more than one user by id '%s'", id));
         }
     }
 
@@ -113,12 +113,12 @@ public class UserDaoImpl implements UserDao {
                 user.getUserId());
 
         if (recordCount == 0) {
-            log.debug(String.format("Dont update any user by id '%d'", user.getUserId()));
+            log.debug(String.format("Didn't update any user by id '%d'", user.getUserId()));
         } else if (recordCount == 1) {
-            log.debug(String.format("Update user by id '%d'", user.getUserId()));
+            log.debug(String.format("Updated user by id '%d'", user.getUserId()));
         } else {
-            log.error(String.format("Update more than one user by id '%d'", user.getUserId()));
-            throw new DataBaseSQLException(String.format("Update more than one user by id '%d'", user.getUserId()));
+            log.error(String.format("Updated more than one user by id '%d'", user.getUserId()));
+            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getUserId()));
         }
     }
 
@@ -131,12 +131,12 @@ public class UserDaoImpl implements UserDao {
         int recordCount = template.update(sql_query, id);
 
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any user by id '%d'", id));
+            log.debug(String.format("Didn't delete any user by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete user by id '%d'", id));
+            log.debug(String.format("Deleted user by id '%d'", id));
         } else {
-            log.error(String.format("Delete more than one user by '%d'", id));
-            throw new DataBaseSQLException(String.format("Delete more than one user by '%d'", id));
+            log.error(String.format("Deleted more than one user by '%d'", id));
+            throw new DataBaseSQLException(String.format("Deleted more than one user by '%d'", id));
         }
     }
 
@@ -150,10 +150,10 @@ public class UserDaoImpl implements UserDao {
         checkIfCollectionIsNull(users);
 
         if (users.isEmpty()) {
-            log.debug("Dont find any user");
+            log.debug("Didn't find any user");
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d user(s)", users.size()));
+            log.debug(String.format("Found %d user(s)", users.size()));
             return users;
         }
     }
@@ -168,14 +168,14 @@ public class UserDaoImpl implements UserDao {
         checkIfCollectionIsNull(users);
 
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by nickname '%s'", nickname));
+            log.debug(String.format("Didn't find any user by nickname '%s'", nickname));
             return null;
         } else if (users.size() == 1) {
-            log.debug(String.format("Find a user by nickname '%s'", nickname));
+            log.debug(String.format("Found a user by nickname '%s'", nickname));
             return users.get(0);
         } else {
-            log.error(String.format("Find more than one user by nickname '%s'", nickname));
-            throw new DataBaseSQLException(String.format("Find more than one user by nickname '%s'", nickname));
+            log.error(String.format("Found more than one user by nickname '%s'", nickname));
+            throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", nickname));
         }
     }
 
@@ -189,10 +189,10 @@ public class UserDaoImpl implements UserDao {
         checkIfCollectionIsNull(users);
 
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by first name '%s'", firstName));
+            log.debug(String.format("Didn't find any user by first name '%s'", firstName));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d user(s) by first name '%s'", users.size(), firstName));
+            log.debug(String.format("Found %d user(s) by first name '%s'", users.size(), firstName));
             return users;
         }
     }
@@ -204,12 +204,12 @@ public class UserDaoImpl implements UserDao {
 
         int recordCount = template.update(sql_query, nickname);
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any user by nickname '%s'", nickname));
+            log.debug(String.format("Didn't delete any user by nickname '%s'", nickname));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete user by nickname '%s'", nickname));
+            log.debug(String.format("Deleted user by nickname '%s'", nickname));
         } else {
-            log.error(String.format("Delete more than one user by nickname '%s'", nickname));
-            throw new DataBaseSQLException(String.format("Delete more than one user by nickname '%s'", nickname));
+            log.error(String.format("Deleted more than one user by nickname '%s'", nickname));
+            throw new DataBaseSQLException(String.format("Deleted more than one user by nickname '%s'", nickname));
         }
     }
 

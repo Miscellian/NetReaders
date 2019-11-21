@@ -61,7 +61,7 @@ public class BookDaoImpl implements BookDao {
                 newId = holder.getKey().intValue();
             }
             book.setId(newId);
-            log.debug(String.format("Create a new book with id '%s'", newId));
+            log.debug(String.format("Created a new book with id '%s'", newId));
             return book;
 
         } catch (DuplicateKeyException e) {
@@ -80,14 +80,14 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug(String.format("Dont find any book by id '%s'", id));
+            log.debug(String.format("Didn't find any book by id '%s'", id));
             return null;
         } else if (books.size() == 1) {
-            log.debug(String.format("Find a book by id '%s'", id));
+            log.debug(String.format("Found a book by id '%s'", id));
             return books.get(0);
         } else {
-            log.error(String.format("Find more than one book by id '%s'", id));
-            throw new DataBaseSQLException(String.format("Find more than one book by id '%s'", id));
+            log.error(String.format("Found more than one book by id '%s'", id));
+            throw new DataBaseSQLException(String.format("Found more than one book by id '%s'", id));
         }
     }
 
@@ -105,12 +105,12 @@ public class BookDaoImpl implements BookDao {
                 book.getPhoto(),
                 id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont update any book by id '%d'", id));
+            log.debug(String.format("Didn't update any book by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Update book by id '%d'", id));
+            log.debug(String.format("Updated book by id '%d'", id));
         } else {
-            log.error(String.format("Update more than one book by id '%d'", id));
-            throw new DataBaseSQLException(String.format("Update more than one book by id '%d'", id));
+            log.error(String.format("Updated more than one book by id '%d'", id));
+            throw new DataBaseSQLException(String.format("Updated more than one book by id '%d'", id));
         }
     }
 
@@ -122,12 +122,12 @@ public class BookDaoImpl implements BookDao {
         long id = book.getId();
         int recordCount = template.update(sql_query, id);
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any book by id '%d'", id));
+            log.debug(String.format("Didn't delete any book by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete book by id '%d'", id));
+            log.debug(String.format("Deleted book by id '%d'", id));
         } else {
-            log.error(String.format("Delete more than one book by id '%d'", id));
-            throw new DataBaseSQLException(String.format("Delete more than one book by id '%d'", id));
+            log.error(String.format("Deleted more than one book by id '%d'", id));
+            throw new DataBaseSQLException(String.format("Deleted more than one book by id '%d'", id));
         }
     }
 
@@ -141,10 +141,10 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug("Dont find any book");
+            log.debug("Didn't find any book");
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d book(s)", books.size()));
+            log.debug(String.format("Found %d book(s)", books.size()));
             return books;
         }
     }
@@ -159,10 +159,10 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug(String.format("Dont find any book by genreId '%d'", genre_id));
+            log.debug(String.format("Didn't find any book by genreId '%d'", genre_id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d book(s) by genreId '%d'", books.size(), genre_id));
+            log.debug(String.format("Found %d book(s) by genreId '%d'", books.size(), genre_id));
             return books;
         }
     }
@@ -177,10 +177,10 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug(String.format("Dont find any book by authorID '%d'", author_id));
+            log.debug(String.format("Didn't find any book by authorID '%d'", author_id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d book(s) by authorID '%d'", books.size(), author_id));
+            log.debug(String.format("Found %d book(s) by authorID '%d'", books.size(), author_id));
             return books;
         }
     }
@@ -195,10 +195,10 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug(String.format("Dont find any book with offset '%d'", offset));
+            log.debug(String.format("Didn't find any book with offset '%d'", offset));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d book(s) with offset '%d'", books.size(), offset));
+            log.debug(String.format("Found %d book(s) with offset '%d'", books.size(), offset));
             return books;
         }
     }
@@ -211,6 +211,7 @@ public class BookDaoImpl implements BookDao {
         List<Book> books = template.query(sql_query, bookMapper, name, name, amount, offset);
 
         checkIfCollectionIsNull(books);
+
         if (books.isEmpty()) {
             log.debug(String.format("Didn't find any books with name like '%s'", name));
             return Collections.emptyList();
@@ -230,12 +231,52 @@ public class BookDaoImpl implements BookDao {
         checkIfCollectionIsNull(books);
 
         if (books.isEmpty()) {
-            log.debug(String.format("Dont find any book by announcementID '%d'", id));
+            log.debug(String.format("Didn't find any book by announcementID '%d'", id));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d book(s) by announcementID '%d'", books.size(), id));
+            log.debug(String.format("Found %d book(s) by announcementID '%d'", books.size(), id));
             return books;
         }
+    }
+
+    @Override
+    public Integer getCount() {
+        String sql_query = env.getProperty("book.getCount");
+
+        Integer count = template.queryForObject(sql_query, Integer.class);
+
+        log.debug(String.format("Found %d books", count));
+        return count;
+    }
+
+    @Override
+    public Integer getCountByAuthor(int author_id) {
+        String sql_query = env.getProperty("book.getCountByAuthor");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{author_id}, Integer.class);
+
+        log.debug(String.format("Found %d books by authorID '%d' ", count, author_id));
+        return count;
+    }
+
+    @Override
+    public Integer getCountByGenre(int genre_id) {
+        String sql_query = env.getProperty("book.getCountByGenre");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{genre_id}, Integer.class);
+
+        log.debug(String.format("Found %d books by genreID '%d'", count, genre_id));
+        return count;
+    }
+
+    @Override
+    public Integer getCountByName(String name) {
+        String sql_query = env.getProperty("book.getCountByName");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{name, name}, Integer.class);
+
+        log.debug(String.format("Found %d books by name '%s'", count, name));
+        return count;
     }
 
     private void checkIfCollectionIsNull(Collection<Book> collection) {
@@ -244,45 +285,5 @@ public class BookDaoImpl implements BookDao {
             log.error("Get `null` reference from jdbcTemplate");
             throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
         }
-    }
-
-    @Override
-    public Integer getCount() throws SQLException {
-    	String sql_query = env.getProperty("book.getCount");
-
-    	Integer count = template.queryForObject(sql_query, Integer.class);
-
-        log.debug(String.format("Found %d books", count));
-        return count;
-    }
-
-    @Override
-    public Integer getCountByAuthor(int author_id) throws SQLException {
-    	String sql_query = env.getProperty("book.getCountByAuthor");
-
-    	Integer count = template.queryForObject(sql_query, new Object[] { author_id }, Integer.class);
-
-        log.debug(String.format("Found %d books by authorID '%d' ", count, author_id));
-        return count;
-    }
-
-    @Override
-    public Integer getCountByGenre(int genre_id) throws SQLException {
-    	String sql_query = env.getProperty("book.getCountByGenre");
-
-    	Integer count = template.queryForObject(sql_query, new Object[] { genre_id }, Integer.class);
-
-        log.debug(String.format("Found %d books by genreID '%d'", count, genre_id));
-        return count;
-    }
-
-    @Override
-    public Integer getCountByName(String name) throws SQLException {
-    	String sql_query = env.getProperty("book.getCountByName");
-
-    	Integer count = template.queryForObject(sql_query, new Object[] { name, name }, Integer.class);
-
-        log.debug(String.format("Found %d books by name '%s'", count, name));
-        return count;
     }
 }

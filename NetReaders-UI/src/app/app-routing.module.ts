@@ -29,7 +29,9 @@ const routes: Routes = [
             {path: 'byauthor/:id', component: AnnouncementListComponent, data: {filter: 'author'}},
             {path: 'bygenre/:id', component: AnnouncementListComponent, data: {filter: 'genre'}},
             {path: '**', component: AnnouncementListComponent, data: {filter: 'all'}}
-        ];
+        ]
+    }
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

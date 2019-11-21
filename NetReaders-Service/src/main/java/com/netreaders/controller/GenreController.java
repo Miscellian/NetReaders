@@ -20,13 +20,13 @@ public class GenreController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public ResponseMessage<Collection<Genre>> GetAllGenres() {
+    public ResponseMessage<Collection<Genre>> getAllGenres() {
         return genreService.getAll();
     }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Genre> GetGenreById(@PathVariable Integer id) {
+    public ResponseMessage<Genre> getGenreById(@PathVariable Integer id) {
         return genreService.getById(id);
     }
 }

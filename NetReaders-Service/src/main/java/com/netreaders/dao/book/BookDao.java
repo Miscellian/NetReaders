@@ -1,9 +1,9 @@
 package com.netreaders.dao.book;
 
 import com.netreaders.dao.GenericDao;
+import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Book;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
 public interface BookDao extends GenericDao<Book, Integer> {
@@ -14,18 +14,15 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Collection<Book> getById(int amount, int offset) throws DataBaseSQLException;
 
-    Collection<Book> getByName(String name) throws DataBaseSQLException;
+    Collection<Book> getByName(String name, int amount, int offset) throws DataBaseSQLException;
 
     Collection<Book> getByAnnouncementId(int announcement_id) throws DataBaseSQLException;
-    Collection<Book> getById(int amount, int offset) throws SQLException;
 
-    Collection<Book> getByName(String name, int amount, int offset) throws SQLException;
+    Integer getCount() throws DataBaseSQLException;
 
-    Integer getCount() throws SQLException;
+    Integer getCountByAuthor(int author_id) throws DataBaseSQLException;
 
-    Integer getCountByAuthor(int author_id) throws SQLException;
+    Integer getCountByGenre(int genre_id) throws DataBaseSQLException;
 
-    Integer getCountByGenre(int genre_id) throws SQLException;
-
-    Integer getCountByName(String name) throws SQLException;
+    Integer getCountByName(String name) throws DataBaseSQLException;
 }
