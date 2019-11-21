@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Log4j
@@ -39,6 +41,8 @@ public class UserDaoImpl implements UserDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
+        // save object into DB and return auto generated PK via KeyHolder
+        // or throws DuplicateKeyException if record exist in table
         try {
             template.update(new PreparedStatementCreator() {
                 @Override
@@ -57,17 +61,16 @@ public class UserDaoImpl implements UserDao {
             if (holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("user_id");
             } else {
-                // if return single value
                 newId = holder.getKey().intValue();
             }
             user.setUserId(newId);
-            log.info(String.format("Create a new user with id '%s'", newId));
+            log.debug(String.format("Create a new user with id '%s'", newId));
 
             return user;
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUserNickname()));
-            throw new SQLException();
+            throw new SQLException("Internal sql exception");
         }
     }
 
@@ -79,15 +82,14 @@ public class UserDaoImpl implements UserDao {
         List<User> users = template.query(sql_query, userMapper, id);
 
         if (users.isEmpty()) {
-            log.info(String.format("Dont find any user by id '%s'", id));
+            log.debug(String.format("Dont find any user by id '%s'", id));
             return null;
         } else if (users.size() == 1) {
-            log.info(String.format("Find a user by id '%s'", id));
+            log.debug(String.format("Find a user by id '%s'", id));
             return users.get(0);
         } else {
             log.error(String.format("Find more than one user by id '%s'", id));
-            //May be custom exception
-            throw new SQLException();
+            throw new SQLException("Internal sql exception");
         }
     }
 
@@ -106,18 +108,17 @@ public class UserDaoImpl implements UserDao {
                 user.getUserId());
 
         if (recordCount == 0) {
-            log.info(String.format("Dont update any user by id '%d'", user.getUserId()));
+            log.debug(String.format("Dont update any user by id '%d'", user.getUserId()));
         } else if (recordCount == 1) {
-            log.info(String.format("Update user by id '%d'", user.getUserId()));
+            log.debug(String.format("Update user by id '%d'", user.getUserId()));
         } else {
             log.error(String.format("Update more than one user by id '%d'", user.getUserId()));
-            //May be custom exception
-            throw new SQLException();
+            throw new SQLException("Internal sql exception");
         }
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(User user) throws SQLException {
 
         String sql_query = env.getProperty("user.delete");
 
@@ -125,26 +126,26 @@ public class UserDaoImpl implements UserDao {
         int recordCount = template.update(sql_query, id);
 
         if (recordCount == 0) {
-            log.info(String.format("Dont delete any user by id '%d'", id));
+            log.debug(String.format("Dont delete any user by id '%d'", id));
         } else if (recordCount == 1) {
-            log.info(String.format("Delete user by id '%d'", id));
+            log.debug(String.format("Delete user by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one user by '%d'", id));
+            throw new SQLException("Internal sql exception");
         }
     }
 
     @Override
-    public List<User> getAll() {
+    public Collection<User> getAll() {
 
         String sql_query = env.getProperty("user.readAll");
 
         List<User> users = template.query(sql_query, userMapper);
-
         if (users.isEmpty()) {
-            log.info("Dont find any user");
-            return null;
+            log.debug("Dont find any user");
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d user(s)", users.size()));
+            log.debug(String.format("Find %d user(s)", users.size()));
             return users;
         }
     }
@@ -156,29 +157,28 @@ public class UserDaoImpl implements UserDao {
 
         List<User> users = template.query(sql_query, userMapper, nickname);
         if (users.isEmpty()) {
-            log.info(String.format("Dont find any user by nickname '%s'", nickname));
+            log.debug(String.format("Dont find any user by nickname '%s'", nickname));
             return null;
         } else if (users.size() == 1) {
-            log.info(String.format("Find a user by nickname '%s'", nickname));
+            log.debug(String.format("Find a user by nickname '%s'", nickname));
             return users.get(0);
         } else {
             log.error(String.format("Find more than one user by nickname '%s'", nickname));
-            //May be custom exception
-            throw new SQLException();
+            throw new SQLException("Internal sql exception");
         }
     }
 
     @Override
-    public List<User> findByFirstName(String firstName) {
+    public Collection<User> findByFirstName(String firstName) {
 
         String sql_query = env.getProperty("user.findByFirstName");
 
         List<User> users = template.query(sql_query, userMapper, firstName);
         if (users.isEmpty()) {
-            log.info(String.format("Dont find any user by first name '%s'", firstName));
-            return null;
+            log.debug(String.format("Dont find any user by first name '%s'", firstName));
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d user(s) by first name '%s'", users.size(), firstName));
+            log.debug(String.format("Find %d user(s) by first name '%s'", users.size(), firstName));
             return users;
         }
     }
@@ -189,15 +189,13 @@ public class UserDaoImpl implements UserDao {
         String sql_query = env.getProperty("user.deleteByNickname");
 
         int recordCount = template.update(sql_query, nickname);
-
         if (recordCount == 0) {
-            log.info(String.format("Dont delete any user by nickname '%s'", nickname));
+            log.debug(String.format("Dont delete any user by nickname '%s'", nickname));
         } else if (recordCount == 1) {
-            log.info(String.format("Delete user by nickname '%s'", recordCount, nickname));
+            log.debug(String.format("Delete user by nickname '%s'", recordCount, nickname));
         } else {
             log.error(String.format("Delete more than one user by nickname '%s'", nickname));
-            //May be custom exception
-            throw new SQLException();
+            throw new SQLException("Internal sql exception");
         }
     }
 }

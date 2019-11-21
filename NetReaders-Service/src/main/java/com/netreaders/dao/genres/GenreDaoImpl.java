@@ -7,16 +7,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Log4j
@@ -40,14 +39,13 @@ public class GenreDaoImpl implements GenreDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
+        // save object into DB and return auto generated PK via KeyHolder
+        // or throws DuplicateKeyException if record exist in table
         try {
-            template.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, genre.getName());
-                    return ps;
-                }
+            template.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, genre.getName());
+                return ps;
             }, holder);
 
             Integer newId;
@@ -57,7 +55,7 @@ public class GenreDaoImpl implements GenreDao {
                 newId = holder.getKey().intValue();
             }
             genre.setId(newId);
-            log.info(String.format("Create a new genre with id '%s'", newId));
+            log.debug(String.format("Create a new genre with id '%s'", newId));
 
             return genre;
 
@@ -74,10 +72,10 @@ public class GenreDaoImpl implements GenreDao {
         List<Genre> genres = template.query(sql_query, genreMapper, id);
 
         if (genres.isEmpty()) {
-            log.info(String.format("Dont find any genre by id '%s'", id));
+            log.debug(String.format("Dont find any genre by id '%s'", id));
             return null;
         } else if (genres.size() == 1) {
-            log.info(String.format("Find a genre by id '%s'", id));
+            log.debug(String.format("Find a genre by id '%s'", id));
             return genres.get(0);
         } else {
             log.error(String.format("Find more than one genre by id '%s'", id));
@@ -94,9 +92,9 @@ public class GenreDaoImpl implements GenreDao {
         int recordCount = template.update(sql_query, genre.getName(), id);
 
         if (recordCount == 0) {
-            log.info(String.format("Dont update any genre by id '%d'", id));
+            log.debug(String.format("Dont update any genre by id '%d'", id));
         } else if (recordCount == 1) {
-            log.info(String.format("Update genre by id '%d'", id));
+            log.debug(String.format("Update genre by id '%d'", id));
         } else {
             log.error(String.format("Update more than one genre by id '%d'", id));
             throw new SQLException("Internal sql exception");
@@ -110,11 +108,10 @@ public class GenreDaoImpl implements GenreDao {
 
         long id = genre.getId();
         int recordCount = template.update(sql_query, id);
-
         if (recordCount == 0) {
-            log.info(String.format("Dont delete any genre by id '%d'", id));
+            log.debug(String.format("Dont delete any genre by id '%d'", id));
         } else if (recordCount == 1) {
-            log.info(String.format("Delete genre by id '%d'", id));
+            log.debug(String.format("Delete genre by id '%d'", id));
         } else {
             log.error(String.format("Delete more than one genre by id '%d'", id));
             throw new SQLException("Internal sql exception");
@@ -127,12 +124,11 @@ public class GenreDaoImpl implements GenreDao {
         String sql_query = env.getProperty("genre.readAll");
 
         List<Genre> genres = template.query(sql_query, genreMapper);
-
         if (genres.isEmpty()) {
-            log.info("Dont find any genre");
-            return null;
+            log.debug("Dont find any genre");
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d genre(s)", genres.size()));
+            log.debug(String.format("Find %d genre(s)", genres.size()));
             return genres;
         }
     }
@@ -142,12 +138,11 @@ public class GenreDaoImpl implements GenreDao {
         String sql_query = env.getProperty("genre.getByBookId");
 
         List<Genre> books = template.query(sql_query, genreMapper, id);
-
         if (books.isEmpty()) {
-            log.info(String.format("Dont find any genre by bookID '%d'", id));
-            return null;
+            log.debug(String.format("Dont find any genre by bookID '%d'", id));
+            return Collections.emptyList();
         } else {
-            log.info(String.format("Find %d genre(s) by bookID '%d'", books.size(), id));
+            log.debug(String.format("Find %d genre(s) by bookID '%d'", books.size(), id));
             return books;
         }
     }
