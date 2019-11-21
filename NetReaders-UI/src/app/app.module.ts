@@ -18,7 +18,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     NavbarComponent,
     UserpageComponent,
-    AdminslistComponent
+    AdminslistComponent,
+    SignupComponent,
+    LoginComponent
   ],
   imports: [
     FormsModule,

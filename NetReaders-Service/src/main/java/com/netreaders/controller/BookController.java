@@ -61,7 +61,7 @@ public class BookController {
 		}
 		
 		@GetMapping(value = "byname")
-		@CrossOrigin(origins = "http://localhost:4200")
+		@CrossOrigin(origins = "http://localhost:8080")
 		public ResponseMessage<Collection<BookDto>> GetByName(
 				@RequestParam(name = "name") String name,
 				@RequestParam(name = "amount") String amount,

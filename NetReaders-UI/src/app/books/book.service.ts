@@ -12,7 +12,7 @@ export class BookService {
   constructor(private httpClient: HttpClient) { }
 
   getById(id: number): Observable<ResponseMessage<BookDto>> {
-    return this.httpClient.get<ResponseMessage<BookDto>>(`https://netreaders.herokuapp.com/api/books/${id}`);
+    return this.httpClient.get<ResponseMessage<BookDto>>(`http://netreaders.herokuapp.com/api/books/${id}`);
   }
   getByAuthor(arg: string, page: string): Observable<ResponseMessage<BookDto[]>> {
     var offset = (Number(page) - 1) * 5;
