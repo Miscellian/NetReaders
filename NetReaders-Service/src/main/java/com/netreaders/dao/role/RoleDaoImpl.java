@@ -77,6 +77,19 @@ public class RoleDaoImpl implements RoleDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Collection<Role> findByUserId(int id) throws SQLException {
+		String sql_query = env.getProperty("role.findByUserId");
+		List<Role> roles = template.query(sql_query, roleMapper, id);
+        if (roles.isEmpty()) {
+            log.debug(String.format("Dont find any role by userid '%d'", id));
+            return null;
+        } else {
+            log.debug(String.format("Found roles by userId '%d'", id));
+            return roles;
+        }
+	}
     
 
 }

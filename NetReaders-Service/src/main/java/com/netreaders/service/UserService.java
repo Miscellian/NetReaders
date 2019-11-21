@@ -8,30 +8,36 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.netreaders.dao.role.RoleDao;
-import com.netreaders.dao.token.TokenDao;
+//import com.netreaders.dao.token.TokenDao;
 import com.netreaders.dao.user.UserDao;
+import com.netreaders.dto.SignUpForm;
 import com.netreaders.dto.UserDto;
 import com.netreaders.models.Role;
-import com.netreaders.models.Token;
+//import com.netreaders.models.Token;
 import com.netreaders.models.User;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
 
 	@Autowired
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
 
-	@Autowired
-	private TokenDao tokenDao;
+//	@Autowired
+//	private TokenDao tokenDao;
 
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	public User registerUser(UserDto userDto) throws SQLException {
 
@@ -42,8 +48,6 @@ public class UserService {
 		String hashedPassword = passwordEncoder.encode(userDto.getPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(userDto.getEmail());
-
-		user.setRoles(Arrays.asList(roleDao.findByRoleName("ROLE_USER")));
 		userDao.create(user);
 		return user;
 	}
@@ -52,43 +56,49 @@ public class UserService {
 		return userDao.findByNickname(username);
 	}
 
-	/*@Override
-	public User findByUsernameAndPassword(String username, String password) {
-
-		return userDAO.findByUsernameAndPassword(username, password);
-	}
+//	public void createTokenName(User user, String token) throws SQLException {
+//		Token newUserToken = new Token(token, user);
+//		tokenDao.create(newUserToken);
+//	}
+//
+//	
+//	public Token getTokenName(String Token) throws SQLException {
+//		return tokenDao.findByToken(Token);
+//	}
 
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-
-		User user = userDAO.findByUsername(userName);
-		if (user == null) {
-			throw new UsernameNotFoundException("Invalid username or password.");
-		}
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user;
+		Collection<Role> roles;
 		try {
-			if (user.isEnabled() != true) {
-				throw new UsernameNotFoundException("Please enable your account.");
-			}
-		} catch (UsernameNotFoundException e) {
+			user = userDao.findByNickname(username);
+			roles= roleDao.findByUserId(user.getUserId());
+			return UserPrinciple.build(user, roles);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				user.isEnabled(), true, true, true, mapRolesToAuthorities(user.getRoles()));
-	}*/
-
-	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
+		 
+		
 	}
 
-	public void createTokenName(User user, String token) throws SQLException {
-		Token newUserToken = new Token(token, user);
-		tokenDao.create(newUserToken);
-	}
-
-	
-	public Token getTokenName(String Token) throws SQLException {
-		return tokenDao.findByToken(Token);
+	public User registerUser(SignUpForm signUpForm) {
+		User user = new User();
+		user.setFirstName(signUpForm.getFirstName());
+		user.setLastName(signUpForm.getLastName());
+		user.setUserNickname(signUpForm.getUsername());
+		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
+		user.setUserPassword(hashedPassword);
+		user.setEmail(signUpForm.getEmail());
+		try {
+			userDao.create(user);
+			return user;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 

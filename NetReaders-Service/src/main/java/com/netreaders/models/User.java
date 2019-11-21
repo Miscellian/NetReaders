@@ -18,5 +18,4 @@ public class User {
     private String firstName;
     private String lastName;
     private Integer profilePhoto;
-    private Collection<Role> roles;
 }

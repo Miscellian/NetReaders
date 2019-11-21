@@ -14,15 +14,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @PropertySource("classpath:application.properties")
 public class Config {
 
-	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-		viewResolver.setPrefix("WEB-INF/view/");
-		viewResolver.setSuffix(".jsp");
-
-		return viewResolver;
-	}
+//	@Bean
+//	public ViewResolver viewResolver() {
+//		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//
+//		viewResolver.setPrefix("WEB-INF/view/");
+//		viewResolver.setSuffix(".jsp");
+//
+//		return viewResolver;
+//	}
 	
 	@Bean
      public MessageSource messageSource() {
