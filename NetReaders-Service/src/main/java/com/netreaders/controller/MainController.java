@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 public class MainController {
-	@RequestMapping(value = "/**/{path:[^.]*}")
-	public String redirect() {
-		return "forward:/";
-	}
+    @RequestMapping(value = "/**/{path:[^.]*}")
+    public String redirect() {
+        return "forward:/";
+    }
 }
