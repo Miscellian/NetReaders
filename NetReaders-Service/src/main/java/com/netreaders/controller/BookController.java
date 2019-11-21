@@ -63,8 +63,10 @@ public class BookController {
 		@GetMapping(value = "byname")
 		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Collection<BookDto>> GetByName(
-				@RequestParam(name = "name") String name) {
-			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name);
+				@RequestParam(name = "name") String name,
+				@RequestParam(name = "amount") String amount,
+				@RequestParam(name = "offset") String offset) {
+			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name, amount, offset);
 			return response;
 		}
 		
@@ -88,6 +90,14 @@ public class BookController {
 		public ResponseMessage<Integer> GetCountByGenre(
 				@RequestParam(name = "id") String genreid) {
 			ResponseMessage<Integer> response = bookService.getCountByGenre(genreid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByName")
+		@CrossOrigin(origins = "http://localhost:4200")
+		public ResponseMessage<Integer> GetCountByName(
+				@RequestParam(name = "name") String book_name) {
+			ResponseMessage<Integer> response = bookService.getCountByBookName(book_name);
 			return response;
 		}
 }

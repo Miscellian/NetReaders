@@ -22,7 +22,7 @@ export class BookService {
     var offset = (Number(page) - 1) * 5;
     return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/bygenre?id=${arg}&amount=5&offset=${offset}`);
   }
-  getByName(name: string, page: string): Observable<ResponseMessage<BookDto[]>> {
+  getByBookName(name: string, page: string): Observable<ResponseMessage<BookDto[]>> {
     var offset = (Number(page) - 1) * 5;
     return this.httpClient.get<ResponseMessage<BookDto[]>>(`http://localhost:8080/api/books/byname?name=${name}&amount=5&offset=${offset}`);
   }
@@ -38,5 +38,8 @@ export class BookService {
   }
   getCountByGenre(arg: string): Observable<ResponseMessage<number>> {
     return this.httpClient.get<ResponseMessage<number>>(`http://localhost:8080/api/books/countByGenre?id=${arg}`);
+  }
+  getCountByBookName(arg: string): Observable<ResponseMessage<number>> {
+    return this.httpClient.get<ResponseMessage<number>>(`http://localhost:8080/api/books/countByName?name=${arg}`);
   }
 }

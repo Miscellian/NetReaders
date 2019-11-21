@@ -10,7 +10,8 @@ import { UserpageComponent } from './userpage/userpage.component';
 import { AdminslistComponent } from './adminslist/adminslist.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     BooksModule,
     CommonModule,
-    NgbPaginationModule
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

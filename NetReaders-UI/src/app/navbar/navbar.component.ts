@@ -17,4 +17,12 @@ export class NavbarComponent implements OnInit {
     
   }
 
+  onEnter(bookname: string) {
+    if (!bookname) {
+      this.router.navigateByUrl(`/books/range/1`);
+      return;
+    }
+    this.router.navigateByUrl(`/books/byname/${bookname}/1`);
+  }
+
 }

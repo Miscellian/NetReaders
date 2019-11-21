@@ -113,10 +113,12 @@ public class BookService {
         return message;
     }
     
-    public ResponseMessage<Collection<BookDto>> getByName(String name) {
+    public ResponseMessage<Collection<BookDto>> getByName(String name, String amount, String offset) {
     	ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
         try {
-        	Collection<Book> books = bookDao.getByName(name.toLowerCase());
+            int numericAmount = Integer.parseInt(amount);
+            int numericOffset = Integer.parseInt(offset);
+        	Collection<Book> books = bookDao.getByName(name.toLowerCase(), numericAmount, numericOffset);
         	Collection<BookDto> bookDtos = books.stream()
                     .map(this::tryCreateBookDto)
                     .collect(Collectors.toCollection(ArrayList::new));
@@ -155,6 +157,17 @@ public class BookService {
     	try {
     		int numericId = Integer.parseInt(id);
         	Integer count = bookDao.getCountByGenre(numericId);
+        	message.setObj(count);
+        }  catch (SQLException | RuntimeException e) {
+            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+        }
+        return message;
+    }
+    
+    public ResponseMessage<Integer> getCountByBookName(String book_name) {
+    	ResponseMessage<Integer> message = new ResponseMessage<>();
+    	try {
+        	Integer count = bookDao.getCountByBookName(book_name);
         	message.setObj(count);
         }  catch (SQLException | RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
