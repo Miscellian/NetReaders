@@ -12,8 +12,11 @@ import java.util.Collection;
 @Service
 public class AuthorService {
 
-    @Autowired
-    private AuthorDao authorDao;
+    private final AuthorDao authorDao;
+
+    public AuthorService(AuthorDao authorDao) {
+        this.authorDao = authorDao;
+    }
 
     public ResponseMessage<Collection<Author>> getAll() throws DataBaseSQLException {
 

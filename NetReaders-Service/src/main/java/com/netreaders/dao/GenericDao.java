@@ -15,9 +15,9 @@ import java.util.Collection;
 public interface GenericDao<E, PK extends Serializable> {
 
     /**
-     * Persist the newInstance object into database and return newInstance with PK
+     * Persist the newInstance object into database and return entity with PK
      */
-    E create(E newInstance) throws DataBaseSQLException;
+    E create(E entity) throws DataBaseSQLException;
 
     /**
      * Retrieve an object that was previously persisted to the database using
@@ -28,12 +28,12 @@ public interface GenericDao<E, PK extends Serializable> {
     /**
      * Save changes made to a persistent object.
      */
-    void update(E persistentObject) throws DataBaseSQLException;
+    void update(E entity) throws DataBaseSQLException;
 
     /**
      * Remove an object from persistent storage in the database
      */
-    void delete(E persistentObject) throws DataBaseSQLException;
+    void delete(E entity) throws DataBaseSQLException;
 
     /**
      * Retrieve all objects that were previously persisted to the database

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseMessage<T> {
-
     private Boolean isSuccessful = true;
     private String errorMessage = "";
     private T obj = null;

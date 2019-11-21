@@ -3,7 +3,6 @@ package com.netreaders.dao.book;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Book;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
@@ -23,17 +22,20 @@ import java.util.List;
 @Repository
 public class BookDaoImpl implements BookDao {
 
-    @Autowired
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private BookMapper bookMapper;
+    private final BookMapper bookMapper;
+
+    public BookDaoImpl(JdbcTemplate template, Environment env, BookMapper bookMapper) {
+        this.template = template;
+        this.env = env;
+        this.bookMapper = bookMapper;
+    }
 
     @Override
-    public Book create(Book book) throws DataBaseSQLException {
+    public Book create(Book book) {
 
         final String sql_query = env.getProperty("book.create");
 
@@ -53,7 +55,7 @@ public class BookDaoImpl implements BookDao {
             }, holder);
 
             Integer newId;
-            if (holder.getKeys().size() > 1) {
+            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("book_id");
             } else {
                 newId = holder.getKey().intValue();
@@ -69,7 +71,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book getById(Integer id) throws DataBaseSQLException {
+    public Book getById(Integer id) {
 
         String sql_query = env.getProperty("book.read");
 
@@ -90,7 +92,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void update(Book book) throws DataBaseSQLException {
+    public void update(Book book) {
 
         String sql_query = env.getProperty("book.update");
 
@@ -113,7 +115,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void delete(Book book) throws DataBaseSQLException {
+    public void delete(Book book) {
 
         String sql_query = env.getProperty("book.delete");
 
@@ -130,7 +132,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getAll() throws DataBaseSQLException {
+    public Collection<Book> getAll() {
 
         String sql_query = env.getProperty("book.readAll");
 
@@ -147,7 +149,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    public Collection<Book> findBooksByGenre(int genre_id, int amount, int offset) throws DataBaseSQLException {
+    public Collection<Book> findBooksByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByGenre");
 
@@ -164,7 +166,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    public Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) throws DataBaseSQLException {
+    public Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByAuthor");
 
@@ -181,7 +183,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    public Collection<Book> getById(int amount, int offset) throws DataBaseSQLException {
+    public Collection<Book> getById(int amount, int offset) {
 
         String sql_query = env.getProperty("book.getByIdWithOffset");
 
@@ -199,7 +201,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getByName(String name) throws DataBaseSQLException {
+    public Collection<Book> getByName(String name) {
 
         String sql_query = env.getProperty("book.getByName");
 
@@ -217,7 +219,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getByAnnouncementId(int id) throws DataBaseSQLException {
+    public Collection<Book> getByAnnouncementId(int id) {
 
         String sql_query = env.getProperty("book.getByAnnouncementId");
 

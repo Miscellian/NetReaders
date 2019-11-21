@@ -13,7 +13,6 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookDto {
-
     private Collection<Genre> genres;
     private Collection<Author> authors;
     private Book book;

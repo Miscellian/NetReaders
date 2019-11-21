@@ -3,7 +3,6 @@ package com.netreaders.dao.user;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.User;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,17 +25,20 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    public UserDaoImpl(Environment env, JdbcTemplate template, UserMapper userMapper) {
+        this.env = env;
+        this.template = template;
+        this.userMapper = userMapper;
+    }
 
     @Override
-    public User create(final User user) throws DataBaseSQLException {
+    public User create(final User user) {
 
         final String sql_query = env.getProperty("user.create");
 
@@ -59,7 +61,7 @@ public class UserDaoImpl implements UserDao {
             }, holder);
 
             Integer newId;
-            if (holder.getKeys().size() > 1) {
+            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("user_id");
             } else {
                 newId = holder.getKey().intValue();
@@ -76,7 +78,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getById(Long id) throws DataBaseSQLException {
+    public User getById(Long id) {
 
         String sql_query = env.getProperty("user.read");
 
@@ -97,7 +99,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(User user) throws DataBaseSQLException {
+    public void update(User user) {
 
         String sql_query = env.getProperty("user.update");
 
@@ -121,7 +123,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void delete(User user) throws DataBaseSQLException {
+    public void delete(User user) {
 
         String sql_query = env.getProperty("user.delete");
 
@@ -157,7 +159,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByNickname(String nickname) throws DataBaseSQLException {
+    public User findByNickname(String nickname) {
 
         String sql_query = env.getProperty("user.findByNickname");
 
@@ -204,7 +206,7 @@ public class UserDaoImpl implements UserDao {
         if (recordCount == 0) {
             log.debug(String.format("Dont delete any user by nickname '%s'", nickname));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete user by nickname '%s'", recordCount, nickname));
+            log.debug(String.format("Delete user by nickname '%s'", nickname));
         } else {
             log.error(String.format("Delete more than one user by nickname '%s'", nickname));
             throw new DataBaseSQLException(String.format("Delete more than one user by nickname '%s'", nickname));

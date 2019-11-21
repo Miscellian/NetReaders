@@ -3,7 +3,6 @@ package com.netreaders.dao.annoucement;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Announcement;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,17 +25,20 @@ import java.util.List;
 @Repository
 public class AnnouncementDaoImpl implements AnnouncementDao {
 
-    @Autowired
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private AnnouncementMapper announcementMapper;
+    private final AnnouncementMapper announcementMapper;
+
+    public AnnouncementDaoImpl(JdbcTemplate template, Environment env, AnnouncementMapper announcementMapper) {
+        this.template = template;
+        this.env = env;
+        this.announcementMapper = announcementMapper;
+    }
 
     @Override
-    public Announcement create(Announcement announcement) throws DataBaseSQLException {
+    public Announcement create(Announcement announcement) {
 
         final String sql_query = env.getProperty("announcement.create");
 
@@ -57,7 +59,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             }, holder);
 
             Integer newId;
-            if (holder.getKeys().size() > 1) {
+            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("announcement_id");
             } else {
                 newId = holder.getKey().intValue();
@@ -74,7 +76,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Announcement getById(Integer id) throws DataBaseSQLException {
+    public Announcement getById(Integer id) {
 
         String sql_query = env.getProperty("announcement.read");
 
@@ -95,7 +97,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public void update(Announcement announcement) throws DataBaseSQLException {
+    public void update(Announcement announcement) {
 
         String sql_query = env.getProperty("announcement.update");
 
@@ -112,7 +114,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public void delete(Announcement announcement) throws DataBaseSQLException {
+    public void delete(Announcement announcement) {
 
         String sql_query = env.getProperty("announcement.delete");
 
@@ -129,7 +131,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> getAll() throws DataBaseSQLException {
+    public Collection<Announcement> getAll() {
 
         String sql_query = env.getProperty("announcement.readAll");
 
@@ -147,7 +149,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByGenre(int genre_id, int amount, int offset) throws DataBaseSQLException {
+    public Collection<Announcement> findAnnouncementsByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
 
@@ -165,7 +167,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByAuthor(int author_id, int amount, int offset) throws DataBaseSQLException {
+    public Collection<Announcement> findAnnouncementsByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
 
@@ -184,7 +186,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
 
     @Override
-    public Collection<Announcement> getById(int amount, int offset) throws DataBaseSQLException {
+    public Collection<Announcement> getById(int amount, int offset) {
 
         String sql_query = env.getProperty("announcement.getByIdWithOffset");
 

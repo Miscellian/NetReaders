@@ -26,7 +26,7 @@ public class WebRestControllerAdvice {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage handleArgumentTypeMismatchException(DataBaseSQLException ex) {
+    public ResponseMessage handleArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         ResponseMessage responseMessage = new ResponseMessage<>();
         ResponseMessagePrepearer.prepareMessage(responseMessage, ex.getMessage());
         return responseMessage;

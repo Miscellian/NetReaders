@@ -6,7 +6,6 @@ import com.netreaders.dto.AnnouncementDto;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Announcement;
 import com.netreaders.models.ResponseMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,11 +15,14 @@ import java.util.stream.Collectors;
 @Service
 public class AnnouncementService {
 
-    @Autowired
-    private AnnouncementDao announcementDao;
+    private final AnnouncementDao announcementDao;
 
-    @Autowired
-    private BookDao bookDao;
+    private final BookDao bookDao;
+
+    public AnnouncementService(AnnouncementDao announcementDao, BookDao bookDao) {
+        this.announcementDao = announcementDao;
+        this.bookDao = bookDao;
+    }
 
     public ResponseMessage<Collection<AnnouncementDto>> getAllAnnouncements() throws DataBaseSQLException {
 

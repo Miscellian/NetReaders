@@ -3,7 +3,6 @@ package com.netreaders.dao.author;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Author;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,17 +25,20 @@ import java.util.List;
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
 
-    @Autowired
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private AuthorMapper authorMapper;
+    private final AuthorMapper authorMapper;
+
+    public AuthorDaoImpl(JdbcTemplate template, Environment env, AuthorMapper authorMapper) {
+        this.template = template;
+        this.env = env;
+        this.authorMapper = authorMapper;
+    }
 
     @Override
-    public Author create(Author author) throws DataBaseSQLException {
+    public Author create(Author author) {
 
         final String sql_query = env.getProperty("author.create");
 
@@ -55,7 +57,7 @@ public class AuthorDaoImpl implements AuthorDao {
             }, holder);
 
             Integer newId;
-            if (holder.getKeys().size() > 1) {
+            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("author_id");
             } else {
                 newId = holder.getKey().intValue();
@@ -71,7 +73,7 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    public Author getById(Integer id) throws DataBaseSQLException {
+    public Author getById(Integer id) {
 
         String sql_query = env.getProperty("author.read");
 
@@ -92,7 +94,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void update(Author author) throws DataBaseSQLException {
+    public void update(Author author) {
 
         String sql_query = env.getProperty("author.update");
 
@@ -109,7 +111,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void delete(Author author) throws DataBaseSQLException {
+    public void delete(Author author) {
 
         String sql_query = env.getProperty("author.delete");
 
@@ -142,7 +144,7 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    public Collection<Author> getByBookId(int id) throws DataBaseSQLException {
+    public Collection<Author> getByBookId(int id) {
 
         String sql_query = env.getProperty("author.getByBookId");
 

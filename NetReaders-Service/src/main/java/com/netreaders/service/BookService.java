@@ -7,7 +7,6 @@ import com.netreaders.dto.BookDto;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Book;
 import com.netreaders.models.ResponseMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,14 +16,17 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    @Autowired
-    private BookDao bookDao;
+    private final BookDao bookDao;
 
-    @Autowired
-    private GenreDao genreDao;
+    private final GenreDao genreDao;
 
-    @Autowired
-    private AuthorDao authorDao;
+    private final AuthorDao authorDao;
+
+    public BookService(BookDao bookDao, GenreDao genreDao, AuthorDao authorDao) {
+        this.bookDao = bookDao;
+        this.genreDao = genreDao;
+        this.authorDao = authorDao;
+    }
 
     public ResponseMessage<Collection<BookDto>> findBooksByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
 

@@ -3,7 +3,6 @@ package com.netreaders.controller;
 import com.netreaders.dto.AnnouncementDto;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -13,8 +12,11 @@ import java.util.Collection;
 @RequestMapping("/api/announcements")
 public class AnnouncementController {
 
-    @Autowired
-    private AnnouncementService announcementService;
+    private final AnnouncementService announcementService;
+
+    public AnnouncementController(AnnouncementService announcementService) {
+        this.announcementService = announcementService;
+    }
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
@@ -25,8 +27,7 @@ public class AnnouncementController {
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseMessage<AnnouncementDto> getById(@PathVariable() Integer id) {
-        ResponseMessage<AnnouncementDto> response = announcementService.findAnnouncementById(id);
-        return response;
+        return announcementService.findAnnouncementById(id);
     }
 
     @GetMapping(value = "bygenre")
@@ -35,8 +36,7 @@ public class AnnouncementController {
             @RequestParam(name = "id") Integer genreid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        ResponseMessage<Collection<AnnouncementDto>> response = announcementService.findAnnouncementsByGenre(genreid, amount, offset);
-        return response;
+        return announcementService.findAnnouncementsByGenre(genreid, amount, offset);
     }
 
     @GetMapping(value = "byauthor")
@@ -45,7 +45,6 @@ public class AnnouncementController {
             @RequestParam(name = "id") Integer authorid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        ResponseMessage<Collection<AnnouncementDto>> response = announcementService.findAnnouncementsByAuthor(authorid, amount, offset);
-        return response;
+        return announcementService.findAnnouncementsByAuthor(authorid, amount, offset);
     }
 }

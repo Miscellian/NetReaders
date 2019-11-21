@@ -3,7 +3,6 @@ package com.netreaders.dao.genres;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Genre;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
@@ -23,17 +22,20 @@ import java.util.List;
 @Repository
 public class GenreDaoImpl implements GenreDao {
 
-    @Autowired
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private GenreMapper genreMapper;
+    private final GenreMapper genreMapper;
+
+    public GenreDaoImpl(JdbcTemplate template, Environment env, GenreMapper genreMapper) {
+        this.template = template;
+        this.env = env;
+        this.genreMapper = genreMapper;
+    }
 
     @Override
-    public Genre create(Genre genre) throws DataBaseSQLException {
+    public Genre create(Genre genre) {
 
         final String sql_query = env.getProperty("genre.create");
 
@@ -49,7 +51,7 @@ public class GenreDaoImpl implements GenreDao {
             }, holder);
 
             Integer newId;
-            if (holder.getKeys().size() > 1) {
+            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
                 newId = (Integer) holder.getKeys().get("genre_id");
             } else {
                 newId = holder.getKey().intValue();
@@ -65,7 +67,7 @@ public class GenreDaoImpl implements GenreDao {
         }
     }
 
-    public Genre getById(Integer id) throws DataBaseSQLException {
+    public Genre getById(Integer id) {
 
         String sql_query = env.getProperty("genre.read");
 
@@ -86,7 +88,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public void update(Genre genre) throws DataBaseSQLException {
+    public void update(Genre genre) {
 
         String sql_query = env.getProperty("genre.update");
         long id = genre.getId();
@@ -104,7 +106,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public void delete(Genre genre) throws DataBaseSQLException {
+    public void delete(Genre genre) {
 
         String sql_query = env.getProperty("genre.delete");
 
@@ -121,7 +123,7 @@ public class GenreDaoImpl implements GenreDao {
 
     }
 
-    public Collection<Genre> getAll() throws DataBaseSQLException {
+    public Collection<Genre> getAll() {
 
         String sql_query = env.getProperty("genre.readAll");
 
@@ -138,7 +140,7 @@ public class GenreDaoImpl implements GenreDao {
         }
     }
 
-    public Collection<Genre> getByBookId(int id) throws DataBaseSQLException {
+    public Collection<Genre> getByBookId(int id) {
 
         String sql_query = env.getProperty("genre.getByBookId");
 
