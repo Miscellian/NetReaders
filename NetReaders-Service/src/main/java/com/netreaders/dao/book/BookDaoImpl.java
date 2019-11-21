@@ -191,7 +191,7 @@ public class BookDaoImpl implements BookDao {
 
         String sql_query = env.getProperty("book.getByNameWithOffset");
 
-        List<Book> books = template.query(sql_query, bookMapper, name, amount, offset);
+        List<Book> books = template.query(sql_query, bookMapper, name, name, amount, offset);
         if (books.isEmpty()) {
             log.debug(String.format("Didn't find any books with name like '%s'", name));
             return Collections.emptyList();
@@ -232,12 +232,12 @@ public class BookDaoImpl implements BookDao {
     }
     
     @Override
-    public Integer getCountByBookName(String book_name) throws SQLException {
-    	String sql_query = env.getProperty("book.getCountByBookName");
+    public Integer getCountByName(String name) throws SQLException {
+    	String sql_query = env.getProperty("book.getCountByName");
     	
-    	Integer count = template.queryForObject(sql_query, new Object[] { book_name }, Integer.class);
+    	Integer count = template.queryForObject(sql_query, new Object[] { name, name }, Integer.class);
 
-        log.debug(String.format("Found %d books by name '%s'", count, book_name));
+        log.debug(String.format("Found %d books by name '%s'", count, name));
         return count;
     }
 }

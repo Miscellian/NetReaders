@@ -12,14 +12,14 @@ export class BooklistComponent implements OnInit {
   funcs: any = {
     genre: () => { this.func = () => this.bookService.getByGenre(this.arg, this.page.toString()); },
     author: () => { this.func = () => this.bookService.getByAuthor(this.arg, this.page.toString()); },
-    name: () => { this.func = () => this.bookService.getByBookName(this.arg, this.page.toString()); },
+    name: () => { this.func = () => this.bookService.getByName(this.arg, this.page.toString()); },
     range: () => { this.func = () => this.bookService.getByRange(this.page.toString()); }
   };
 
   funcsCount: any = {
     genre: () => { this.func = () => this.bookService.getCountByGenre(this.arg) },
     author: () => { this.func = () => this.bookService.getCountByAuthor(this.arg); },
-    name: () => { this.func = () => this.bookService.getCountByBookName(this.arg) },
+    name: () => { this.func = () => this.bookService.getCountByName(this.arg) },
     range: () => { this.func = () => this.bookService.getCount(); }
   }
 

@@ -96,8 +96,8 @@ public class BookController {
 		@GetMapping(value = "countByName")
 		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseMessage<Integer> GetCountByName(
-				@RequestParam(name = "name") String book_name) {
-			ResponseMessage<Integer> response = bookService.getCountByBookName(book_name);
+				@RequestParam(name = "name") String name) {
+			ResponseMessage<Integer> response = bookService.getCountByName(name);
 			return response;
 		}
 }

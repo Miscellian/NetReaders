@@ -164,10 +164,10 @@ public class BookService {
         return message;
     }
     
-    public ResponseMessage<Integer> getCountByBookName(String book_name) {
+    public ResponseMessage<Integer> getCountByName(String name) {
     	ResponseMessage<Integer> message = new ResponseMessage<>();
     	try {
-        	Integer count = bookDao.getCountByBookName(book_name);
+        	Integer count = bookDao.getCountByName(name);
         	message.setObj(count);
         }  catch (SQLException | RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
