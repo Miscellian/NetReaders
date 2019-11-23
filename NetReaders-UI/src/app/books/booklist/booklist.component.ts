@@ -46,6 +46,7 @@ export class BooklistComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       params => {
+        window.location.hash = '#top';
         this.arg = params['id'];
         this.page = params['page'];
         this.funcsCount[this.activatedRoute.snapshot.data.filter]();

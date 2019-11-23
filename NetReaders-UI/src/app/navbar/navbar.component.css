@@ -1,4 +1,4 @@
-nav{
+nav {
     font-family: 'Lato', sans-serif;
     background-color: #68C5FA;
 }
@@ -9,6 +9,12 @@ nav{
     font-size: 1.5em;
 }
 
-button {
-    background-color: #007BFF;
+.btn {
+    background-color: #68C5FA;
+    color: #007BFF;
+    padding: .5rem 1rem;
+}
+
+div.dropdown-menu {
+    border: .1rem solid #007BFF;
 }
