@@ -12,17 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.netreaders.dao.role.RoleDao;
-//import com.netreaders.dao.token.TokenDao;
 import com.netreaders.dao.user.UserDao;
 import com.netreaders.dto.SignUpForm;
 import com.netreaders.dto.UserDto;
 import com.netreaders.models.Role;
-//import com.netreaders.models.Token;
 import com.netreaders.models.User;
 
 @Service
@@ -37,7 +33,7 @@ public class UserService implements UserDetailsService{
 //	private TokenDao tokenDao;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public User registerUser(UserDto userDto) throws SQLException {
 
