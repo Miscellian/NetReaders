@@ -28,3 +28,14 @@ export class Author {
   id: number;
   name: string;
 }
+
+export class User{
+  constructor(
+      public user_name: string,
+      public fist_name: string,
+      public last_name: string,
+      public email: string,
+      public password: string
+  ){}
+
+}
