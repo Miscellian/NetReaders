@@ -28,12 +28,11 @@ div.header {
   display: inline;
 }
 
-#description-container {
+div#description-container {
   margin-top: 5%;
   padding: 2%;
-  border: .1vw solid #007BFF;
-  border-top-left-radius: 10%;
-  border-bottom-right-radius: 10%;
+  border: .15vw ridge #68C5FA;
+  border-radius: 10px;
 }
 
 a.author-genre-link {
@@ -44,4 +43,10 @@ a.author-genre-link {
 
 a.author-genre-link:hover {
   color: #218838; 
+}
+
+@media screen and (max-width: 600px) {
+  div#description-container {
+    border: none;
+  }
 }

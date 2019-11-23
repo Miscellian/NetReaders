@@ -7,7 +7,7 @@ a.btn {
   margin-bottom: 5%;
   background-color: #007BFF;
   border-color: #28a745;
-  font-size:x-large
+  font-size: x-large
 }
 
 a.btn:hover {
@@ -24,15 +24,14 @@ a#book-title {
 
 p.header {
   margin-top: 1%;
-  font-size:large;
+  font-size: large;
 }
 
 div#main {
   padding: 2%;
   margin-bottom: 2%;
-  border: .1vw solid #007BFF;
-  border-top-left-radius: 10%;
-  border-bottom-right-radius: 10%;
+  border: .15vw ridge #68C5FA;
+  border-radius: 10px;
 }
 
 div.header {
@@ -42,9 +41,15 @@ div.header {
 a.author-genre-link {
   text-decoration: none;
   font-size: large;
-  color: black; 
+  color: black;
 }
 
 a.author-genre-link:hover {
-  color: #218838; 
+  color: #218838;
+}
+
+@media screen and (max-width: 767px) {
+  div#main {
+    border: none;
+  }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../books/book.service';
+import { NavbarService } from './navbar.service';
+import { Genre } from '../model';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -9,12 +11,22 @@ import { BookService } from '../books/book.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private bookService: BookService,
+  genres: Genre[];
+
+  constructor(private navbarService: NavbarService,
     private activatedRoute: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit() {
-    
+    this.navbarService.getAllGenres().subscribe(
+      response => {
+        if (!response.isSuccessful) {
+          this.router.navigate(['/error']);
+        } else {
+          this.genres = response.obj;
+        }
+      }
+    );
   }
 
   onEnter(bookname: string) {
