@@ -9,7 +9,6 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/authors")
-@CrossOrigin(origins = "*")
 public class AuthorController {
 	
 	private final AuthorService authorService;
@@ -19,13 +18,11 @@ public class AuthorController {
 	}
 
 	@GetMapping("all")
-	@CrossOrigin(origins = "*")
 	public ResponseMessage<Collection<Author>> GetAllAuthors() {
 		return authorService.getAll();
 	}
 	
 	@GetMapping(value = "{id}")
-	@CrossOrigin(origins = "*")
 	public ResponseMessage<Author> GetAuthorById(@PathVariable String id) {
 		ResponseMessage<Author> response = authorService.getById(id);
 		return response;

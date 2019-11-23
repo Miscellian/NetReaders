@@ -30,7 +30,6 @@ import com.netreaders.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class UsersController {
 	@Autowired
 	private UserService userService;

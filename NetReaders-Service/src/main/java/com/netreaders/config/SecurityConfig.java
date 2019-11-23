@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.netreaders.security.JwtAuthEntryPoint;
 import com.netreaders.security.JwtAuthTokenFilter;
@@ -37,16 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthTokenFilter();
     }
 	
+	@Bean
+	protected CorsConfigurationSource corsConfigurationSource() {
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+	    return source;
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().
-        authorizeRequests()
+		http.cors().and()
+        .authorizeRequests()
         .antMatchers("/api/users/test").hasAuthority("ADMIN")
         .anyRequest().permitAll()
         .and()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().csrf().disable();
+		http.cors();
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
