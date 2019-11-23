@@ -11,6 +11,7 @@ import { AdminslistComponent } from './adminslist/adminslist.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorpageComponent } from './errorpage/errorpage.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     NavbarComponent,
     UserpageComponent,
-    AdminslistComponent
+    AdminslistComponent,
+    ErrorpageComponent
   ],
   imports: [
     FormsModule,
