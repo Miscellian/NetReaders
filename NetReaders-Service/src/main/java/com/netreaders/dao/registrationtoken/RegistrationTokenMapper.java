@@ -20,14 +20,9 @@ public class RegistrationTokenMapper implements RowMapper<RegistrationToken> {
 
     	token.setTokenId(rs.getInt("registration_token_id"));
     	token.setUserId(rs.getInt("user_id"));
-    	token.setToken(rs.getString("token"));
+    	token.setToken(rs.getString("token_value"));
     	token.setCreatedDateTime(rs.getObject("created_time", LocalDateTime.class));
 
         return token;
     }
-
-//    @Bean
-//    public RegistrationTokenMapper getTokenMapper() {
-//        return new RegistrationTokenMapper();
-//    }
 }
