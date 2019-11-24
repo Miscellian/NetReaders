@@ -21,7 +21,8 @@ const routes: Routes = [
       {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
       {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
     ]
-  }
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuthenticationService} from "./authentication.service";
 
 @Component({
   selector: 'app-login',
@@ -7,56 +9,53 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user: FormGroup;
-  constructor(private fb: FormBuilder){}
-  ngOnInit(){
-    this.initForm();
-  }
-  private passwordValidator(control: FormControl): ValidationErrors {
-    const value = control.value;
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
 
-    const hasNumber = /[0-9]/.test(value);
-
-    const hasCapitalLetter = /[A-Z]/.test(value);
-
-    const hasLowercaseLetter = /[a-z]/.test(value);
-
-    const isLengthValid = value ? value.length > 7 : false;
-
-
-    const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
-
-    if (!passwordValid) {
-      return { invalidPassword: 'Password is invalid' };
+  constructor(
+      private formBuilder: FormBuilder,
+      private route: ActivatedRoute,
+      private router: Router,
+      private authenticationService: AuthenticationService,
+  ) {
+    // redirect to home if already logged in
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
     }
-    return null;
   }
 
-  private initForm(): void{
-    this.user =this.fb.group({
-      user_name: ['',[
-        Validators.required,
-        Validators.minLength(1)]
-      ],
-      password: ['',[
-        Validators.required,
-        this.passwordValidator]
-      ],
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  onSubmit(){
-    const controls = this.user.controls;
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
 
-    if (this.user.invalid) {
+  onSubmit() {
+    this.submitted = true;
 
-      Object.keys(controls)
-          .forEach(controlName => controls[controlName].markAsTouched());
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
       return;
     }
 
-    /** TODO: Обработка данных формы */
-    console.log(this.user.value);
-  }
+    this.loading = true;
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+        .subscribe(response => {
+          if (!response.isSuccessful) {
+            this.router.navigate(['/error']);
+          } else {
+            this.router.navigate([this.returnUrl]);
+          }
+        });
 
+  }
 }

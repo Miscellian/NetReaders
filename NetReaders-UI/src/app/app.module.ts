@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,11 @@ import { SignupComponent} from './signup/signup.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
 import { LoginComponent } from './login/login.component';
+import {AuthGuard} from "./_helpers/auth.guard";
+import {AuthenticationService} from "./login/authentication.service";
+import {UserService} from "./signup/user.service";
+import {JwtInterceptor} from "./_helpers/jwt.interceptor";
+import {ErrorInterceptor} from "./_helpers/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -31,7 +36,12 @@ import { LoginComponent } from './login/login.component';
     BooksModule,
     CommonModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    AuthenticationService,
+    UserService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

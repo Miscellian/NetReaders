@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {AuthenticationService} from "../login/authentication.service";
+import {Router} from "@angular/router";
+import {UserService} from "./user.service";
 
 @Component({
   selector: 'app-signup',
@@ -7,12 +10,27 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  user: FormGroup;
+  registerForm: FormGroup;
+  loading = false;
+  submitted = false;
 
-  constructor(private fb: FormBuilder){}
+  constructor(
+      private formBuilder: FormBuilder,
+      private router: Router,
+      private authenticationService: AuthenticationService,
+      private userService: UserService,
+  ) {
+    // redirect to home if already logged in
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
-  ngOnInit(){
-    this.initForm();
+  checkPasswords(group: FormGroup) {
+    let password = group.get('password').value;
+    let confirm_password = group.get('confirm_password').value;
+
+    return password === confirm_password ? null : {notSame: true}
   }
 
   private passwordValidator(control: FormControl): ValidationErrors {
@@ -30,58 +48,46 @@ export class SignupComponent implements OnInit {
     const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
 
     if (!passwordValid) {
-      return { invalidPassword: 'Password is invalid' };
+      return {invalidPassword: 'Password is invalid'};
     }
     return null;
   }
 
-  checkPasswords(group: FormGroup) {
-    let password = group.get('password').value;
-    let confirm_password = group.get('confirm_password').value;
-
-    return password === confirm_password ? null : { notSame: true }
-  }
-  
-  private initForm(): void{
-    this.user =this.fb.group({
-      user_name: ['',[
-          Validators.required,
-          Validators.minLength(1)]
+  ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      user_name: ['', [Validators.required, Validators.minLength(1)]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]
       ],
-      first_name: ['',[
-        Validators.required,
-        Validators.minLength(1)]
-      ],
-      last_name: ['',[
-        Validators.required,
-        Validators.minLength(1)]
-      ],
-      email: ['',[
-        Validators.required,
-        Validators.email]
-      ],
-      password: ['',[
-        Validators.required,
-        this.passwordValidator]
-      ],
-      confirm_password: ['',[
-        Validators.required,
-        this.checkPasswords]
-      ],
+      password: ['', [Validators.required, this.passwordValidator]],
+      confirm_password: ['', [Validators.required, this.checkPasswords]
+      ]
     });
   }
 
-  onSubmit(){
-    const controls = this.user.controls;
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.registerForm.controls;
+  }
 
-    if (this.user.invalid) {
+  onSubmit() {
+    this.submitted = true;
 
-      Object.keys(controls)
-          .forEach(controlName => controls[controlName].markAsTouched());
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
       return;
     }
 
-    /** TODO: Обработка данных формы */
-    console.log(this.user.value);
+    this.loading = true;
+    this.userService.register(this.registerForm.value)
+        .subscribe(response => {
+          if (!response.isSuccessful) {
+            this.router.navigate(['/error']);
+            this.loading = false;
+          } else {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 }

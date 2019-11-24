@@ -29,13 +29,22 @@ export class Author {
   name: string;
 }
 
-export class User{
-  constructor(
-      public user_name: string,
-      public fist_name: string,
-      public last_name: string,
-      public email: string,
-      public password: string
-  ){}
+export class User {
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  token: string;
+}
 
+export class LoginInfo {
+  token: string;
+  type: string;
+  username: string;
+  authorities: Authority[];
+}
+
+export class Authority {
+  authority: string;
 }
