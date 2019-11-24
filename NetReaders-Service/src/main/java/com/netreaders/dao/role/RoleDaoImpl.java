@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.netreaders.models.Role;
+import com.netreaders.models.User;
 
 import lombok.extern.log4j.Log4j;
 
@@ -49,6 +50,26 @@ public class RoleDaoImpl implements RoleDao {
 	}
 
 	@Override
+	public Collection<Role> findByUserId(int id) throws SQLException {
+		String sql_query = env.getProperty("role.findByUserId");
+		List<Role> roles = template.query(sql_query, roleMapper, id);
+        if (roles.isEmpty()) {
+            log.debug(String.format("Dont find any role by userid '%d'", id));
+            return null;
+        } else {
+            log.debug(String.format("Found roles by userId '%d'", id));
+            return roles;
+        }
+	}
+
+	@Override
+	public boolean addUserToRole(Role role, User user) throws SQLException {
+		String sql_query = env.getProperty("role.addUserToRole");
+		int rows = template.update(sql_query,user.getUserId(),role.getRoleId());
+		return rows > 0;
+	}
+	
+	@Override
 	public Role create(Role newInstance) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
@@ -56,8 +77,19 @@ public class RoleDaoImpl implements RoleDao {
 
 	@Override
 	public Role getById(Long id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		String sql_query = env.getProperty("role.read");
+
+        List<Role> roles = template.query(sql_query, roleMapper, id);
+        if (roles.isEmpty()) {
+            log.debug(String.format("Dont find any role by id '%s'", id));
+            return null;
+        } else if (roles.size() == 1) {
+            log.debug(String.format("Find a role by id '%s'", id));
+            return roles.get(0);
+        } else {
+            log.error(String.format("Find more than one role by id '%s'", id));
+            throw new SQLException("Internal sql exception");
+        }
 	}
 
 	@Override
@@ -76,19 +108,6 @@ public class RoleDaoImpl implements RoleDao {
 	public Collection<Role> getAll() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public Collection<Role> findByUserId(int id) throws SQLException {
-		String sql_query = env.getProperty("role.findByUserId");
-		List<Role> roles = template.query(sql_query, roleMapper, id);
-        if (roles.isEmpty()) {
-            log.debug(String.format("Dont find any role by userid '%d'", id));
-            return null;
-        } else {
-            log.debug(String.format("Found roles by userId '%d'", id));
-            return roles;
-        }
 	}
     
 
