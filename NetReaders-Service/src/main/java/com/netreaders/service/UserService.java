@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.netreaders.dao.role.RoleDao;
 import com.netreaders.dao.user.UserDao;
@@ -34,6 +35,7 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
+	@Transactional
 	public User registerUser(SignUpForm signUpForm) {
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
@@ -50,6 +52,29 @@ public class UserService implements UserDetailsService{
 			return user;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Transactional
+	public User registerPriviledgedUser(SignUpForm signUpForm, String[] roles) {
+		User user = new User();
+		user.setFirstName(signUpForm.getFirstName());
+		user.setLastName(signUpForm.getLastName());
+		user.setUserNickname(signUpForm.getUsername());
+		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
+		user.setUserPassword(hashedPassword);
+		user.setEmail(signUpForm.getEmail());
+		Role role;
+		try {
+			userDao.create(user);
+			for(String roleName : roles) {
+				role = roleDao.findByRoleName(roleName);
+				roleDao.addUserToRole(role, user);
+			}
+			return user;
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -73,7 +98,6 @@ public class UserService implements UserDetailsService{
 			roles= roleDao.findByUserId(user.getUserId());
 			return UserPrinciple.build(user, roles);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

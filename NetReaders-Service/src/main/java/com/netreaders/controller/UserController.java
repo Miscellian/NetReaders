@@ -50,16 +50,16 @@ public class UserController {
 	JwtProvider jwtProvider;
 	
 	@PostMapping("/registration")
-	public boolean registerUser(@RequestBody SignUpForm signUpForm) throws SQLException {
+	public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) throws SQLException {
 		User user = userService.findByNickname(signUpForm.getUsername());
 		if (user != null) {
-			return false;
+			return ResponseEntity.badRequest().body("User already exists");
 		}
 		user = userService.registerUser(signUpForm);
 		RegistrationToken token = registrationTokenService.createToken(user);
 		emailService.sendEmail(user, token);
 		
-		return true;
+		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/login")
@@ -67,11 +67,10 @@ public class UserController {
 		User user = userService.findByNickname(loginForm.getUsername());
 		if(user != null) {
 			if(registrationTokenService.getByUser(user) != null) {
-				return ResponseEntity.badRequest().build();
+				return ResponseEntity.badRequest().body("Finish your registration first");
 			}
-			
 		} else {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body("User Already exists");
 		}
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
@@ -92,4 +91,27 @@ public class UserController {
 		}
 		return ResponseEntity.badRequest().build();
 	}
+	@PostMapping("/createAdmin")
+	public boolean createAdmin(@RequestBody SignUpForm signUpForm) throws SQLException {
+		User user = userService.findByNickname(signUpForm.getUsername());
+		if (user != null) {
+			return false;
+		}
+		user = userService.registerPriviledgedUser(signUpForm, new String[] {"ADMIN"});
+		
+		return true;
+	}
+	
+	@PostMapping("/createModerator")
+	public boolean createModerator(@RequestBody SignUpForm signUpForm,
+								   @RequestBody String[] roles) throws SQLException {
+		User user = userService.findByNickname(signUpForm.getUsername());
+		if (user != null) {
+			return false;
+		}
+		user = userService.registerPriviledgedUser(signUpForm, roles);
+		
+		return true;
+	}
+	
 }

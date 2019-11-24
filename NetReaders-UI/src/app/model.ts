@@ -29,6 +29,17 @@ export class Author {
   name: string;
 }
 
+export class LoginInfo {
+  token: string;
+  type: string;
+  username: string;
+  authorities: Authority[];
+}
+
+export class Authority {
+  authority: string;
+}
+
 export class User{
   constructor(
       public user_name: string,

@@ -43,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and()
 		.authorizeRequests()
-        .antMatchers("/api/users/test").hasAuthority("ADMIN")
+        .antMatchers("/api/users/createAdmin").hasAuthority("SUPER_ADMIN")
+        .antMatchers("/api/users/createModerator").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
         .anyRequest().permitAll()
         .and()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
