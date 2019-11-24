@@ -4,18 +4,16 @@ import com.netreaders.dao.genres.GenreDao;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Genre;
 import com.netreaders.models.ResponseMessage;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 @Service
+@AllArgsConstructor
 public class GenreService {
 
     private final GenreDao genreDao;
-
-    public GenreService(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
 
     public ResponseMessage<Collection<Genre>> getAll() throws DataBaseSQLException {
 

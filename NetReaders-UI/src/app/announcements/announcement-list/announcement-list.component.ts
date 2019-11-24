@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AnnouncementService} from '../announcement.service';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AnnouncementDto} from "../../model";
+import {Announcement} from "../../model";
 
 @Component({
     selector: 'app-announcement-list',
@@ -22,7 +22,7 @@ export class AnnouncementListComponent implements OnInit {
         }
     };
     arg: string;
-    announcementDtos: AnnouncementDto[];
+    announcements: Announcement[];
     func: any = () => this.announcementService.getByAuthor(this.arg);
 
     constructor(private announcementService: AnnouncementService,
@@ -37,7 +37,7 @@ export class AnnouncementListComponent implements OnInit {
             if (!response.isSuccessful) {
                 this.router.navigate(['/error']);
             } else {
-                this.announcementDtos = response.obj;
+                this.announcements = response.obj;
             }
         });
     }

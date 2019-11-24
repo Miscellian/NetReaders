@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AnnouncementDto} from "../../model";
+import {Announcement} from "../../model";
 import {AnnouncementService} from "../announcement.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class AnnouncementDetailComponent implements OnInit {
 
     id: number;
-    announcementDto: AnnouncementDto;
+    announcement: Announcement;
     func: any = () => this.announcementService.getById(this.id);
 
     constructor(private announcementService: AnnouncementService,
@@ -25,7 +25,7 @@ export class AnnouncementDetailComponent implements OnInit {
             if (!response.isSuccessful) {
                 this.router.navigate(['/error']);
             } else {
-                this.announcementDto = response.obj;
+                this.announcement = response.obj;
             }
         });
     }

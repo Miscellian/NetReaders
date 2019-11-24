@@ -1,79 +1,77 @@
 package com.netreaders.service;
 
 import com.netreaders.dao.annoucement.AnnouncementDao;
-import com.netreaders.dao.book.BookDao;
-import com.netreaders.dto.AnnouncementDto;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Announcement;
 import com.netreaders.models.ResponseMessage;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AnnouncementService {
 
     private final AnnouncementDao announcementDao;
+    private final BookService bookService;
 
-    private final BookDao bookDao;
+    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() throws DataBaseSQLException {
 
-    public AnnouncementService(AnnouncementDao announcementDao, BookDao bookDao) {
-        this.announcementDao = announcementDao;
-        this.bookDao = bookDao;
-    }
-
-    public ResponseMessage<Collection<AnnouncementDto>> getAllAnnouncements() throws DataBaseSQLException {
-
-        ResponseMessage<Collection<AnnouncementDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.getAll();
-        Collection<AnnouncementDto> announcementDtos = announcements.stream()
-                .map(this::tryCreateAnnouncementDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(announcementDtos);
+        message.setObj(createDtoCollection(announcements));
 
         return message;
     }
 
-    public ResponseMessage<AnnouncementDto> findAnnouncementById(Integer id) throws DataBaseSQLException {
+    public ResponseMessage<Announcement> findAnnouncementById(Integer id) throws DataBaseSQLException {
 
-        ResponseMessage<AnnouncementDto> message = new ResponseMessage<>();
+        ResponseMessage<Announcement> message = new ResponseMessage<>();
         Announcement announcement = announcementDao.getById(id);
-        message.setObj(tryCreateAnnouncementDto(announcement));
+        message.setObj(modelToDto(announcement));
 
         return message;
     }
 
-    public ResponseMessage<Collection<AnnouncementDto>> findAnnouncementsByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public ResponseMessage<Collection<Announcement>> findAnnouncementsByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<AnnouncementDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.findAnnouncementsByGenre(genre_id, amount, offset);
-        Collection<AnnouncementDto> announcementDtos = announcements.stream()
-                .map(this::tryCreateAnnouncementDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(announcementDtos);
+        Collection<Announcement> announcementDtos = createDtoCollection(announcements);
+
+        //TODO
+
+        message.setObj(createDtoCollection(announcements));
 
         return message;
     }
 
-    public ResponseMessage<Collection<AnnouncementDto>> findAnnouncementsByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public ResponseMessage<Collection<Announcement>> findAnnouncementsByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<AnnouncementDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.findAnnouncementsByAuthor(author_id, amount, offset);
-        Collection<AnnouncementDto> announcementDtos = announcements.stream()
-                .map(this::tryCreateAnnouncementDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(announcementDtos);
+
+        //TODO
+
+        message.setObj(createDtoCollection(announcements));
 
         return message;
     }
 
-    private AnnouncementDto tryCreateAnnouncementDto(Announcement announcement) throws DataBaseSQLException {
+    private Collection<Announcement> createDtoCollection(Collection<Announcement> announcements) {
 
-        return new AnnouncementDto(
-                bookDao.getByAnnouncementId(announcement.getId()),
-                announcement
-        );
+        return announcements.stream()
+                .map(this::modelToDto)
+                .collect(Collectors.toList());
     }
+
+    private Announcement modelToDto(Announcement announcement) throws DataBaseSQLException {
+
+        announcement.setBooks(bookService.getByAnnouncementId(announcement.getId()));
+
+        return announcement;
+    }
+
 }

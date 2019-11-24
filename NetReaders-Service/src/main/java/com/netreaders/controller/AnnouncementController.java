@@ -1,6 +1,6 @@
 package com.netreaders.controller;
 
-import com.netreaders.dto.AnnouncementDto;
+import com.netreaders.models.Announcement;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +20,19 @@ public class AnnouncementController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public ResponseMessage<Collection<AnnouncementDto>> getAllAnnouncements() {
+    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() {
         return announcementService.getAllAnnouncements();
     }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<AnnouncementDto> getById(@PathVariable() Integer id) {
+    public ResponseMessage<Announcement> getById(@PathVariable() Integer id) {
         return announcementService.findAnnouncementById(id);
     }
 
     @GetMapping(value = "bygenre")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<AnnouncementDto>> getByGenre(
+    public ResponseMessage<Collection<Announcement>> getByGenre(
             @RequestParam(name = "id") Integer genreid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
@@ -41,7 +41,7 @@ public class AnnouncementController {
 
     @GetMapping(value = "byauthor")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<AnnouncementDto>> getByAuthor(
+    public ResponseMessage<Collection<Announcement>> getByAuthor(
             @RequestParam(name = "id") Integer authorid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {

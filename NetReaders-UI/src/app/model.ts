@@ -4,18 +4,6 @@ export class ResponseMessage<T> {
     obj: T;
 }
 
-export class BookDto {
-    book: Book;
-    genres: Genre[];
-    authors: Author[];
-}
-
-export class AnnouncementDto {
-    announcement: Announcement;
-    books: Book[];
-
-}
-
 export class Book {
     id: number;
     title: string;
@@ -23,6 +11,9 @@ export class Book {
     description: string;
     release_date: Date;
     book_language: string;
+
+    genres: Genre[];
+    authors: Author[];
 }
 
 export class Announcement {
@@ -30,6 +21,8 @@ export class Announcement {
     announcement_date: Date;
     description: string;
     published: boolean;
+
+    books: Book[];
 }
 
 export class Genre {

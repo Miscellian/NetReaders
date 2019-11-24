@@ -3,10 +3,10 @@ package com.netreaders.service;
 import com.netreaders.dao.author.AuthorDao;
 import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
-import com.netreaders.dto.BookDto;
 import com.netreaders.exception.DataBaseSQLException;
 import com.netreaders.models.Book;
 import com.netreaders.models.ResponseMessage;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,73 +14,54 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BookService {
 
     private final BookDao bookDao;
-
     private final GenreDao genreDao;
-
     private final AuthorDao authorDao;
 
-    public BookService(BookDao bookDao, GenreDao genreDao, AuthorDao authorDao) {
-        this.bookDao = bookDao;
-        this.genreDao = genreDao;
-        this.authorDao = authorDao;
-    }
+    public ResponseMessage<Collection<Book>> findBooksByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-    public ResponseMessage<Collection<BookDto>> findBooksByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
-
-        ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Book>> message = new ResponseMessage<>();
         Collection<Book> books = bookDao.findBooksByGenre(genre_id, amount, offset);
-        Collection<BookDto> bookDtos = books.stream()
-                .map(this::tryCreateBookDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(bookDtos);
+        message.setObj(createDtoCollection(books));
 
         return message;
     }
 
-    public ResponseMessage<Collection<BookDto>> findBooksByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public ResponseMessage<Collection<Book>> findBooksByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Book>> message = new ResponseMessage<>();
         Collection<Book> books = bookDao.findBooksByAuthor(author_id, amount, offset);
-        Collection<BookDto> bookDtos = books.stream()
-                .map(this::tryCreateBookDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(bookDtos);
+        message.setObj(createDtoCollection(books));
 
         return message;
     }
 
-    public ResponseMessage<Collection<BookDto>> getById(Integer amount, Integer offset) throws DataBaseSQLException {
+    public ResponseMessage<Collection<Book>> getById(Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Book>> message = new ResponseMessage<>();
         Collection<Book> books = bookDao.getById(amount, offset);
-        Collection<BookDto> bookDtos = books.stream()
-                .map(this::tryCreateBookDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(bookDtos);
+        message.setObj(createDtoCollection(books));
 
         return message;
     }
 
-    public ResponseMessage<BookDto> findBookById(Integer id) throws DataBaseSQLException {
+    public ResponseMessage<Book> findBookById(Integer id) throws DataBaseSQLException {
 
-        ResponseMessage<BookDto> message = new ResponseMessage<>();
+        ResponseMessage<Book> message = new ResponseMessage<>();
         Book book = bookDao.getById(id);
-        message.setObj(tryCreateBookDto(book));
+        message.setObj(modelToDto(book));
 
         return message;
     }
 
-    public ResponseMessage<Collection<BookDto>> getByName(String name, Integer amount, Integer offset) throws DataBaseSQLException {
+    public ResponseMessage<Collection<Book>> getByName(String name, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
+        ResponseMessage<Collection<Book>> message = new ResponseMessage<>();
         Collection<Book> books = bookDao.getByName(name.toLowerCase(), amount, offset);
-        Collection<BookDto> bookDtos = books.stream()
-                .map(this::tryCreateBookDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-        message.setObj(bookDtos);
+        message.setObj(createDtoCollection(books));
 
         return message;
     }
@@ -121,11 +102,24 @@ public class BookService {
         return message;
     }
 
-    private BookDto tryCreateBookDto(Book book) throws DataBaseSQLException {
+    public Collection<Book> getByAnnouncementId(Integer announcement_id) {
+        return createDtoCollection(bookDao.getByAnnouncementId(announcement_id));
+    }
 
-        return new BookDto(
-                genreDao.getByBookId(book.getId()),
-                authorDao.getByBookId(book.getId()),
-                book);
+    public Collection<Book> createDtoCollection(Collection<Book> books) {
+
+        return books.stream()
+                .map(this::modelToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Book modelToDto(Book book) throws DataBaseSQLException {
+
+        book.setGenres(genreDao.getByBookId(book.getId()));
+        book.setAuthors(authorDao.getByBookId(book.getId()));
+
+        return book;
+
     }
 }
+

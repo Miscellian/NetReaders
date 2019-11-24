@@ -1,12 +1,12 @@
 <div class="card mb-3">
     <div class="card-body">
         <div class="card-text mb-1 mb-2"><a
-                href="/announcements/{{announcementDto.announcement.id}}">{{announcementDto.announcement.description}}</a>
+                href="/announcements/{{announcement.announcement.id}}">{{announcement.announcement.description}}</a>
         </div>
-        <h6 class="card-subtitle text-muted">{{announcementDto.announcement.announcement_date}}</h6>
+        <h6 class="card-subtitle text-muted">{{announcement.announcement.announcement_date}}</h6>
     </div>
-    <div *ngIf="announcementDto.books">
-        <div class="card ml-3 mb-3" *ngFor="let book of announcementDto.books">
+    <div *ngIf="announcement.books">
+        <div class="card ml-3 mb-3" *ngFor="let book of announcement.books">
             <div class="card-body">
                 <a href="/books/{{book.id}}">{{book.title }}</a>
                 <div *ngIf="book.description" class="card-text">{{book.description }}</div>

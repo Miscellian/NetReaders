@@ -1,6 +1,6 @@
 package com.netreaders.controller;
 
-import com.netreaders.dto.BookDto;
+import com.netreaders.models.Book;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.BookService;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +20,13 @@ public class BookController {
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<BookDto> getBookById(@PathVariable Integer id) {
+    public ResponseMessage<Book> getBookById(@PathVariable Integer id) {
         return bookService.findBookById(id);
     }
 
     @GetMapping(value = "range")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<BookDto>> getById(
+    public ResponseMessage<Collection<Book>> getById(
             @RequestParam(name = "amount", defaultValue = "0") Integer amount,
             @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
         return bookService.getById(amount, offset);
@@ -34,7 +34,7 @@ public class BookController {
 
     @GetMapping(value = "byauthor")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<BookDto>> getByAuthor(
+    public ResponseMessage<Collection<Book>> getByAuthor(
             @RequestParam(name = "id") Integer authorid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
@@ -43,7 +43,7 @@ public class BookController {
 
     @GetMapping(value = "byname")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<BookDto>> getByName(
+    public ResponseMessage<Collection<Book>> getByName(
             @RequestParam(name = "name") String name,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
@@ -52,7 +52,7 @@ public class BookController {
 
     @GetMapping(value = "bygenre")
     @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseMessage<Collection<BookDto>> getByGenre(
+    public ResponseMessage<Collection<Book>> getByGenre(
             @RequestParam(name = "id") Integer genreid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AnnouncementDto} from "../../model";
+import {Announcement} from "../../model";
 
 @Component({
     selector: 'app-announcement-item',
@@ -7,7 +7,7 @@ import {AnnouncementDto} from "../../model";
     styleUrls: ['./announcement-item.component.css']
 })
 export class AnnouncementItemComponent implements OnInit {
-    @Input() public announcementDto: AnnouncementDto;
+    @Input() public announcement: Announcement;
     id: number;
 
     constructor() {
