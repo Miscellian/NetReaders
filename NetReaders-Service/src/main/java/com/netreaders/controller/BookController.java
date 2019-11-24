@@ -3,6 +3,7 @@ package com.netreaders.controller;
 import com.netreaders.models.Book;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.BookService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -10,13 +11,10 @@ import java.util.Collection;
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/books")
+@AllArgsConstructor
 public class BookController {
 
     private final BookService bookService;
-
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
@@ -29,7 +27,7 @@ public class BookController {
     public ResponseMessage<Collection<Book>> getById(
             @RequestParam(name = "amount", defaultValue = "0") Integer amount,
             @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
-        return bookService.getById(amount, offset);
+        return bookService.findAll(amount, offset);
     }
 
     @GetMapping(value = "byauthor")
@@ -47,7 +45,7 @@ public class BookController {
             @RequestParam(name = "name") String name,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        return bookService.getByName(name, amount, offset);
+        return bookService.findByName(name, amount, offset);
     }
 
     @GetMapping(value = "bygenre")

@@ -3,6 +3,7 @@ package com.netreaders.controller;
 import com.netreaders.models.Announcement;
 import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -10,13 +11,10 @@ import java.util.Collection;
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/announcements")
+@AllArgsConstructor
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;
-
-    public AnnouncementController(AnnouncementService announcementService) {
-        this.announcementService = announcementService;
-    }
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
