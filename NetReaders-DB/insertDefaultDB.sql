@@ -1125,7 +1125,8 @@ VALUES ((SELECT book_id
          FROM authors
          WHERE author_name = 'Ray Bradbury'));
 
-SELECT * FROM "authors";
+SELECT *
+FROM "authors";
 /*-----------------------------------------------------------------------------------------*/
 
 
@@ -1133,9 +1134,9 @@ SELECT * FROM "authors";
 
 INSERT INTO "announcements"(announcement_date, description, published)
 VALUES (TO_DATE('24/12/2019', 'DD/MM/YYYY'), 'New books will be published', true),
-       (TO_DATE('01/01/2019', 'DD/MM/YYYY'), '2020 New Year book`s event', true),
-       (TO_DATE('23/12/2019', 'DD/MM/YYYY'), 'Stephen King books will be trabslated in ukrainian', true),
-       (TO_DATE('01/06/2020', 'DD/MM/YYYY'), 'Add a new genre of books for children', true);
+       (TO_DATE('01/01/2020', 'DD/MM/YYYY'), '2020 New Year book`s event', true),
+       (TO_DATE('25/12/2019', 'DD/MM/YYYY'), 'Stephen King books will be translated in ukrainian', true),
+       (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Add a new genre of books for children', true);
 
 INSERT INTO book_announcement(book_id, announcement_id)
 VALUES ((SELECT book_id
@@ -1143,69 +1144,110 @@ VALUES ((SELECT book_id
          WHERE title = 'Harry Potter and the Prisoner of Azkaban'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 1));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
-         FROM books
-         WHERE title = 'The Dark Tower II'),
-        (SELECT announcement_id
-         FROM announcements
-         WHERE announcement_id = 1));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
-         FROM books
-         WHERE title = 'Kobzar'),
-        (SELECT announcement_id
-         FROM announcements
-         WHERE announcement_id = 1));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
          FROM books
          WHERE title = 'The Da Vinci Code'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 1));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
          FROM books
-         WHERE title = 'The Dark Tower I'),
+         WHERE title = 'The Dark Tower VII: The Dark Tower'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 3));
+         WHERE description = 'New books will be published')),
 
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+       ((SELECT book_id
          FROM books
-         WHERE title = 'The Dark Tower II'),
+         WHERE title = 'Harry Potter and the Deathly Hallows'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 3));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+         WHERE description = '2020 New Year book`s event')),
+       ((SELECT book_id
          FROM books
-         WHERE title = 'Harry Potter and the Philosopher`s stone'),
+         WHERE title = 'Harry Potter and the Chamber of Secrets'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 2));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+         WHERE description = '2020 New Year book`s event')),
+       ((SELECT book_id
          FROM books
-         WHERE title = 'Don Quixote'),
+         WHERE title = 'The Sun and Her Flowers'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 2));
-
-INSERT INTO book_announcement(book_id, announcement_id)
-VALUES ((SELECT book_id
+         WHERE description = '2020 New Year book`s event')),
+       ((SELECT book_id
          FROM books
-         WHERE title = 'Robinson Crusoe'),
+         WHERE title = 'Milk and Honey'),
         (SELECT announcement_id
          FROM announcements
-         WHERE announcement_id = 2));
+         WHERE description = '2020 New Year book`s event')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'A Journal of the Plague Year'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = '2020 New Year book`s event')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Call of the Wild'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = '2020 New Year book`s event')),
+
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower: The Gunslinger'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower II: The Drawing of the Three'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower III: The Waste Lands'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower: The Wind Through the Keyhole'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower VI: Song of Susannah'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower V: Wolves of the Calla'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Stephen King books will be translated in ukrainian')),
+
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Hobbit'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Lord of the Rings : The Return of the King'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'White Fang'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published'));
 /*-----------------------------------------------------------------------------------------*/

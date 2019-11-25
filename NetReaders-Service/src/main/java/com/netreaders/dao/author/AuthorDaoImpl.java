@@ -1,41 +1,37 @@
 package com.netreaders.dao.author;
 
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.DuplicateModelException;
+import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Author;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 @Log4j
 @PropertySource("classpath:query.properties")
-@Repository
+@AllArgsConstructor
 public class AuthorDaoImpl implements AuthorDao {
 
     private final JdbcTemplate template;
-
     private final Environment env;
-
     private final AuthorMapper authorMapper;
-
-    public AuthorDaoImpl(JdbcTemplate template, Environment env, AuthorMapper authorMapper) {
-        this.template = template;
-        this.env = env;
-        this.authorMapper = authorMapper;
-    }
 
     @Override
     public Author create(Author author) {
@@ -45,31 +41,21 @@ public class AuthorDaoImpl implements AuthorDao {
         KeyHolder holder = new GeneratedKeyHolder();
 
         // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateKeyException if record exist in table
+        // or throws DuplicateModelException if record exist in table
         try {
-            template.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, author.getName());
-                    return ps;
-                }
-            }, holder);
+            template.update(creator(sql_query, author), holder);
 
-            Integer newId;
-            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
-                newId = (Integer) holder.getKeys().get("author_id");
-            } else {
-                newId = holder.getKey().intValue();
-            }
-            author.setId(newId);
-            log.debug(String.format("Created a new author with id '%s'", newId));
+            author.setId(retrieveId(holder));
 
+            log.debug(String.format("Created a new author with id '%s'", author.getId()));
             return author;
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("Author '%s' is already exist", author.getName()));
-            throw new DataBaseSQLException(String.format("Author '%s' is already exist", author.getName()));
+            throw new DuplicateModelException(String.format("Author '%s' is already exist", author.getName()));
+        } catch (SQLException e) {
+            log.error("Author creation fail!");
+            throw new DataBaseSQLException("Author creation fail!");
         }
     }
 
@@ -82,8 +68,8 @@ public class AuthorDaoImpl implements AuthorDao {
         checkIfCollectionIsNull(authors);
 
         if (authors.isEmpty()) {
-            log.debug(String.format("Didn't find any author by id '%s'", id));
-            return null;
+            log.error(String.format("Didn't find any author by id '%s'", id));
+            throw new NoSuchModelException(String.format("Didn't find any author by id '%s'", id));
         } else if (authors.size() == 1) {
             log.debug(String.format("Found a author by id '%s'", id));
             return authors.get(0);
@@ -166,6 +152,24 @@ public class AuthorDaoImpl implements AuthorDao {
             // unreachable, but who knows (:
             log.error("Get `null` reference from jdbcTemplate");
             throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
+        }
+    }
+
+    private PreparedStatementCreator creator(String sql, Author author) throws SQLException {
+
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
+        factory.setReturnGeneratedKeys(true);
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+
+        return factory.newPreparedStatementCreator(Collections.singletonList(author.getName()));
+    }
+
+    private Integer retrieveId(KeyHolder holder) {
+
+        if (holder.getKeys() != null && holder.getKeys().size() > 0) {
+            return (Integer) holder.getKeys().get("author_id");
+        } else {
+            return holder.getKey().intValue();
         }
     }
 }

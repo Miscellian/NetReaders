@@ -1,41 +1,38 @@
 package com.netreaders.dao.user;
 
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.User;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Types;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+
+@Repository
 @Log4j
 @PropertySource("classpath:query.properties")
-@Repository
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
 
     private final Environment env;
-
     private final JdbcTemplate template;
-
     private final UserMapper userMapper;
-
-    public UserDaoImpl(Environment env, JdbcTemplate template, UserMapper userMapper) {
-        this.env = env;
-        this.template = template;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public User create(final User user) {
@@ -47,33 +44,20 @@ public class UserDaoImpl implements UserDao {
         // save object into DB and return auto generated PK via KeyHolder
         // or throws DuplicateKeyException if record exist in table
         try {
-            template.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, user.getUserNickname());
-                    ps.setString(2, user.getUserPassword());
-                    ps.setString(3, user.getEmail());
-                    ps.setString(4, user.getFirstName());
-                    ps.setString(5, user.getLastName());
-                    return ps;
-                }
-            }, holder);
+            template.update(creator(sql_query, user), holder);
 
-            Integer newId;
-            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
-                newId = (Integer) holder.getKeys().get("user_id");
-            } else {
-                newId = holder.getKey().intValue();
-            }
-            user.setUserId(newId);
-            log.debug(String.format("Created a new user with id '%s'", newId));
+            user.setUserId(retrieveId(holder));
+
+            log.debug(String.format("Created a new user with id '%s'", user.getUserId()));
 
             return user;
 
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUserNickname()));
             throw new DataBaseSQLException(String.format("User '%s' is already exist", user.getUserNickname()));
+        } catch (SQLException e) {
+            log.error("User creation fail!");
+            throw new DataBaseSQLException("User creation fail!");
         }
     }
 
@@ -169,7 +153,7 @@ public class UserDaoImpl implements UserDao {
 
         if (users.isEmpty()) {
             log.debug(String.format("Didn't find any user by nickname '%s'", nickname));
-            return null;
+            throw new NoSuchModelException(String.format("Didn't find any user by nickname '%s'", nickname));
         } else if (users.size() == 1) {
             log.debug(String.format("Found a user by nickname '%s'", nickname));
             return users.get(0);
@@ -198,7 +182,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteByNickname(String nickname) throws DataBaseSQLException {
+    public void deleteByNickname(String nickname) {
 
         String sql_query = env.getProperty("user.deleteByNickname");
 
@@ -218,6 +202,35 @@ public class UserDaoImpl implements UserDao {
             // unreachable, but who knows (:
             log.error("Get `null` reference from jdbcTemplate");
             throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
+        }
+    }
+
+    private PreparedStatementCreator creator(String sql, User user) throws SQLException {
+
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
+        factory.setReturnGeneratedKeys(true);
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+
+        // TODO types and add photo column
+
+        return factory.newPreparedStatementCreator(Arrays.asList(
+                user.getUserNickname(),
+                user.getUserPassword(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()));
+    }
+
+    private Integer retrieveId(KeyHolder holder) {
+
+        if (holder.getKeys() != null && holder.getKeys().size() > 0) {
+            return (Integer) holder.getKeys().get("user_id");
+        } else {
+            return holder.getKey().intValue();
         }
     }
 }

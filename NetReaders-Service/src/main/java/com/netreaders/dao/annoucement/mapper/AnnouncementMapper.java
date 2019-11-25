@@ -1,4 +1,4 @@
-package com.netreaders.dao.annoucement;
+package com.netreaders.dao.annoucement.mapper;
 
 import com.netreaders.models.Announcement;
 import org.springframework.context.annotation.Bean;

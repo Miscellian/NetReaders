@@ -1,6 +1,8 @@
 package com.netreaders.dao;
 
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.DuplicateModelException;
+import com.netreaders.exception.classes.NoSuchModelException;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,20 +21,22 @@ public interface GenericDao<E, PK extends Serializable> {
      *
      * @throws DataBaseSQLException
      */
-    E create(E entity) throws DataBaseSQLException;
+    E create(E entity) throws DataBaseSQLException, DuplicateModelException;
 
     /**
      * Retrieve an object that was previously persisted to the database using
      * the indicated id as primary key.
      *
      * @throws DataBaseSQLException
+     * @throws DuplicateModelException
      */
-    E getById(PK id) throws DataBaseSQLException;
+    E getById(PK id) throws DataBaseSQLException, NoSuchModelException;
 
     /**
      * Save changes made to a persistent object.
      *
      * @throws DataBaseSQLException
+     * @throws NoSuchModelException
      */
     void update(E entity) throws DataBaseSQLException;
 

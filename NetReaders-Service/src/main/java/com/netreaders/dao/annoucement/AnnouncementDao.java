@@ -1,7 +1,7 @@
 package com.netreaders.dao.annoucement;
 
 import com.netreaders.dao.GenericDao;
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Announcement;
 
 import java.util.Collection;

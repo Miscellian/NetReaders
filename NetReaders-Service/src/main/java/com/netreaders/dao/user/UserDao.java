@@ -1,10 +1,9 @@
 package com.netreaders.dao.user;
 
 import com.netreaders.dao.GenericDao;
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.User;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
 public interface UserDao extends GenericDao<User, Long> {

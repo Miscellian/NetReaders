@@ -1,38 +1,38 @@
 package com.netreaders.dao.book;
 
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.DuplicateModelException;
+import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Book;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 @Log4j
 @PropertySource("classpath:query.properties")
-@Repository
+@AllArgsConstructor
 public class BookDaoImpl implements BookDao {
 
     private final JdbcTemplate template;
-
     private final Environment env;
-
     private final BookMapper bookMapper;
-
-    public BookDaoImpl(JdbcTemplate template, Environment env, BookMapper bookMapper) {
-        this.template = template;
-        this.env = env;
-        this.bookMapper = bookMapper;
-    }
 
     @Override
     public Book create(Book book) {
@@ -44,29 +44,18 @@ public class BookDaoImpl implements BookDao {
         // save object into DB and return auto generated PK via KeyHolder
         // or throws DuplicateKeyException if record exist in table
         try {
-            template.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, book.getTitle());
-                ps.setInt(2, book.getPhoto());
-                ps.setString(3, book.getDescription());
-                ps.setDate(4, book.getRelease_date());
-                ps.setString(5, book.getBook_language());
-                return ps;
-            }, holder);
+            template.update(creator(sql_query, book), holder);
 
-            Integer newId;
-            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
-                newId = (Integer) holder.getKeys().get("book_id");
-            } else {
-                newId = holder.getKey().intValue();
-            }
-            book.setId(newId);
-            log.debug(String.format("Created a new book with id '%s'", newId));
+            book.setId(retrieveId(holder));
+
+            log.debug(String.format("Created a new book with id '%s'", book.getId()));
             return book;
-
         } catch (DuplicateKeyException e) {
             log.error(String.format("Book '%s' is already exist", book.getTitle()));
-            throw new DataBaseSQLException(String.format("Book '%s' is already exist", book.getTitle()));
+            throw new DuplicateModelException(String.format("Book '%s' is already exist", book.getTitle()));
+        } catch (SQLException e) {
+            log.error("Book creation fail!");
+            throw new DataBaseSQLException("Book creation fail!");
         }
     }
 
@@ -81,7 +70,7 @@ public class BookDaoImpl implements BookDao {
 
         if (books.isEmpty()) {
             log.debug(String.format("Didn't find any book by id '%s'", id));
-            return null;
+            throw new NoSuchModelException(String.format("Didn't find any book by id '%s'", id));
         } else if (books.size() == 1) {
             log.debug(String.format("Found a book by id '%s'", id));
             return books.get(0);
@@ -186,8 +175,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getById(int amount, int offset) {
-
+    public Collection<Book> findAllBooks(int amount, int offset) throws DataBaseSQLException {
         String sql_query = env.getProperty("book.getByIdWithOffset");
 
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
@@ -204,7 +192,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getByName(String name, int amount, int offset) {
+    public Collection<Book> findBooksByName(String name, int amount, int offset) {
 
         String sql_query = env.getProperty("book.getByNameWithOffset");
 
@@ -222,7 +210,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> getByAnnouncementId(int id) {
+    public Collection<Book> findBooksByAnnouncement(int id) {
 
         String sql_query = env.getProperty("book.getByAnnouncementId");
 
@@ -284,6 +272,33 @@ public class BookDaoImpl implements BookDao {
             // unreachable, but who knows (:
             log.error("Get `null` reference from jdbcTemplate");
             throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
+        }
+    }
+
+    private PreparedStatementCreator creator(String sql, Book book) throws SQLException {
+
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
+        factory.setReturnGeneratedKeys(true);
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.INTEGER));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.DATE));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+
+        return factory.newPreparedStatementCreator(Arrays.asList(
+                book.getTitle(),
+                book.getPhoto(),
+                book.getDescription(),
+                book.getRelease_date(),
+                book.getBook_language()));
+    }
+
+    private Integer retrieveId(KeyHolder holder) {
+
+        if (holder.getKeys() != null && holder.getKeys().size() > 0) {
+            return (Integer) holder.getKeys().get("book_id");
+        } else {
+            return holder.getKey().intValue();
         }
     }
 }

@@ -1,41 +1,41 @@
 package com.netreaders.dao.annoucement;
 
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.dao.annoucement.mapper.AnnouncementMapper;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.DuplicateModelException;
+import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Announcement;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+
+@Repository
 @Log4j
 @PropertySource("classpath:query.properties")
-@Repository
+@AllArgsConstructor
 public class AnnouncementDaoImpl implements AnnouncementDao {
 
     private final JdbcTemplate template;
-
     private final Environment env;
-
     private final AnnouncementMapper announcementMapper;
-
-    public AnnouncementDaoImpl(JdbcTemplate template, Environment env, AnnouncementMapper announcementMapper) {
-        this.template = template;
-        this.env = env;
-        this.announcementMapper = announcementMapper;
-    }
 
     @Override
     public Announcement create(Announcement announcement) {
@@ -45,33 +45,20 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         KeyHolder holder = new GeneratedKeyHolder();
 
         // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateKeyException if record exist in table
+        // or throws DuplicateModelException if record exist in table
         try {
-            template.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                    ps.setDate(1, announcement.getAnnouncement_date());
-                    ps.setString(2, announcement.getDescription());
-                    ps.setBoolean(3, announcement.getPublished());
-                    return ps;
-                }
-            }, holder);
+            template.update(creator(sql_query, announcement), holder);
 
-            Integer newId;
-            if (holder.getKeys() != null && holder.getKeys().size() > 1) {
-                newId = (Integer) holder.getKeys().get("announcement_id");
-            } else {
-                newId = holder.getKey().intValue();
-            }
-            announcement.setId(newId);
-            log.debug(String.format("Created a new announcement with id '%s'", newId));
+            announcement.setId(retrieveId(holder));
 
+            log.debug(String.format("Created a new announcement with id '%s'", announcement.getId()));
             return announcement;
-
         } catch (DuplicateKeyException e) {
             log.error(String.format("Announcement '%s' is already exist", announcement.getId()));
-            throw new DataBaseSQLException(String.format("Announcement '%s' is already exist", announcement.getId()));
+            throw new DuplicateModelException(String.format("Announcement '%s' is already exist", announcement.getId()));
+        } catch (SQLException e) {
+            log.error("Announcement creation fail!");
+            throw new DataBaseSQLException("Announcement creation fail!");
         }
     }
 
@@ -85,8 +72,8 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Didn't find any announcement by id '%s'", id));
-            return null;
+            log.error(String.format("Didn't find any announcement by id '%s'", id));
+            throw new NoSuchModelException(String.format("Didn't find any announcement by id '%s'", id));
         } else if (announcements.size() == 1) {
             log.debug(String.format("Found a announcement by id '%s'", id));
             return announcements.get(0);
@@ -208,6 +195,29 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             // unreachable, but who knows (:
             log.error("Get `null` reference from jdbcTemplate");
             throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
+        }
+    }
+
+    private PreparedStatementCreator creator(String sql, Announcement announcement) throws SQLException {
+
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
+        factory.setReturnGeneratedKeys(true);
+        factory.addParameter(new SqlParameter(Types.TIMESTAMP));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.BOOLEAN));
+
+        return factory.newPreparedStatementCreator(Arrays.asList(
+                announcement.getAnnouncement_date(),
+                announcement.getDescription(),
+                announcement.getPublished()));
+    }
+
+    private Integer retrieveId(KeyHolder holder) {
+
+        if (holder.getKeys() != null && holder.getKeys().size() > 0) {
+            return (Integer) holder.getKeys().get("announcement_id");
+        } else {
+            return holder.getKey().intValue();
         }
     }
 }
