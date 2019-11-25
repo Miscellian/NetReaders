@@ -1,7 +1,6 @@
 package com.netreaders.controller;
 
 import com.netreaders.models.Genre;
-import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.GenreService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,13 @@ public class GenreController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public ResponseMessage<Collection<Genre>> getAllGenres() {
+    public Collection<Genre> getAllGenres() {
         return genreService.getAllGenres();
     }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Genre> getGenreById(@PathVariable Integer id) {
+    public Genre getGenreById(@PathVariable Integer id) {
         return genreService.findGenreById(id);
     }
 }

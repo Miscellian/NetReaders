@@ -1,7 +1,6 @@
 package com.netreaders.controller;
 
 import com.netreaders.models.Announcement;
-import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +17,19 @@ public class AnnouncementController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() {
+    public Collection<Announcement> getAllAnnouncements() {
         return announcementService.getAllAnnouncements();
     }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Announcement> getById(@PathVariable() Integer id) {
+    public Announcement getById(@PathVariable() Integer id) {
         return announcementService.findAnnouncementById(id);
     }
 
     @GetMapping(value = "bygenre")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<Announcement>> getByGenre(
+    public Collection<Announcement> getByGenre(
             @RequestParam(name = "id") Integer genreid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
@@ -39,7 +38,7 @@ public class AnnouncementController {
 
     @GetMapping(value = "byauthor")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<Announcement>> getByAuthor(
+    public Collection<Announcement> getByAuthor(
             @RequestParam(name = "id") Integer authorid,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {

@@ -1,9 +1,7 @@
 package com.netreaders.controller;
 
 import com.netreaders.models.Author;
-import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AuthorService;
-import com.netreaders.service.impl.AuthorServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +17,13 @@ public class AuthorController {
 
     @GetMapping("all")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Collection<Author>> GetAllAuthors() {
+    public Collection<Author> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 
     @GetMapping(value = "{id}")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseMessage<Author> GetAuthorById(@PathVariable Integer id) {
+    public Author getAuthorById(@PathVariable Integer id) {
         return authorService.findAuthorById(id);
     }
 }

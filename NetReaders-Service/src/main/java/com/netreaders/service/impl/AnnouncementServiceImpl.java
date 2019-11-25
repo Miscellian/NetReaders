@@ -1,9 +1,8 @@
 package com.netreaders.service.impl;
 
 import com.netreaders.dao.annoucement.AnnouncementDao;
-import com.netreaders.exception.DataBaseSQLException;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Announcement;
-import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AnnouncementService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,47 +17,30 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private final AnnouncementDao announcementDao;
     private final BookServiceImpl bookServiceImpl;
 
-    public ResponseMessage<Collection<Announcement>> getAllAnnouncements() throws DataBaseSQLException {
+    public Collection<Announcement> getAllAnnouncements() throws DataBaseSQLException {
 
-        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.getAll();
-        message.setObj(createDtoCollection(announcements));
-
-        return message;
+        return createDtoCollection(announcements);
     }
 
-    public ResponseMessage<Announcement> findAnnouncementById(Integer id) throws DataBaseSQLException {
+    public Announcement findAnnouncementById(Integer id) throws DataBaseSQLException {
 
-        ResponseMessage<Announcement> message = new ResponseMessage<>();
         Announcement announcement = announcementDao.getById(id);
-        message.setObj(modelToDto(announcement));
-
-        return message;
+        return modelToDto(announcement);
     }
 
-    public ResponseMessage<Collection<Announcement>> findAnnouncementsByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Announcement> findAnnouncementsByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.findAnnouncementsByGenre(genre_id, amount, offset);
-        Collection<Announcement> announcementDtos = createDtoCollection(announcements);
-
         //TODO
-
-        message.setObj(createDtoCollection(announcements));
-
-        return message;
+        return createDtoCollection(announcements);
     }
 
-    public ResponseMessage<Collection<Announcement>> findAnnouncementsByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Announcement> findAnnouncementsByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
 
-        ResponseMessage<Collection<Announcement>> message = new ResponseMessage<>();
         Collection<Announcement> announcements = announcementDao.findAnnouncementsByAuthor(author_id, amount, offset);
-
         //TODO
-
-        message.setObj(createDtoCollection(announcements));
-
-        return message;
+        return createDtoCollection(announcements);
     }
 
     private Collection<Announcement> createDtoCollection(Collection<Announcement> announcements) {
@@ -71,8 +53,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private Announcement modelToDto(Announcement announcement) throws DataBaseSQLException {
 
         announcement.setBooks(bookServiceImpl.getByAnnouncementId(announcement.getId()));
-
         return announcement;
     }
-
 }
