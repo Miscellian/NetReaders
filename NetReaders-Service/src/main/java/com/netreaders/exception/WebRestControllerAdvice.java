@@ -1,12 +1,16 @@
 package com.netreaders.exception;
 
-import com.netreaders.models.ResponseMessage;
-import com.netreaders.utils.ResponseMessagePrepearer;
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.NoSuchModelException;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * The global exception handler
@@ -18,20 +22,28 @@ public class WebRestControllerAdvice {
 
     @ExceptionHandler(DataBaseSQLException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseMessage handleSQLException(DataBaseSQLException ex) {
-        ResponseMessage responseMessage = new ResponseMessage<>();
-        ResponseMessagePrepearer.prepareMessage(responseMessage, ex.getMessage());
-        return responseMessage;
+    @ResponseBody
+    public ResponseMessage handleSQLException(HttpServletRequest request, DataBaseSQLException ex) {
+        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseMessage handleArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        ResponseMessage responseMessage = new ResponseMessage<>();
-        ResponseMessagePrepearer.prepareMessage(responseMessage, ex.getMessage());
-        return responseMessage;
+    @ResponseBody
+    public ResponseMessage handleArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
+        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
-    // Other list of exceptions
-    // ...
+    @ExceptionHandler(NoSuchModelException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ResponseMessage handleNoSuchModelException(HttpServletRequest request, NoSuchModelException ex) {
+        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+    }
+
+    @AllArgsConstructor
+    private static class ResponseMessage {
+        private String code;
+        private String errorMessage;
+    }
 }

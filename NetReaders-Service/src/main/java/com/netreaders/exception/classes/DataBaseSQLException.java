@@ -1,7 +1,11 @@
-package com.netreaders.exception;
+package com.netreaders.exception.classes;
 
 // Create unchecked custom exception for SQLException
 public class DataBaseSQLException extends RuntimeException {
+
+    public DataBaseSQLException() {
+        super();
+    }
 
     public DataBaseSQLException(String message) {
         super(message);
