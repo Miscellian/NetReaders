@@ -22,12 +22,14 @@ export class BookviewComponent implements OnInit {
     ngOnInit() {
         this.id = +this.activatedRoute.snapshot.paramMap.get('id');
         this.bookService.getById(this.id).subscribe(response => {
-            if (!response.isSuccessful) {
+            if (response.status != 200) {
+                // Maybe create multiple error pages for different http codes
+                console.log("Error", response.status)
                 this.router.navigate(['/error']);
             } else {
-                this.book = response.obj;
-                this.genres = response.obj.genres;
-                this.authors = response.obj.authors;
+                this.book = response.body;
+                this.genres = response.body.genres;
+                this.authors = response.body.authors;
             }
         });
     }

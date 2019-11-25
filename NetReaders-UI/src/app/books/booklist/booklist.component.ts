@@ -68,7 +68,9 @@ export class BooklistComponent implements OnInit {
                 this.page = params['page'];
                 this.funcsCount[this.activatedRoute.snapshot.data.filter]();
                 this.func().subscribe(response => {
-                    if (!response.isSuccessful) {
+                    if (response.status != 200) {
+                        // Maybe create multiple error pages for different http codes
+                        console.log("Error", response.status)
                         this.router.navigate(['/error']);
                     } else {
                         this.count = +response.obj;
@@ -76,10 +78,12 @@ export class BooklistComponent implements OnInit {
                 });
                 this.funcs[this.activatedRoute.snapshot.data.filter]();
                 this.func().subscribe(response => {
-                    if (!response.isSuccessful) {
+                    if (response.status != 200) {
+                        // Maybe create multiple error pages for different http codes
+                        console.log("Error", response.status)
                         this.router.navigate(['/error']);
                     } else {
-                        this.books = response.obj;
+                        this.books = response.body;
                     }
                 });
             }

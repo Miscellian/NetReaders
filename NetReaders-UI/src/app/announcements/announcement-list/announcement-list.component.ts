@@ -34,10 +34,12 @@ export class AnnouncementListComponent implements OnInit {
         this.arg = this.activatedRoute.snapshot.paramMap.get('id');
         this.funcs[this.activatedRoute.snapshot.data.filter]();
         this.func().subscribe(response => {
-            if (!response.isSuccessful) {
+            if (response.status != 200) {
+                // Maybe create multiple error pages for different http codes
+                console.log("Error", response.status);
                 this.router.navigate(['/error']);
             } else {
-                this.announcements = response.obj;
+                this.announcements = response.body;
             }
         });
     }

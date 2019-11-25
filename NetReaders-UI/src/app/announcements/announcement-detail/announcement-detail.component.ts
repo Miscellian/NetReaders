@@ -22,10 +22,12 @@ export class AnnouncementDetailComponent implements OnInit {
     ngOnInit() {
         this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.func().subscribe(response => {
-            if (!response.isSuccessful) {
+            if (response.status != 200) {
+                // Maybe create multiple error pages for different http codes
+                console.log("Error", response.status);
                 this.router.navigate(['/error']);
             } else {
-                this.announcement = response.obj;
+                this.announcement = response.body;
             }
         });
     }

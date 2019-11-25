@@ -1,7 +1,6 @@
-export class ResponseMessage<T> {
-    isSuccessful: boolean;
+export class ResponseMessage {
+    code: string;
     errorMessage: string;
-    obj: T;
 }
 
 export class Book {
