@@ -4,8 +4,8 @@ import { BookviewComponent } from './books/bookview/bookview.component';
 import { BooklistComponent } from './books/booklist/booklist.component';
 import { UserpageComponent } from './userpage/userpage.component';
 import { AdminslistComponent } from './adminslist/adminslist.component';
-import { SignupComponent} from './signup/signup.component';
-import {LoginComponent} from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
@@ -21,8 +21,7 @@ const routes: Routes = [
       {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
       {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
     ]
-  },
-  { path: '**', redirectTo: '' }
+  }
 ];
 
 @NgModule({

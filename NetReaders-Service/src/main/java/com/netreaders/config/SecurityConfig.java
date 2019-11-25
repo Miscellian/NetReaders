@@ -17,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.netreaders.security.JwtAuthEntryPoint;
 import com.netreaders.security.JwtAuthTokenFilter;
@@ -39,12 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthTokenFilter();
     }
 	
+	@Bean
+	protected CorsConfigurationSource corsConfigurationSource() {
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+	    return source;
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and()
 		.authorizeRequests()
         .antMatchers("/api/users/createAdmin").hasAuthority("SUPER_ADMIN")
         .antMatchers("/api/users/createModerator").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
+        .antMatchers("/userpage").hasAuthority("USER")
         .anyRequest().permitAll()
         .and()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

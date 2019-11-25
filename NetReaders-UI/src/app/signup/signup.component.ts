@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {AuthenticationService} from "../login/authentication.service";
-import {Router} from "@angular/router";
-import {UserService} from "./user.service";
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AuthenticationService} from '../login/authentication.service';
+import {Router} from '@angular/router';
+import {UserService} from './user.service';
 
 @Component({
   selector: 'app-signup',
@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
       private userService: UserService,
   ) {
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
+    if (localStorage.getItem('TokenValue')) {
       this.router.navigate(['/']);
     }
   }

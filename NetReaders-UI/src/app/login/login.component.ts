@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "./authentication.service";
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from './authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
       private authenticationService: AuthenticationService,
   ) {
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
+    if (localStorage.getItem('TokenValue')) {
       this.router.navigate(['/']);
     }
   }
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
         .subscribe(response => {
-          if (!response.isSuccessful) {
+          if (!response.token) {
             this.router.navigate(['/error']);
           } else {
             this.router.navigate([this.returnUrl]);
