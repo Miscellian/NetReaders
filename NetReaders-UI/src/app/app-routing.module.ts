@@ -15,6 +15,7 @@ const routes: Routes = [
   {path: 'newadmin', component: AdminslistComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'confirmRegistration', component: ConfirmUserComponent},
   {path: 'books',
     children: [
       {path: ':id', component: BookviewComponent },
@@ -22,8 +23,7 @@ const routes: Routes = [
       {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
       {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
     ]
-  },
-  {path: 'confirmUser', component: ConfirmUserComponent},
+  }
 ];
 
 @NgModule({

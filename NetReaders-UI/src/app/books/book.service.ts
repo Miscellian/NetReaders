@@ -12,7 +12,7 @@ export class BookService {
   constructor(private httpClient: HttpClient) { }
 
   getById(id: number): Observable<ResponseMessage<BookDto>> {
-    return this.httpClient.get<ResponseMessage<BookDto>>(`http://localhost:8080/api/books/${id}`);
+    return this.httpClient.get<ResponseMessage<BookDto>>(`http://localhost:8080/api/books/${id}`) ;
   }
 
   getByAuthor(arg: string): Observable<ResponseMessage<BookDto[]>> {

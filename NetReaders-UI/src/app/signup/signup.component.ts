@@ -85,7 +85,7 @@ export class SignupComponent implements OnInit {
     this.loading = true;
     this.userService.register(this.registerForm)
         .subscribe(response => {
-          if (!response.isSuccessful) {
+          if (response.status !== 200) {
             this.router.navigate(['/error']);
             this.loading = false;
           } else {
