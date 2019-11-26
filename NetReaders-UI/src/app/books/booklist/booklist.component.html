@@ -1,3 +1,10 @@
 <div *ngFor="let bookdto of bookdtos">
     <app-booklist-item [bookdto]="bookdto"></app-booklist-item>
+    <hr id="splitter">
+</div>
+<div class="container">
+    <ngb-pagination class="d-flex justify-content-center" [pageSize]="5" [collectionSize]="count"
+        [boundaryLinks]="true" [maxSize]="5" [(page)]="page" (pageChange)="loadPage($event)">
+    </ngb-pagination>
+    
 </div>

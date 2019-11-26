@@ -5,6 +5,7 @@ import { BooklistComponent } from './books/booklist/booklist.component';
 import { UserpageComponent } from './userpage/userpage.component';
 import { AdminslistComponent } from './adminslist/adminslist.component';
 import { SignupComponent } from './signup/signup.component';
+import { ErrorpageComponent } from './errorpage/errorpage.component';
 import { LoginComponent } from './login/login.component';
 import {ConfirmUserComponent} from "./confirmUser/confirmUser.component";
 
@@ -17,13 +18,15 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'books',
     children: [
-      {path: ':id', component: BookviewComponent },
-      {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
-      {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
-      {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}}
+      { path: ':id', component: BookviewComponent },
+      { path: 'byauthor/:id/:page', component: BooklistComponent, data: { filter: 'author' } },
+      { path: 'bygenre/:id/:page', component: BooklistComponent, data: { filter: 'genre' } },
+      { path: 'byname/:id/:page', component: BooklistComponent, data: { filter: 'name' } },
+      { path: 'range/:page', component: BooklistComponent, data: { filter: 'range' } }
     ]
   },
   {path: 'confirmUser', component: ConfirmUserComponent},
+  { path: 'error', component: ErrorpageComponent }
 ];
 
 @NgModule({
