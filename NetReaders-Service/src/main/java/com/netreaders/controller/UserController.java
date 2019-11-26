@@ -3,24 +3,16 @@ package com.netreaders.controller;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +43,7 @@ public class UserController {
 	
 	@PostMapping("/registration")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUsername());
+		User user = userService.findByNickname(signUpForm.getUser_name());
 		if (user != null) {
 			return ResponseEntity.badRequest().body("User already exists");
 		}
@@ -93,7 +85,7 @@ public class UserController {
 	}
 	@PostMapping("/createAdmin")
 	public boolean createAdmin(@RequestBody SignUpForm signUpForm) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUsername());
+		User user = userService.findByNickname(signUpForm.getUser_name());
 		if (user != null) {
 			return false;
 		}
@@ -105,7 +97,7 @@ public class UserController {
 	@PostMapping("/createModerator")
 	public boolean createModerator(@RequestBody SignUpForm signUpForm,
 								   @RequestBody String[] roles) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUsername());
+		User user = userService.findByNickname(signUpForm.getUser_name());
 		if (user != null) {
 			return false;
 		}

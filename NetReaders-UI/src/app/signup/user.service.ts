@@ -12,7 +12,7 @@ export class UserService {
 
     register(registerForm: FormGroup): Observable<ResponseMessage<String>> {
         let user: User = new User();
-        user.username = registerForm.value['user_name'];
+        user.user_name = registerForm.value['user_name'];
         user.firstName = registerForm.value['firstName'];
         user.lastName = registerForm.value['lastName'];
         user.email = registerForm.value['email'];

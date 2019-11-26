@@ -17,6 +17,7 @@ import {AuthenticationService} from './login/authentication.service';
 import {UserService} from './signup/user.service';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
+import {ConfirmUserComponent} from "./confirmUser/confirmUser.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
     UserpageComponent,
     AdminslistComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    ConfirmUserComponent
   ],
   imports: [
     ReactiveFormsModule,

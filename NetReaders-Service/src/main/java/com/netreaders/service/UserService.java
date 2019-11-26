@@ -1,13 +1,9 @@
 package com.netreaders.service;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,7 +36,7 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUsername());
+		user.setUserNickname(signUpForm.getUser_name());
 		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());
@@ -62,7 +58,7 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUsername());
+		user.setUserNickname(signUpForm.getUser_name());
 		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());

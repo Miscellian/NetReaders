@@ -30,7 +30,7 @@ export class Author {
 }
 
 export class User {
-  username: string;
+  user_name: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -3,6 +3,8 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
 import {AuthenticationService} from '../login/authentication.service';
 import {Router} from '@angular/router';
 import {UserService} from './user.service';
+import {first} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-signup',
@@ -10,6 +12,7 @@ import {UserService} from './user.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  private subject = new Subject<any>();
   registerForm: FormGroup;
   loading = false;
   submitted = false;
@@ -27,8 +30,8 @@ export class SignupComponent implements OnInit {
   }
 
   checkPasswords(group: FormGroup) {
-    let password = group.get('password').value;
-    let confirm_password = group.get('confirm_password').value;
+    let password = group.value['password'];
+    let confirm_password = group.value['confirm_password'];
 
     return password === confirm_password ? null : {notSame: true}
   }
@@ -80,7 +83,7 @@ export class SignupComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.registerForm.value)
+    this.userService.register(this.registerForm)
         .subscribe(response => {
           if (!response.isSuccessful) {
             this.router.navigate(['/error']);
