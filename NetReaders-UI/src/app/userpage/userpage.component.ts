@@ -19,16 +19,18 @@ export class UserpageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.arg = this.activatedRoute.snapshot.data['id'];
-        this.userService.getById(this.arg).subscribe(
-            response => {
-              if (response.isSuccessful) {
-                this.user = response.obj;
-              } else {
-                this.router.navigate(['/error']);
-              }
+        this.activatedRoute.params.subscribe(
+            params => {
+                this.arg = params['id'];
+                this.userService.getById(this.arg).subscribe(response => {
+                    if (!response.isSuccessful) {
+                        this.router.navigate(['/error']);
+                    } else {
+                        this.user = response.obj;
+                    }
+                })
             }
-        )
+        );
     }
 
 }
