@@ -16,14 +16,14 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping("all")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Author> getAllAuthors() {
-        return authorService.getAllAuthors();
+
+        return authorService.getAll();
     }
 
     @GetMapping(value = "{id}")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Author getAuthorById(@PathVariable Integer id) {
-        return authorService.findAuthorById(id);
+
+        return authorService.findById(id);
     }
 }

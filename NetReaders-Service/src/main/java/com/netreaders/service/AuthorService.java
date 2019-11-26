@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface AuthorService {
 
-    Author findAuthorById(Integer id) throws DataBaseSQLException;
+    Author findById(Integer id) throws DataBaseSQLException;
 
-    Collection<Author> getAllAuthors() throws DataBaseSQLException;
+    Collection<Author> getAll() throws DataBaseSQLException;
 }

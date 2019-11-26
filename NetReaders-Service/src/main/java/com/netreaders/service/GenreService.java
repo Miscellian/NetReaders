@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface GenreService {
 
-    Genre findGenreById(Integer genreId) throws DataBaseSQLException;
+    Genre findById(Integer genreId) throws DataBaseSQLException;
 
-    Collection<Genre> getAllGenres() throws DataBaseSQLException;
+    Collection<Genre> getAll() throws DataBaseSQLException;
 }

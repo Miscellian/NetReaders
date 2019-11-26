@@ -16,30 +16,27 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping(value = "{id}")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Book getBookById(@PathVariable Integer id) {
-        return bookService.findBookById(id);
+        return bookService.findById(id);
     }
 
     @GetMapping(value = "range")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Book> getById(
             @RequestParam(name = "amount", defaultValue = "0") Integer amount,
             @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
+
         return bookService.findAll(amount, offset);
     }
 
     @GetMapping(value = "byauthor")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Book> getByAuthor(
-            @RequestParam(name = "id") Integer authorid,
+            @RequestParam(name = "id") Integer authorId,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        return bookService.findBooksByAuthor(authorid, amount, offset);
+        return bookService.findByAuthor(authorId, amount, offset);
     }
 
     @GetMapping(value = "byname")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Book> getByName(
             @RequestParam(name = "name") String name,
             @RequestParam(name = "amount") Integer amount,
@@ -48,38 +45,37 @@ public class BookController {
     }
 
     @GetMapping(value = "bygenre")
-    @CrossOrigin(origins = "http://localhost:4200")
     public Collection<Book> getByGenre(
-            @RequestParam(name = "id") Integer genreid,
+            @RequestParam(name = "id") Integer genreId,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        return bookService.findBooksByGenre(genreid, amount, offset);
+
+        return bookService.findByGenre(genreId, amount, offset);
     }
 
     @GetMapping(value = "count")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Integer getCount() {
         return bookService.getCount();
     }
 
     @GetMapping(value = "countByAuthor")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Integer getCountByAuthor(
-            @RequestParam(name = "id") Integer authorid) {
-        return bookService.getCountByAuthor(authorid);
+            @RequestParam(name = "id") Integer authorId) {
+
+        return bookService.getCountByAuthor(authorId);
     }
 
     @GetMapping(value = "countByGenre")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Integer getCountByGenre(
-            @RequestParam(name = "id") Integer genreid) {
-        return bookService.getCountByGenre(genreid);
+            @RequestParam(name = "id") Integer genreId) {
+
+        return bookService.getCountByGenre(genreId);
     }
 
     @GetMapping(value = "countByName")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Integer getCountByName(
             @RequestParam(name = "name") String name) {
+
         return bookService.getCountByName(name);
     }
 }

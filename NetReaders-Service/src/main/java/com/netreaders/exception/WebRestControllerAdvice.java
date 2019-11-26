@@ -24,6 +24,7 @@ public class WebRestControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ResponseMessage handleSQLException(HttpServletRequest request, DataBaseSQLException ex) {
+
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
@@ -31,6 +32,7 @@ public class WebRestControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResponseMessage handleArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
+
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
@@ -38,11 +40,13 @@ public class WebRestControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ResponseMessage handleNoSuchModelException(HttpServletRequest request, NoSuchModelException ex) {
+
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
     @AllArgsConstructor
     private static class ResponseMessage {
+
         private String code;
         private String errorMessage;
     }

@@ -10,6 +10,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 public class Book {
+
     private Integer id;
     private String title;
     private Integer photo;

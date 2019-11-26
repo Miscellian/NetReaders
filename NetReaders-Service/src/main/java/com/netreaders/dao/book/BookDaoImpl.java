@@ -139,7 +139,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> findBooksByGenre(int genre_id, int amount, int offset) {
+    public Collection<Book> findByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByGenre");
 
@@ -157,7 +157,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) {
+    public Collection<Book> findByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByAuthor");
 
@@ -175,7 +175,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> findAllBooks(int amount, int offset) throws DataBaseSQLException {
+    public Collection<Book> findAll(int amount, int offset) throws DataBaseSQLException {
         String sql_query = env.getProperty("book.getByIdWithOffset");
 
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
@@ -192,7 +192,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> findBooksByName(String name, int amount, int offset) {
+    public Collection<Book> findByName(String name, int amount, int offset) {
 
         String sql_query = env.getProperty("book.getByNameWithOffset");
 
@@ -205,24 +205,6 @@ public class BookDaoImpl implements BookDao {
             return Collections.emptyList();
         } else {
             log.debug(String.format("Found %d book(s) with name like '%s'", books.size(), name));
-            return books;
-        }
-    }
-
-    @Override
-    public Collection<Book> findBooksByAnnouncement(int id) {
-
-        String sql_query = env.getProperty("book.getByAnnouncementId");
-
-        List<Book> books = template.query(sql_query, bookMapper, id);
-
-        checkIfCollectionIsNull(books);
-
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any book by announcementID '%d'", id));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d book(s) by announcementID '%d'", books.size(), id));
             return books;
         }
     }
@@ -265,6 +247,60 @@ public class BookDaoImpl implements BookDao {
 
         log.debug(String.format("Found %d books by name '%s'", count, name));
         return count;
+    }
+
+    @Override
+    public Collection<Book> findByAnnouncementId(Integer announcementId) {
+
+        String sql_query = env.getProperty("book.findByAnnouncementId");
+
+        List<Book> books = template.query(sql_query, bookMapper, announcementId);
+
+        checkIfCollectionIsNull(books);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any book by announcementID '%d'", announcementId));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d book(s) by announcementID '%d'", books.size(), announcementId));
+            return books;
+        }
+    }
+
+    @Override
+    public Collection<Book> findByAnnouncementWithGenre(Integer announcementId, Integer genreId) {
+
+        String sql_query = env.getProperty("book.findByAnnouncementIdWithGenre");
+
+        List<Book> books = template.query(sql_query, bookMapper, announcementId, genreId);
+
+        checkIfCollectionIsNull(books);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any book by announcementID '%d' with genreID '%d'", announcementId, genreId));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d book(s) by announcementID '%d' with genreID '%d'", books.size(), announcementId, genreId));
+            return books;
+        }
+    }
+
+    @Override
+    public Collection<Book> findByAnnouncementWithAuthor(Integer announcementId, Integer authorId) {
+
+        String sql_query = env.getProperty("book.findByAnnouncementIdWithAuthor");
+
+        List<Book> books = template.query(sql_query, bookMapper, announcementId, authorId);
+
+        checkIfCollectionIsNull(books);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any book by announcementID '%d' with authorID '%d'", announcementId, authorId));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d book(s) by announcementID '%d' with authorID '%d'", books.size(), announcementId, authorId));
+            return books;
+        }
     }
 
     private void checkIfCollectionIsNull(Collection<Book> collection) {

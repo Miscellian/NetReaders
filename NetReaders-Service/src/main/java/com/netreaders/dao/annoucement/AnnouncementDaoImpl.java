@@ -1,6 +1,5 @@
 package com.netreaders.dao.annoucement;
 
-import com.netreaders.dao.annoucement.mapper.AnnouncementMapper;
 import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
@@ -19,7 +18,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
@@ -136,44 +134,43 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByGenre(int genre_id, int amount, int offset) {
+    public Collection<Announcement> findByGenre(Integer genreId, Integer amount, Integer offset) {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
 
-        List<Announcement> announcements = template.query(sql_query, announcementMapper, genre_id, amount, offset);
+        List<Announcement> announcements = template.query(sql_query, announcementMapper, genreId, amount, offset);
 
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Didn't find any announcement by genreId '%d'", genre_id));
+            log.debug(String.format("Didn't find any announcement by genreId '%d'", genreId));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Found %d announcement(s) by genreId '%d'", announcements.size(), genre_id));
+            log.debug(String.format("Found %d announcement(s) by genreId '%d'", announcements.size(), genreId));
             return announcements;
         }
     }
 
     @Override
-    public Collection<Announcement> findAnnouncementsByAuthor(int author_id, int amount, int offset) {
+    public Collection<Announcement> findByAuthor(Integer authorId, Integer amount, Integer offset) {
 
         String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
 
-        List<Announcement> announcements = template.query(sql_query, announcementMapper, author_id, amount, offset);
+        List<Announcement> announcements = template.query(sql_query, announcementMapper, authorId, amount, offset);
 
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Didn't find any announcement by authorID '%d'", author_id));
+            log.debug(String.format("Didn't find any announcement by authorID '%d'", authorId));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Found %d announcement(s) by authorID '%d'", announcements.size(), author_id));
+            log.debug(String.format("Found %d announcement(s) by authorID '%d'", announcements.size(), authorId));
             return announcements;
         }
     }
 
-
     @Override
-    public Collection<Announcement> getById(int amount, int offset) {
+    public Collection<Announcement> findAll(Integer amount, Integer offset) {
 
         String sql_query = env.getProperty("announcement.getByIdWithOffset");
 

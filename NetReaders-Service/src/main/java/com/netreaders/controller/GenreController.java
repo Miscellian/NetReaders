@@ -15,15 +15,15 @@ public class GenreController {
 
     private final GenreService genreService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
     public Collection<Genre> getAllGenres() {
-        return genreService.getAllGenres();
+
+        return genreService.getAll();
     }
 
     @GetMapping(value = "{id}")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Genre getGenreById(@PathVariable Integer id) {
-        return genreService.findGenreById(id);
+
+        return genreService.findById(id);
     }
 }

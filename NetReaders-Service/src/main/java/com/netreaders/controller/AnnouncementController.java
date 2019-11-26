@@ -15,33 +15,35 @@ public class AnnouncementController {
 
     private final AnnouncementService announcementService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("all")
-    public Collection<Announcement> getAllAnnouncements() {
-        return announcementService.getAllAnnouncements();
+    public Collection<Announcement> getAllAnnouncements(
+            @RequestParam(name = "amount", defaultValue = "0") Integer amount,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
+
+        return announcementService.findAll(amount, offset);
     }
 
     @GetMapping(value = "{id}")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Announcement getById(@PathVariable() Integer id) {
-        return announcementService.findAnnouncementById(id);
+
+        return announcementService.findById(id);
     }
 
     @GetMapping(value = "bygenre")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Announcement> getByGenre(
-            @RequestParam(name = "id") Integer genreid,
+            @RequestParam(name = "id") Integer genreId,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        return announcementService.findAnnouncementsByGenre(genreid, amount, offset);
+
+        return announcementService.findByGenre(genreId, amount, offset);
     }
 
     @GetMapping(value = "byauthor")
-    @CrossOrigin(origins = "http://localhost:8080")
     public Collection<Announcement> getByAuthor(
-            @RequestParam(name = "id") Integer authorid,
+            @RequestParam(name = "id") Integer authorId,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
-        return announcementService.findAnnouncementsByAuthor(authorid, amount, offset);
+
+        return announcementService.findByAuthor(authorId, amount, offset);
     }
 }

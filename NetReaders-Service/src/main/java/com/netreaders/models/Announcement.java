@@ -9,6 +9,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 public class Announcement {
+
     private Integer id;
     private Date announcement_date;
     private String description;
@@ -16,8 +17,4 @@ public class Announcement {
 
     //foreign connections
     private Collection<Book> books;
-
-    public Announcement(Collection<Book> books) {
-        this.books = books;
-    }
 }

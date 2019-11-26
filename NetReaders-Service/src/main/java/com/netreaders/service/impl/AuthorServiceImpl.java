@@ -1,7 +1,6 @@
 package com.netreaders.service.impl;
 
 import com.netreaders.dao.author.AuthorDao;
-import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Author;
 import com.netreaders.service.AuthorService;
 import lombok.AllArgsConstructor;
@@ -15,12 +14,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
 
-    public Author findAuthorById(Integer id) throws DataBaseSQLException {
+    public Author findById(Integer id) {
 
         return authorDao.getById(id);
     }
 
-    public Collection<Author> getAllAuthors() throws DataBaseSQLException {
+    public Collection<Author> getAll() {
 
         return authorDao.getAll();
     }

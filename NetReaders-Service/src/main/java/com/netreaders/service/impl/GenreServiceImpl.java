@@ -15,12 +15,12 @@ public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;
 
-    public Genre findGenreById(Integer id) throws DataBaseSQLException {
+    public Genre findById(Integer id) {
 
         return genreDao.getById(id);
     }
 
-    public Collection<Genre> getAllGenres() throws DataBaseSQLException {
+    public Collection<Genre> getAll() {
 
         return genreDao.getAll();
     }

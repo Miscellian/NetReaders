@@ -3,7 +3,6 @@ package com.netreaders.service.impl;
 import com.netreaders.dao.author.AuthorDao;
 import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
-import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Book;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
@@ -20,63 +19,72 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
     private final AuthorDao authorDao;
 
-    public Book findBookById(Integer id) throws DataBaseSQLException {
+    public Book findById(Integer id) {
 
         Book book = bookDao.getById(id);
         return modelToDto(book);
     }
 
-    public Collection<Book> findBooksByGenre(Integer genre_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Book> findByGenre(Integer genre_id, Integer amount, Integer offset) {
 
-        Collection<Book> books = bookDao.findBooksByGenre(genre_id, amount, offset);
+        Collection<Book> books = bookDao.findByGenre(genre_id, amount, offset);
         return createDtoCollection(books);
     }
 
-    public Collection<Book> findBooksByAuthor(Integer author_id, Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Book> findByAuthor(Integer author_id, Integer amount, Integer offset) {
 
-        Collection<Book> books = bookDao.findBooksByAuthor(author_id, amount, offset);
+        Collection<Book> books = bookDao.findByAuthor(author_id, amount, offset);
         return createDtoCollection(books);
     }
 
-    public Collection<Book> findByName(String name, Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Book> findByName(String name, Integer amount, Integer offset) {
 
-        Collection<Book> books = bookDao.findBooksByName(name.toLowerCase(), amount, offset);
+        Collection<Book> books = bookDao.findByName(name.toLowerCase(), amount, offset);
         return createDtoCollection(books);
     }
 
-    public Collection<Book> findAll(Integer amount, Integer offset) throws DataBaseSQLException {
+    public Collection<Book> findAll(Integer amount, Integer offset) {
 
-        Collection<Book> books = bookDao.findAllBooks(amount, offset);
+        Collection<Book> books = bookDao.findAll(amount, offset);
         return createDtoCollection(books);
     }
 
     public Integer getCountByGenre(Integer id) {
 
-        Integer count = bookDao.getCountByGenre(id);
-        return count;
+        return bookDao.getCountByGenre(id);
     }
 
     public Integer getCountByAuthor(Integer id) {
 
-        Integer count = bookDao.getCountByAuthor(id);
-        return count;
+        return bookDao.getCountByAuthor(id);
     }
 
     public Integer getCountByName(String name) {
 
-        Integer count = bookDao.getCountByName(name);
-        return count;
+        return bookDao.getCountByName(name);
     }
 
     public Integer getCount() {
 
-        Integer count = bookDao.getCount();
-        return count;
+        return bookDao.getCount();
     }
 
-    public Collection<Book> getByAnnouncementId(Integer announcement_id) {
+    @Override
+    public Collection<Book> findByAnnouncementId(Integer announcementId) {
 
-        return createDtoCollection(bookDao.findBooksByAnnouncement(announcement_id));
+        return bookDao.findByAnnouncementId(announcementId);
+    }
+
+    @Override
+    public Collection<Book> findByAnnouncementWithGenre(Integer announcementId, Integer genreId) {
+
+        return bookDao.findByAnnouncementWithGenre(announcementId, genreId);
+    }
+
+    @Override
+    public Collection<Book> findByAnnouncementWithAuthor(Integer announcementId, Integer authorId) {
+
+        return bookDao.findByAnnouncementWithAuthor(announcementId, authorId);
     }
 
     private Collection<Book> createDtoCollection(Collection<Book> books) {
@@ -86,12 +94,12 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
-    private Book modelToDto(Book book) throws DataBaseSQLException {
+    private Book modelToDto(Book book) {
 
         book.setGenres(genreDao.getByBookId(book.getId()));
         book.setAuthors(authorDao.getByBookId(book.getId()));
-        return book;
 
+        return book;
     }
 }
 

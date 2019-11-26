@@ -7,11 +7,11 @@ import java.util.Collection;
 
 public interface AnnouncementService {
 
-    Announcement findAnnouncementById(Integer id) throws DataBaseSQLException;
+    Announcement findById(Integer id) throws DataBaseSQLException;
 
-    Collection<Announcement> findAnnouncementsByGenre(Integer genreId, Integer amount, Integer offset) throws DataBaseSQLException;
+    Collection<Announcement> findByGenre(Integer genreId, Integer amount, Integer offset) throws DataBaseSQLException;
 
-    Collection<Announcement> findAnnouncementsByAuthor(Integer authorId, Integer amount, Integer offset) throws DataBaseSQLException;
+    Collection<Announcement> findByAuthor(Integer authorId, Integer amount, Integer offset) throws DataBaseSQLException;
 
-    Collection<Announcement> getAllAnnouncements() throws DataBaseSQLException;
+    Collection<Announcement> findAll(Integer amount, Integer offset) throws DataBaseSQLException;
 }
