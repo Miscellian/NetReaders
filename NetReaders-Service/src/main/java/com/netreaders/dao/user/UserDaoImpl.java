@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
         List<User> users = template.query(sql_query, userMapper, id);
 
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by id '%s'", id));
+            log.debug(String.format("Don't find any user by id '%s'", id));
             return null;
         } else if (users.size() == 1) {
             log.debug(String.format("Find a user by id '%s'", id));

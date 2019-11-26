@@ -7,11 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserpageComponent } from './userpage/userpage.component';
-import { AdminslistComponent } from './adminslist/adminslist.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 @NgModule({
@@ -19,8 +19,8 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
     AppComponent,
     NavbarComponent,
     UserpageComponent,
-    AdminslistComponent,
-    ErrorpageComponent
+    ErrorpageComponent,
+    HomepageComponent
   ],
   imports: [
     FormsModule,

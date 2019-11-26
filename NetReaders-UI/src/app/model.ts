@@ -28,3 +28,13 @@ export class Author {
   id: number;
   name: string;
 }
+
+export class User {
+  userId: number;
+  userNickname: string;
+  userPassword: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePhoto: number;
+}

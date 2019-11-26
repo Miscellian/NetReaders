@@ -17,12 +17,9 @@
         </div>
       </div>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Authors</a>
-    </li>
 
 
-    <form class="form-inline" action="getByName($event)">
+    <form class="form-inline search-form" action="getByName($event)">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" #box (keyup.enter)="onEnter(box.value)">
     </form>
 
