@@ -55,9 +55,37 @@ public class BookController {
 		
 		@GetMapping(value = "byname")
 		public ResponseMessage<Collection<BookDto>> GetByName(
-				@RequestParam(name = "name") String name) {
-			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name);
+				@RequestParam(name = "name") String name,
+				@RequestParam(name = "amount") String amount,
+				@RequestParam(name = "offset") String offset) {
+			ResponseMessage<Collection<BookDto>> response = bookService.getByName(name, amount, offset);
 			return response;
 		}
 		
+		@GetMapping(value = "count")
+		public ResponseMessage<Integer> GetCount() {
+			ResponseMessage<Integer> response = bookService.getCount();
+			return response;
+		}
+		
+		@GetMapping(value = "countByAuthor")
+		public ResponseMessage<Integer> GetCountByAuthor(
+				@RequestParam(name = "id") String authorid) {
+			ResponseMessage<Integer> response = bookService.getCountByAuthor(authorid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByGenre")
+		public ResponseMessage<Integer> GetCountByGenre(
+				@RequestParam(name = "id") String genreid) {
+			ResponseMessage<Integer> response = bookService.getCountByGenre(genreid);
+			return response;
+		}
+		
+		@GetMapping(value = "countByName")
+		public ResponseMessage<Integer> GetCountByName(
+				@RequestParam(name = "name") String name) {
+			ResponseMessage<Integer> response = bookService.getCountByName(name);
+			return response;
+		}
 }

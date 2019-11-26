@@ -11,31 +11,4 @@ public class MainController {
 	public String redirect() {
 		return "forward:/";
 	}
-	
-//	@GetMapping("/")
-//	public String showHome() {
-//		return "home";
-//	}
-//	
-//	// moderators
-//	@GetMapping("/moderators")
-//	public String showModeratorsContent() {
-//		return "moderators";
-//	}
-//	
-//	// admins
-//	@GetMapping("/admins")
-//	public String showAdminContent() {
-//		return "admins";
-//	}
-//	// superadmin
-//	@GetMapping("/superadmin")
-//	public String showSuperadminContent() {
-//		return "superadmin";
-//	}
-//	
-//	@GetMapping("/access-denied")
-//	public String showCustomError() {
-//		return "access-denied";
-//	}
 }

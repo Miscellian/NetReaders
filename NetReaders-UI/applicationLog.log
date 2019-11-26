@@ -1,0 +1,6 @@
+DEBUG   2019-11-17 19:35:40,865 [http-nio-8080-exec-7] com.netreaders.dao.book.BookDaoImpl  - Find a book by id '4'
+DEBUG   2019-11-17 19:35:40,879 [http-nio-8080-exec-7] com.netreaders.dao.genres.GenreDaoImpl  - Find 2 genre(s) by bookID '4'
+DEBUG   2019-11-17 19:35:40,891 [http-nio-8080-exec-7] com.netreaders.dao.author.AuthorDaoImpl  - Find 1 author(s) by bookID '4'
+DEBUG   2019-11-17 19:35:44,992 [http-nio-8080-exec-9] com.netreaders.dao.book.BookDaoImpl  - Find a book by id '1'
+DEBUG   2019-11-17 19:35:44,994 [http-nio-8080-exec-9] com.netreaders.dao.genres.GenreDaoImpl  - Find 1 genre(s) by bookID '1'
+DEBUG   2019-11-17 19:35:44,995 [http-nio-8080-exec-9] com.netreaders.dao.author.AuthorDaoImpl  - Find 1 author(s) by bookID '1'

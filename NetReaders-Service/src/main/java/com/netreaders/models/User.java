@@ -1,7 +1,5 @@
 package com.netreaders.models;
 
-import java.util.Collection;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

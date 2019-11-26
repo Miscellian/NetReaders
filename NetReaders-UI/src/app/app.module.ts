@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
 import { LoginComponent } from './login/login.component';
 import {AuthGuard} from './_helpers/auth.guard';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorpageComponent } from './errorpage/errorpage.component';
+
 import {AuthenticationService} from './login/authentication.service';
 import {UserService} from './signup/user.service';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
@@ -27,6 +30,7 @@ import { ApiInterceptor } from './_helpers/api.interceptor';
     UserpageComponent,
     AdminslistComponent,
     SignupComponent,
+    ErrorpageComponent,
     LoginComponent,
     ConfirmUserComponent
   ],
@@ -37,7 +41,8 @@ import { ApiInterceptor } from './_helpers/api.interceptor';
     AppRoutingModule,
     HttpClientModule,
     BooksModule,
-    CommonModule
+    CommonModule,
+    NgbModule
   ],
   providers: [
     AuthGuard,

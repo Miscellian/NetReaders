@@ -1,27 +1,30 @@
 <nav class="navbar navbar-expand-sm fixed-top">
-    <!-- Brand -->
-    <a class="navbar-brand" href="#">Logo</a>
-  
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Books</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Genres</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Historical novel</a>
-            <a class="dropdown-item" href="#">Detective story</a>
-            <a class="dropdown-item" href="#">Drama</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Authors</a>
-        </li>
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Logo</a>
 
-        <form class="form-inline" action="/action_page.php">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-          <button class="btn btn-success" type="submit">Search</button>
-        </form>
-        
-      </ul>
-  </nav>
+
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/books/range/1">Books</a>
+    </li>
+    <li class="nav-item">
+      <div ngbDropdown class="d-inline-block genres">
+        <button class="btn" id="dropdown-genres" ngbDropdownToggle>Genres</button>
+        <div ngbDropdownMenu aria-labelledby="dropdown-genres">
+          <div *ngFor="let genre of genres">
+              <a ngbDropdownItem href="/books/bygenre/{{genre.id}}/1">{{genre.name}}</a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Authors</a>
+    </li>
+
+
+    <form class="form-inline" action="getByName($event)">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" #box (keyup.enter)="onEnter(box.value)">
+    </form>
+
+  </ul>
+</nav>
