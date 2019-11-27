@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS genres CASCADE;
 DROP TABLE IF EXISTS book_author CASCADE;
 DROP TABLE IF EXISTS authors CASCADE;
 DROP TABLE IF EXISTS books CASCADE;
-DROP TABLE IF EXISTS registration_links CASCADE;
+DROP TABLE IF EXISTS registration_tokens CASCADE;
 DROP TABLE IF EXISTS user_role CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -56,12 +56,12 @@ CREATE TABLE user_role (
 	CONSTRAINT ur_role_fk FOREIGN KEY(role_id) REFERENCES roles (role_id)
 );
 
-CREATE TABLE registration_links (
-	registration_link_id SERIAL PRIMARY KEY,
+CREATE TABLE registration_tokens (
+	registration_token_id SERIAL PRIMARY KEY,
 	user_id INTEGER NOT NULL,
-	url VARCHAR(128),
+	token_value VARCHAR(128),
 	created_time TIMESTAMP,
-	CONSTRAINT rl_user_fk FOREIGN KEY(registration_link_id) REFERENCES users(user_id)
+	CONSTRAINT rt_user_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE books (

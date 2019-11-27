@@ -13,4 +13,6 @@ public interface UserDao extends GenericDao<User, Long> {
     Collection<User> findByFirstName(String firstName);
 
     void deleteByNickname(String nickname) throws SQLException;
+
+    User create(final User user) throws SQLException;
 }

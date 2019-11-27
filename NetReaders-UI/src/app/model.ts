@@ -28,3 +28,23 @@ export class Author {
   id: number;
   name: string;
 }
+
+export class User {
+  user_name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  token: string;
+}
+
+export class LoginInfo {
+  token: string;
+  type: string;
+  username: string;
+  authorities: Authority[];
+}
+
+export class Authority {
+  authority: string;
+}

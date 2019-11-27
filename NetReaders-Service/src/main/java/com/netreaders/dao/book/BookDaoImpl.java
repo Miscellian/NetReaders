@@ -140,8 +140,7 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
-    
-    @Override
+
     public Collection<Book> findBooksByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByGenre");
@@ -156,7 +155,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
     public Collection<Book> findBooksByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByAuthor");
@@ -171,7 +169,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
     public Collection<Book> getById(int amount, int offset) {
 
         String sql_query = env.getProperty("book.getByIdWithOffset");

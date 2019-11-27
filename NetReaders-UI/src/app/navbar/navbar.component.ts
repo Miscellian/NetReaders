@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../books/book.service';
 import { NavbarService } from './navbar.service';

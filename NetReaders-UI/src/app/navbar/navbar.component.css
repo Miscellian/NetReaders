@@ -9,6 +9,9 @@ nav {
     font-size: 1.5em;
 }
 
+button {
+    background-color: #007BFF;
+}
 .btn {
     background-color: #68C5FA;
     color: #007BFF;
