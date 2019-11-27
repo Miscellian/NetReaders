@@ -10,7 +10,7 @@ import {HomepageComponent} from "./homepage/homepage.component";
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomepageComponent},
-    {path: 'users/:id', component: UserpageComponent},
+    {path: 'users/:username', component: UserpageComponent},
     {
         path: 'books',
         children: [

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BookService } from '../books/book.service';
+import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { Genre } from '../model';
 @Component({
@@ -11,10 +9,11 @@ import { Genre } from '../model';
 })
 export class NavbarComponent implements OnInit {
 
+  public navbarCollapsed = true;
+
   genres: Genre[];
 
   constructor(private navbarService: NavbarService,
-    private activatedRoute: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit() {

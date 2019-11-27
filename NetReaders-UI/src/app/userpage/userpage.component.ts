@@ -21,8 +21,8 @@ export class UserpageComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(
             params => {
-                this.arg = params['id'];
-                this.userService.getById(this.arg).subscribe(response => {
+                this.arg = params['username'];
+                this.userService.getByUsername(this.arg).subscribe(response => {
                     if (!response.isSuccessful) {
                         this.router.navigate(['/error']);
                     } else {
