@@ -240,4 +240,21 @@ public class BookDaoImpl implements BookDao {
         log.debug(String.format("Found %d books by name '%s'", count, name));
         return count;
     }
+
+	@Override
+	public Book getByReviewId(int id) throws SQLException {
+		String sql_query = env.getProperty("book.getByReviewId");
+
+        List<Book> books = template.query(sql_query, bookMapper, id);
+        if (books.isEmpty()) {
+            log.debug(String.format("Dont find any book by review_id '%d'", id));
+            return null;
+        } else if (books.size() == 1) {
+            log.debug(String.format("Find a book by review_id '%sd'", id));
+            return books.get(0);
+        } else {
+            log.error(String.format("Find more than one book by review_id '%s'", id));
+            throw new SQLException("Internal sql exception");
+        }
+	}
 }
