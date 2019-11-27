@@ -29,7 +29,7 @@ input#search-book {
 }
 
 div.dropdown-menu {
-    border: .1rem solid #007BFF;
+    border: .1rem solid #343a40;
 }
 
 img#navbar-profile-photo {
@@ -51,4 +51,14 @@ nav.navbar {
     a#profile-text {
         display: inline;
     }
+}
+
+a.dropdown-item:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+a.dropdown-item:focus {
+    background-color: #565c62;
+    color: #dddddd;
 }

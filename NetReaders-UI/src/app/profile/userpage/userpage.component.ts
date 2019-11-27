@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "./user.service";
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../model";
 
 @Component({
@@ -9,28 +7,13 @@ import {User} from "../../model";
     styleUrls: ['./userpage.component.css']
 })
 export class UserpageComponent implements OnInit {
-
-    user: User;
+    @Input() public user: User;
     arg: string;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private  userService: UserService,
-                public router: Router) {
+    constructor() {
     }
 
     ngOnInit() {
-        this.activatedRoute.params.subscribe(
-            params => {
-                this.arg = params['username'];
-                this.userService.getByUsername(this.arg).subscribe(response => {
-                    if (!response.isSuccessful) {
-                        this.router.navigate(['/error']);
-                    } else {
-                        this.user = response.obj;
-                    }
-                })
-            }
-        );
     }
 
 }

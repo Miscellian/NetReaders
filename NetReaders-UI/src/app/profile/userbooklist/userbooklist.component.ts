@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {BookDto, User} from "../../model";
+import {BookService} from "../../books/book.service";
 
 @Component({
     selector: 'app-userbooklist',
@@ -7,21 +9,24 @@ import {ActivatedRoute} from "@angular/router";
     styleUrls: ['./userbooklist.component.css']
 })
 export class UserbooklistComponent implements OnInit {
-
+    @Input() public user: User;
     arg: string;
+    bookdtos: BookDto[];
 
-    constructor(private activatedRoute: ActivatedRoute) {
+    constructor(private activatedRoute: ActivatedRoute,
+                private bookService: BookService,
+                public router: Router) {
     }
 
     ngOnInit() {
         this.activatedRoute.params.subscribe(
             params => {
                 this.arg = params['username'];
-                this.userService.getByUsername(this.arg).subscribe(response => {
+                this.bookService.getByUser(this.arg, "1").subscribe(response => {
                     if (!response.isSuccessful) {
                         this.router.navigate(['/error']);
                     } else {
-                        this.user = response.obj;
+                        this.bookdtos = response.obj;
                     }
                 })
             }

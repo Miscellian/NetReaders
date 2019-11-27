@@ -26,13 +26,4 @@ public class UserController {
     public ResponseMessage<User> findUserByUsername(@PathVariable String username) {
         return userService.findUserByUsername(username);
     }
-
-    @GetMapping(value = "booklist")
-    @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseMessage<Collection<BookDto>> getBookListByUsername(
-            @RequestParam(name = "username") String username,
-            @RequestParam(name = "amount", defaultValue = "0") String amount,
-            @RequestParam(name = "offset", defaultValue = "0") String offset) {
-        return userService.getBookListByUsername(username, amount, offset);
-    }
 }

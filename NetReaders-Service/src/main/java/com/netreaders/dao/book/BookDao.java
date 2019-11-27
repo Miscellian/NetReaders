@@ -25,4 +25,6 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Integer getCountByGenre(int genre_id) throws SQLException;
     
     Integer getCountByName(String name) throws SQLException;
+
+    Integer getCountByUsername(String username) throws SQLException;
 }

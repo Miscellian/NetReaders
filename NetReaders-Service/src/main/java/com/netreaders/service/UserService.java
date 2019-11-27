@@ -13,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -56,23 +53,5 @@ public class UserService {
         return message;
     }
 
-    public ResponseMessage<Collection<BookDto>> getBookListByUsername(String username, String amount, String offset) {
-        ResponseMessage<Collection<BookDto>> message = new ResponseMessage<>();
-        try {
-            int numericAmount = Integer.parseInt(amount);
-            int numericOffset = Integer.parseInt(offset);
-            Collection<Book> books = bookDao.getByUsername(username, numericAmount,numericOffset);
-            Collection<BookDto> bookDtos = books.stream()
-                    .map(this::tryCreateBookDto)
-                    .collect(Collectors.toCollection(ArrayList::new));
-            message.setObj(bookDtos);
-        } catch (NumberFormatException e) {
-            ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (RuntimeException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
-        return message;
-    }
+
 }
