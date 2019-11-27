@@ -1,21 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "./user.service";
-import {User} from "../model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
-    selector: 'app-userpage',
-    templateUrl: './userpage.component.html',
-    styleUrls: ['./userpage.component.css']
+    selector: 'app-userbooklist',
+    templateUrl: './userbooklist.component.html',
+    styleUrls: ['./userbooklist.component.css']
 })
-export class UserpageComponent implements OnInit {
+export class UserbooklistComponent implements OnInit {
 
-    user: User;
     arg: string;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private  userService: UserService,
-                public router: Router) {
+    constructor(private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {

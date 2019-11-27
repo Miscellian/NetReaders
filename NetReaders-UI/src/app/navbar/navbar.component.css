@@ -32,7 +32,7 @@ div.dropdown-menu {
     border: .1rem solid #007BFF;
 }
 
-img#profile {
+img#navbar-profile-photo {
     width: 4rem;
     height: auto;
 }
@@ -40,9 +40,12 @@ img#profile {
 a#profile-text {
     display: none;
 }
+nav.navbar {
+    margin-bottom: 5%;
+}
 
 @media screen and (max-width: 767px) {
-    img#profile {
+    img#navbar-profile-photo {
         display: none;
     }
     a#profile-text {

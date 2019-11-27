@@ -31,7 +31,7 @@ export class Author {
 
 export class User {
   userId: number;
-  userNickname: string;
+  username: string;
   userPassword: string;
   email: string;
   firstName: string;
