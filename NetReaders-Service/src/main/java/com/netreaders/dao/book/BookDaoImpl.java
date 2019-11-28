@@ -34,6 +34,11 @@ public class BookDaoImpl implements BookDao {
     private final Environment env;
     private final BookMapper bookMapper;
 
+    public BookDaoImpl(BookMapper bookMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.bookMapper=bookMapper;
+        this.template=template;
+    }
     @Override
     public Book create(Book book) {
 
@@ -138,7 +143,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
     public Collection<Book> findByGenre(int genre_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByGenre");
@@ -156,7 +160,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
     public Collection<Book> findByAuthor(int author_id, int amount, int offset) {
 
         String sql_query = env.getProperty("book.findBooksByAuthor");
@@ -174,7 +177,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
     public Collection<Book> findAll(int amount, int offset) throws DataBaseSQLException {
         String sql_query = env.getProperty("book.getByIdWithOffset");
 

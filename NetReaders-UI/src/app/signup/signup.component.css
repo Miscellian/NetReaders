@@ -1,0 +1,17 @@
+.card{
+    background-color: #68C5FA;
+}
+input.ng-valid[required], input.ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+input.ng-touched.ng-invalid{
+    border-left: 5px solid red;
+}
+
+.error{
+    color:red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}

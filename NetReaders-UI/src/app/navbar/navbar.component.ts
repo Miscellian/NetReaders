@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { Genre } from '../model';

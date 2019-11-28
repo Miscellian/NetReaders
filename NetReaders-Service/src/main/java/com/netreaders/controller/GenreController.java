@@ -13,21 +13,18 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/genres")
-@CrossOrigin(origins = "http://localhost:4200")
 public class GenreController {
 	private final GenreService genreService;
 
 	public GenreController(GenreService genreService) {
 		this.genreService = genreService;
 	}
-	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("all")
 	public ResponseMessage<Collection<Genre>> GetAllGenres() {
 		return genreService.getAll();
 	}
 	
 	@GetMapping(value = "{id}")
-	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseMessage<Genre> GetGenreById(@PathVariable String id) {
 		ResponseMessage<Genre> response = genreService.getById(id);
 		return response;

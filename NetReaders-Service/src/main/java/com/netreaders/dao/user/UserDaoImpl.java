@@ -34,6 +34,12 @@ public class UserDaoImpl implements UserDao {
     private final JdbcTemplate template;
     private final UserMapper userMapper;
 
+    public UserDaoImpl(UserMapper userMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.userMapper=userMapper;
+        this.template=template;
+    }
+
     @Override
     public User create(final User user) {
 

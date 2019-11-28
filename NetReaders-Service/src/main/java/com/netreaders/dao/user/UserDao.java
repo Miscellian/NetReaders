@@ -13,4 +13,6 @@ public interface UserDao extends GenericDao<User, Integer> {
     Collection<User> findByFirstName(String firstName) throws DataBaseSQLException;
 
     void deleteByUsername(String username) throws DataBaseSQLException;
+    User create(final User user) throws DatabaseSQLException;
+    User getById(Integer id) throws DatabaseSQLException
 }
