@@ -25,14 +25,16 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
     private Environment env;
-
-    @Autowired
     private JdbcTemplate template;
+    private UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public UserDaoImpl(UserMapper userMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.userMapper=userMapper;
+        this.template=template;
+    }
 
     @Override
     public User create(final User user) throws SQLException {

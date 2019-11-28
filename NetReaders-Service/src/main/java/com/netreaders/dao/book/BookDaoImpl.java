@@ -23,14 +23,16 @@ import java.util.List;
 @Repository
 public class BookDaoImpl implements BookDao {
 
-    @Autowired
     private JdbcTemplate template;
-
-    @Autowired
     private Environment env;
+    private BookMapper bookMapper;
 
     @Autowired
-    private BookMapper bookMapper;
+    public BookDaoImpl(BookMapper bookMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.bookMapper=bookMapper;
+        this.template=template;
+    }
 
     @Override
     public Book create(Book book) throws SQLException {

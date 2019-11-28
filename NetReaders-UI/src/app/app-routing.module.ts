@@ -26,7 +26,7 @@ const routes: Routes = [
     ]
   },
   {path: 'confirmUser', component: ConfirmUserComponent},
-  { path: 'error', component: ErrorpageComponent }
+  {path: 'error', component: ErrorpageComponent}
 ];
 
 @NgModule({

@@ -31,12 +31,15 @@ import com.netreaders.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// add reference to security data source
-	@Autowired
 	private UserService userService;
-	
-	@Autowired
     private JwtAuthEntryPoint unauthorizedHandler;
-	
+
+	@Autowired
+	public SecurityConfig(JwtAuthEntryPoint unauthorizedHandler, UserService userService){
+		this.unauthorizedHandler=unauthorizedHandler;
+		this.userService=userService;
+	}
+
 	@Bean
     public JwtAuthTokenFilter authenticationJwtTokenFilter() {
         return new JwtAuthTokenFilter();

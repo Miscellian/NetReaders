@@ -19,16 +19,18 @@ import lombok.extern.log4j.Log4j;
 @PropertySource("classpath:query.properties")
 @Repository
 public class RoleDaoImpl implements RoleDao {
-	
-    @Autowired
+
     private RoleMapper roleMapper;
-	
-	@Autowired
     private Environment env;
+    private JdbcTemplate template;
 
     @Autowired
-    private JdbcTemplate template;
-    
+    public RoleDaoImpl(RoleMapper roleMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.roleMapper=roleMapper;
+        this.template=template;
+    }
+
     @Override
 	public Role findByRoleName(String roleName) throws SQLException {
 

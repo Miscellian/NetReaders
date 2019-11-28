@@ -24,15 +24,16 @@ import lombok.extern.log4j.Log4j;
 @Repository
 public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
 
-	@Autowired
     private RegistrationTokenMapper tokenMapper;
-	
-	@Autowired
     private Environment env;
-	
-	@Autowired
 	private JdbcTemplate template;
-	
+
+    @Autowired
+    public RegistrationTokenDaoImpl(RegistrationTokenMapper tokenMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.tokenMapper=tokenMapper;
+        this.template=template;
+    }
 	@Override
 	public RegistrationToken findByToken(String token)  throws SQLException{
 		
