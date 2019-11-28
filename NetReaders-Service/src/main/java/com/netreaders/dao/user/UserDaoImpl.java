@@ -27,10 +27,14 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
 
     private Environment env;
-
     private JdbcTemplate template;
-
     private UserMapper userMapper;
+
+    public UserDaoImpl(UserMapper userMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.userMapper=userMapper;
+        this.template=template;
+    }
 
     @Autowired
     public UserDaoImpl(Environment env, JdbcTemplate template, UserMapper userMapper) {

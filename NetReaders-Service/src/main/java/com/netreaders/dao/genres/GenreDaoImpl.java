@@ -23,14 +23,16 @@ import java.util.List;
 @Repository
 public class GenreDaoImpl implements GenreDao {
 
-    @Autowired
     private JdbcTemplate template;
-
-    @Autowired
     private Environment env;
+    private GenreMapper genreMapper;
 
     @Autowired
-    private GenreMapper genreMapper;
+    public GenreDaoImpl(GenreMapper genreMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.genreMapper=genreMapper;
+        this.template=template;
+    }
 
     @Override
     public Genre create(Genre genre) throws SQLException {

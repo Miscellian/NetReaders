@@ -1,10 +1,8 @@
 import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../login/authentication.service";
-import {Observable, Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {ResponseMessage, User} from "../model";
+import {ResponseMessage} from "../model";
 
 @Component({
     selector: 'app-confirm',
@@ -25,6 +23,6 @@ export class ConfirmUserComponent implements OnInit {
         this.httpClient.get<ResponseMessage<String>>(`http://localhost:8080/api/users/confirmRegistration?token=${this.token}`);
     }
     ngOnInit(): void {
-        confirm()
+        this.confirm()
     }
 }

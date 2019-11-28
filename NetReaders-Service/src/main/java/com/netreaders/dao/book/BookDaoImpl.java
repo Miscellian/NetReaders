@@ -28,10 +28,10 @@ public class BookDaoImpl implements BookDao {
     private BookMapper bookMapper;
 
     @Autowired
-    public BookDaoImpl(JdbcTemplate template, Environment env, BookMapper bookMapper) {
-        this.template = template;
-        this.env = env;
-        this.bookMapper = bookMapper;
+    public BookDaoImpl(BookMapper bookMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.bookMapper=bookMapper;
+        this.template=template;
     }
 
     @Override

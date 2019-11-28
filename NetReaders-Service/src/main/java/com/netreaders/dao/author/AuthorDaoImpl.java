@@ -25,14 +25,16 @@ import java.util.List;
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
 
-    @Autowired
     private JdbcTemplate template;
-
-    @Autowired
     private Environment env;
+    private AuthorMapper authorMapper;
 
     @Autowired
-    private AuthorMapper authorMapper;
+    public AuthorDaoImpl(AuthorMapper authorMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.authorMapper=authorMapper;
+        this.template=template;
+    }
 
     @Override
     public Author create(Author author) throws SQLException {

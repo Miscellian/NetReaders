@@ -20,16 +20,17 @@ import com.netreaders.models.User;
 @Service
 public class UserService implements UserDetailsService{
 
-	@Autowired
 	private UserDao userDao;
-	@Autowired
 	private RoleDao roleDao;
-
-//	@Autowired
-//	private TokenDao tokenDao;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	public UserService(UserDao userDao, RoleDao roleDao, BCryptPasswordEncoder passwordEncoder){
+		this.userDao=userDao;
+		this.roleDao=roleDao;
+		this.passwordEncoder=passwordEncoder;
+	}
+
 
 	@Transactional
 	public User registerUser(SignUpForm signUpForm) {
