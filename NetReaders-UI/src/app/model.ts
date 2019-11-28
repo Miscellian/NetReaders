@@ -38,3 +38,21 @@ export class User {
   lastName: string;
   profilePhoto: number;
 }
+export class LoginInfo {
+  token: string;
+  type: string;
+  username: string;
+  authorities: Authority[];
+}
+
+export class Authority {
+  authority: string;
+}
+
+export class Review {
+  reviewId: number;
+  rating: number;
+  description: string;
+  published: boolean;
+  book: BookDto;
+}

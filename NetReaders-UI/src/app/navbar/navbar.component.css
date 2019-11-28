@@ -10,6 +10,9 @@ img#logo {
     margin-right: 1rem;
 }
 
+button {
+    background-color: #007BFF;
+}
 li.nav-item {
     padding: .2rem .5rem .2rem .5rem;
 }

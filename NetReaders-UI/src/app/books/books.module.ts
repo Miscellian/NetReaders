@@ -17,6 +17,9 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     RouterModule,
     NgbPaginationModule
+  ],
+  exports: [
+    BooklistItemComponent
   ]
 })
 export class BooksModule { }

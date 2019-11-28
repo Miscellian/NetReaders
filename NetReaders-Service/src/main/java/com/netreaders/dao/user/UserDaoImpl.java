@@ -1,46 +1,47 @@
 package com.netreaders.dao.user;
 
+import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.DuplicateModelException;
+import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.User;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Types;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Log4j
 @PropertySource("classpath:query.properties")
+@AllArgsConstructor
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private Environment env;
+    private final Environment env;
+    private final JdbcTemplate template;
+    private final UserMapper userMapper;
 
-    private JdbcTemplate template;
-
-    private UserMapper userMapper;
-
-    @Autowired
-    public UserDaoImpl(Environment env, JdbcTemplate template, UserMapper userMapper) {
-        this.env = env;
-        this.template = template;
-        this.userMapper = userMapper;
+    public UserDaoImpl(UserMapper userMapper, Environment env, JdbcTemplate template){
+        this.env=env;
+        this.userMapper=userMapper;
+        this.template=template;
     }
 
     @Override
-    public User create(final User user) throws SQLException {
+    public User create(final User user) {
 
         final String sql_query = env.getProperty("user.create");
 
@@ -49,38 +50,44 @@ public class UserDaoImpl implements UserDao {
         // save object into DB and return auto generated PK via KeyHolder
         // or throws DuplicateKeyException if record exist in table
         try {
-            final int update = template.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, user.getUsername());
-                    ps.setString(2, user.getUserPassword());
-                    ps.setString(3, user.getEmail());
-                    ps.setString(4, user.getFirstName());
-                    ps.setString(5, user.getLastName());
-                    return ps;
-                }
-            }, holder);
+            final int update = template.update(creator(sql_query, user), holder);
 
-            Integer newId;
-            if (holder.getKeys().size() > 1) {
-                newId = (Integer) holder.getKeys().get("user_id");
-            } else {
-                newId = holder.getKey().intValue();
-            }
-            user.setUserId(newId);
-            log.debug(String.format("Create a new user with id '%s'", newId));
+            user.setUserId(retrieveId(holder));
 
+            log.debug(String.format("Created a new user with id '%s'", user.getUserId()));
             return user;
-
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUsername()));
-            throw new SQLException("Internal sql exception");
+            throw new DuplicateModelException("Internal sql exception");
+        } catch (SQLException e) {
+            log.error("User creation fail!");
+            throw new DataBaseSQLException("User creation fail!");
         }
     }
 
     @Override
-    public void update(User user) throws SQLException {
+    public User getById(Integer id) {
+
+        String sql_query = env.getProperty("user.read");
+
+        List<User> users = template.query(sql_query, userMapper, id);
+
+        checkIfCollectionIsNull(users);
+
+        if (users.isEmpty()) {
+            log.debug(String.format("Didn't find any user by id '%s'", id));
+            throw new NoSuchModelException(String.format("Didn't find any user by id '%s'", id));
+        } else if (users.size() == 1) {
+            log.debug(String.format("Found a user by id '%s'", id));
+            return users.get(0);
+        } else {
+            log.error(String.format("Found more than one user by id '%s'", id));
+            throw new DataBaseSQLException(String.format("Found more than one user by id '%s'", id));
+        }
+    }
+
+    @Override
+    public void update(User user) {
 
         String sql_query = env.getProperty("user.update");
 
@@ -94,17 +101,17 @@ public class UserDaoImpl implements UserDao {
                 user.getUserId());
 
         if (recordCount == 0) {
-            log.debug(String.format("Dont update any user by id '%d'", user.getUserId()));
+            log.debug(String.format("Didn't update any user by id '%d'", user.getUserId()));
         } else if (recordCount == 1) {
-            log.debug(String.format("Update user by id '%d'", user.getUserId()));
+            log.debug(String.format("Updated user by id '%d'", user.getUserId()));
         } else {
-            log.error(String.format("Update more than one user by id '%d'", user.getUserId()));
-            throw new SQLException("Internal sql exception");
+            log.error(String.format("Updated more than one user by id '%d'", user.getUserId()));
+            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getUserId()));
         }
     }
 
     @Override
-    public void delete(User user) throws SQLException {
+    public void delete(User user) {
 
         String sql_query = env.getProperty("user.delete");
 
@@ -112,12 +119,12 @@ public class UserDaoImpl implements UserDao {
         int recordCount = template.update(sql_query, id);
 
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any user by id '%d'", id));
+            log.debug(String.format("Didn't delete any user by id '%d'", id));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete user by id '%d'", id));
+            log.debug(String.format("Deleted user by id '%d'", id));
         } else {
-            log.error(String.format("Delete more than one user by '%d'", id));
-            throw new SQLException("Internal sql exception");
+            log.error(String.format("Deleted more than one user by '%d'", id));
+            throw new DataBaseSQLException(String.format("Delete more than one user by '%d'", id));
         }
     }
 
@@ -128,29 +135,29 @@ public class UserDaoImpl implements UserDao {
 
         List<User> users = template.query(sql_query, userMapper);
         if (users.isEmpty()) {
-            log.debug("Dont find any user");
+            log.debug("Didn't find any book");
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d user(s)", users.size()));
+            log.debug(String.format("Found %d user(s)", users.size()));
             return users;
         }
     }
 
     @Override
-    public User findByUsername(String username) throws SQLException {
+    public User findByUsername(String username) {
 
         String sql_query = env.getProperty("user.findByNickname");
 
         List<User> users = template.query(sql_query, userMapper, username);
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by nickname '%s'", username));
-            return null;
+            log.debug(String.format("Didn't find any user by nickname '%s'", username));
+            throw new NoSuchModelException(String.format("Didn't find any user by nickname '%s'", username));
         } else if (users.size() == 1) {
-            log.debug(String.format("Find a user by nickname '%s'", username));
+            log.debug(String.format("Found a user by nickname '%s'", username));
             return users.get(0);
         } else {
-            log.error(String.format("Find more than one user by nickname '%s'", username));
-            throw new SQLException("Internal sql exception");
+            log.error(String.format("Found more than one user by nickname '%s'", username));
+            throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", username));
         }
     }
 
@@ -161,16 +168,16 @@ public class UserDaoImpl implements UserDao {
 
         List<User> users = template.query(sql_query, userMapper, firstName);
         if (users.isEmpty()) {
-            log.debug(String.format("Dont find any user by first name '%s'", firstName));
+            log.debug(String.format("Didn't find any user by first name '%s'", firstName));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Find %d user(s) by first name '%s'", users.size(), firstName));
+            log.debug(String.format("Found %d user(s) by first name '%s'", users.size(), firstName));
             return users;
         }
     }
 
     @Override
-    public void deleteByUsername(String username) throws SQLException {
+    public void deleteByUsername(String username) {
 
         String sql_query = env.getProperty("user.deleteByNickname");
 
@@ -181,26 +188,42 @@ public class UserDaoImpl implements UserDao {
             log.debug(String.format("Delete user by nickname '%s'", username));
         } else {
             log.error(String.format("Delete more than one user by nickname '%s'", username));
-            throw new SQLException("Internal sql exception");
+            throw new DataBaseSQLException(String.format("Delete more than one user by nickname '%s'", username));
         }
     }
 
-    @Override
-    public User getById(Integer id) throws SQLException {
+    private void checkIfCollectionIsNull(Collection<User> collection) {
+        if (collection == null) {
+            // unreachable, but who knows (:
+            log.error("Get `null` reference from jdbcTemplate");
+            throw new DataBaseSQLException("Get `null` reference from jdbcTemplate");
+        }
+    }
 
-        String sql_query = env.getProperty("user.read");
+    private PreparedStatementCreator creator(String sql, User user) throws SQLException {
 
-        List<User> users = template.query(sql_query, userMapper, id);
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
+        factory.setReturnGeneratedKeys(true);
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
 
-        if (users.isEmpty()) {
-            log.debug(String.format("Don't find any user by id '%s'", id));
-            return null;
-        } else if (users.size() == 1) {
-            log.debug(String.format("Find a user by id '%s'", id));
-            return users.get(0);
+        return factory.newPreparedStatementCreator(Arrays.asList(
+                user.getUsername(),
+                user.getUserPassword(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()));
+    }
+
+    private Integer retrieveId(KeyHolder holder) {
+
+        if (holder.getKeys() != null && holder.getKeys().size() > 0) {
+            return (Integer) holder.getKeys().get("user_id");
         } else {
-            log.error(String.format("Find more than one user by id '%s'", id));
-            throw new SQLException("Internal sql exception");
+            return holder.getKey().intValue();
         }
     }
 }

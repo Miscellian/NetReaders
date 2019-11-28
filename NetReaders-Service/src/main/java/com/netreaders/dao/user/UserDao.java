@@ -1,19 +1,18 @@
 package com.netreaders.dao.user;
 
 import com.netreaders.dao.GenericDao;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.User;
-import org.springframework.jdbc.support.xml.SqlXmlFeatureNotImplementedException;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
 public interface UserDao extends GenericDao<User, Integer> {
 
-    User findByUsername(String username) throws SQLException;
+    User findByUsername(String username) throws DataBaseSQLException;
 
-    Collection<User> findByFirstName(String firstName);
+    Collection<User> findByFirstName(String firstName) throws DataBaseSQLException;
 
-    void deleteByUsername(String username) throws SQLException;
-
-    User getById(Integer id) throws SQLException;
+    void deleteByUsername(String username) throws DataBaseSQLException;
+    User create(final User user) throws DatabaseSQLException;
+    User getById(Integer id) throws DatabaseSQLException
 }

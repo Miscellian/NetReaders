@@ -1,0 +1,8 @@
+<app-booklist-item [bookdto]="review.book"></app-booklist-item>
+<h1>{{review.description}}</h1>
+<h2>Rating : {{review.rating}}</h2>
+<div *ngIf="isReviewModerator() && !review.published">
+    <button (click)="onPublish()">
+        Publish review
+    </button>
+</div>
