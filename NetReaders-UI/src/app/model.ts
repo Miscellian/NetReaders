@@ -30,14 +30,14 @@ export class Author {
 }
 
 export class User {
-  user_name: string;
+  userId: number;
+  username: string;
+  userPassword: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-  token: string;
+  profilePhoto: number;
 }
-
 export class LoginInfo {
   token: string;
   type: string;

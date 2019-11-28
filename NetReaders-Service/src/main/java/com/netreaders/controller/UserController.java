@@ -25,6 +25,10 @@ import com.netreaders.security.JwtProvider;
 import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
 import com.netreaders.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/users")

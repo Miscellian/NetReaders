@@ -1,23 +1,67 @@
 nav {
     font-family: 'Lato', sans-serif;
+    font-size: 1.5rem;
     background-color: #68C5FA;
 }
 
-.logo {
-    color: #fff;
-    font-family: 'cabin', sans-serif;
-    font-size: 1.5em;
+img#logo {
+    width: 4rem;
+    height: auto;
+    margin-right: 1rem;
 }
 
 button {
     background-color: #007BFF;
 }
-.btn {
-    background-color: #68C5FA;
-    color: #007BFF;
-    padding: .5rem 1rem;
+li.nav-item {
+    padding: .2rem .5rem .2rem .5rem;
+}
+
+button#dropdown-genres {
+    padding: .45rem;
+    font-size: 1.5rem;
+    color: #eeeeee;
+}
+
+a#dropdown-genre-item {
+    font-size: 1.5rem;
+}
+
+input#search-book {
+    font-size: 1.5rem;
 }
 
 div.dropdown-menu {
-    border: .1rem solid #007BFF;
+    border: .1rem solid #343a40;
+}
+
+img#navbar-profile-photo {
+    width: 4rem;
+    height: auto;
+}
+
+a#profile-text {
+    display: none;
+}
+nav.navbar {
+    margin-bottom: 5%;
+}
+
+@media screen and (max-width: 767px) {
+    img#navbar-profile-photo {
+        display: none;
+    }
+    a#profile-text {
+        display: inline;
+    }
+}
+
+a.dropdown-item:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+a.dropdown-item:focus {
+    background-color: #565c62;
+    color: #dddddd;
 }

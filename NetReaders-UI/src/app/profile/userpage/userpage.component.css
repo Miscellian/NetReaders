@@ -1,0 +1,20 @@
+img#profile-photo {
+    margin-bottom: 10%;
+}
+
+span#profile-name {
+    font-size: 2em;
+}
+
+span#profile-username {
+    font-size: 2em;
+}
+
+span#profile-email {
+    font-size: 2em;
+}
+
+div#profile-user-description {
+    margin-top: 3%;
+}
+
