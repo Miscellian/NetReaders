@@ -184,7 +184,7 @@ public class BookService {
         try {
             Integer count = bookDao.getCountByName(name);
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException | SQLException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
