@@ -31,8 +31,13 @@ public class ReviewService {
 		}
 		return review;
 	}
-	public void addReview(Review review) throws SQLException{
-		reviewDao.create(review);
+	
+	public void addReview(Review review){
+		try {
+			reviewDao.create(review);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Collection<Review> getByBook(int bookId, int amount, int offset){
@@ -78,6 +83,16 @@ public class ReviewService {
 	public void updateReview(Review review){
 		try {
 			reviewDao.update(review);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void publishReview(int reviewId) {
+		try {
+			Review review = reviewDao.getById(reviewId);
+			review.setPublished(true);
+			updateReview(addBooktoReview(review));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

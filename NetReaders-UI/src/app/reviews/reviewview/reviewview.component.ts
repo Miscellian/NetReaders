@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../review.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Review } from '../../model';
+import { Review, Authority } from '../../model';
 import {BooklistItemComponent} from '../../books/booklist-item/booklist-item.component';
+import { HttpResponse, HttpResponseBase } from '@angular/common/http';
 
 @Component({
   selector: 'app-reviewview',
@@ -33,4 +34,24 @@ export class ReviewviewComponent implements OnInit {
     console.log('a');
   }
 
+  isReviewModerator(): boolean {
+    const authorities: Authority[]  = JSON.parse(localStorage.getItem('Authorities'));
+    if(authorities === null) return false;
+    
+    return authorities
+    .map((val,index,arr) => val.authority)
+    .includes('REVIEW_MODERATOR');
+  }
+
+  onPublish() {
+    this.reviewService.publishReview(this.review).subscribe(
+      response => {
+        if (response.status !== 200) {
+          this.router.navigate(['/error']);
+        } else {
+          alert('Updated successfuly!');
+        }
+      }
+    )
+  }
 }

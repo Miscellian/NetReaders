@@ -9,6 +9,7 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
 import { LoginComponent } from './login/login.component';
 import { ConfirmUserComponent } from './confirmUser/confirmUser.component';
 import { ReviewviewComponent } from './reviews/reviewview/reviewview.component';
+import { CreateReviewComponent } from './reviews/create-review/create-review.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
   {
     path: 'reviews',
     children: [
+      { path: 'add/:bookid', component: CreateReviewComponent},
       { path: ':id', component: ReviewviewComponent }
     ]
   }

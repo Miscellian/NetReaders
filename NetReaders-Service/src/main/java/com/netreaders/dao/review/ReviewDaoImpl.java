@@ -3,6 +3,7 @@ package com.netreaders.dao.review;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +59,7 @@ public class ReviewDaoImpl implements ReviewDao {
                 newId = holder.getKey().intValue();
             }
             review.setReviewId(newId);
-            log.debug(String.format("Create a new review with id '%s'", newId));
+            log.debug(String.format("Create a new review with id '%d'", newId));
 
             return review;
 
@@ -74,13 +75,13 @@ public class ReviewDaoImpl implements ReviewDao {
 
         List<Review> reviews = template.query(sql_query, reviewMapper, id);
         if (reviews.isEmpty()) {
-            log.debug(String.format("Dont find any review by id '%s'", id));
+            log.debug(String.format("Dont find any review by id '%d'", id));
             return null;
         } else if (reviews.size() == 1) {
-            log.debug(String.format("Find a review by id '%s'", id));
+            log.debug(String.format("Find a review by id '%d'", id));
             return reviews.get(0);
         } else {
-            log.error(String.format("Find more than one review by id '%s'", id));
+            log.error(String.format("Find more than one review by id '%d'", id));
             throw new SQLException("Internal sql exception");
         }
 	}
@@ -91,12 +92,12 @@ public class ReviewDaoImpl implements ReviewDao {
         long id = review.getReviewId();
 
         int recordCount = template.update(sql_query, new Object[] {
-        		review.getBook().getBook().getId(),
         		review.getRating(),
         		review.getDescription(),
-        		review.isPublished()
-        }, id);
-
+        		review.isPublished(),
+        		id
+        });
+        
         if (recordCount == 0) {
             log.debug(String.format("Dont update any review by id '%d'", id));
         } else if (recordCount == 1) {

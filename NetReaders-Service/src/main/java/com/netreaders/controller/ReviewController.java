@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,20 +33,11 @@ public class ReviewController {
 		Review review = reviewService.getById(id);
 		if(!review.isPublished()) {
 			List<String> roles = new JwtProvider().getAuthoritiesFromToken(token);
-			if(roles == null || !roles.contains("REVIEW_MODERATOR"))
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).allow(HttpMethod.GET).build();
+			if(roles == null || !roles.contains("REVIEW_MODERATOR")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			}
 		}
 		return ResponseEntity.ok(review);
-	}
-
-	@GetMapping("published/{id}")
-	public Review getPublishedReviewById(@PathVariable int id) {
-		return reviewService.getById(id);
-	}
-	
-	@GetMapping("unpublished/{id}")
-	public Review getUnpublishedReviewById(@PathVariable int id) {
-		return reviewService.getById(id);
 	}
 	
 	@GetMapping("published/bybook")
@@ -59,5 +52,17 @@ public class ReviewController {
 		return reviewService.getUnpublishedByBookId(bookid, amount, offset);
 	}
 	
+	@PostMapping("add")
+	public ResponseEntity<?> createReview(@RequestBody Review review){
+		review.setPublished(false);
+		reviewService.addReview(review);
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("publish")
+	public ResponseEntity<?> publishReview(@RequestParam(name = "id") String reviewId) {
+		reviewService.publishReview(Integer.parseInt(reviewId));
+		return ResponseEntity.ok().build();
+	}
 	
 }

@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/users/createModerator").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
         .antMatchers("/userpage").hasAuthority("USER")
         .antMatchers("/api/reviews/unpublished/**").hasAuthority("REVIEW_MODERATOR")
+        .antMatchers("/api/reviews/publish").hasAuthority("REVIEW_MODERATOR")
         .anyRequest().permitAll()
         .and()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
