@@ -3,8 +3,6 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
 import {AuthenticationService} from '../login/authentication.service';
 import {Router} from '@angular/router';
 import {UserService} from './user.service';
-import {first} from "rxjs/operators";
-import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +10,6 @@ import {Subject} from "rxjs";
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  private subject = new Subject<any>();
   registerForm: FormGroup;
   loading = false;
   submitted = false;
@@ -57,7 +54,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
+    console.log(this.registerForm = this.formBuilder.group({
       user_name: ['', [Validators.required, Validators.minLength(1)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -66,7 +63,8 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, this.passwordValidator]],
       confirm_password: ['', [Validators.required, this.checkPasswords]
       ]
-    });
+    }));
+    console.log()
   }
 
   // convenience getter for easy access to form fields
@@ -86,10 +84,10 @@ export class SignupComponent implements OnInit {
     this.userService.register(this.registerForm)
         .subscribe(response => {
           if (response.status !== 200) {
-            this.router.navigate(['/error']);
+            this.router.navigate['/error'];
             this.loading = false;
           } else {
-            this.router.navigate(['/login']);
+            this.router.navigate['/login'];
           }
         });
   }

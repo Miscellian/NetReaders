@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Announcement {
 
+    private Integer id;
     private Date announcement_date;
     private String description;
     private Boolean published;

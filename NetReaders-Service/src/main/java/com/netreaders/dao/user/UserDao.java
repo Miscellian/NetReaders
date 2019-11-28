@@ -1,18 +1,18 @@
 package com.netreaders.dao.user;
 
 import com.netreaders.dao.GenericDao;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.User;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
-public interface UserDao extends GenericDao<User, Long> {
+public interface UserDao extends GenericDao<User, Integer> {
 
-    User findByNickname(String nickname) throws SQLException;
+    User findByUsername(String username) throws DataBaseSQLException;
 
-    Collection<User> findByFirstName(String firstName);
+    Collection<User> findByFirstName(String firstName) throws DataBaseSQLException;
 
-    void deleteByNickname(String nickname) throws SQLException;
-
-    User create(final User user) throws SQLException;
+    void deleteByUsername(String username) throws DataBaseSQLException;
+    User create(final User user) throws DatabaseSQLException;
+    User getById(Integer id) throws DatabaseSQLException
 }

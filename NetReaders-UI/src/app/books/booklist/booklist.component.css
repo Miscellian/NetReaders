@@ -3,10 +3,18 @@
      border: 1px solid#007BFF;
  }
 
- 
-@media screen and (max-width: 767px) {
-    hr#splitter {
-        display: block;
-    }
-   
+
+ @media screen and (max-width: 767px) {
+     hr#splitter {
+         display: block;
+     }
+
+ }
+ /deep/ .pagination .page-item .page-link {
+      border-radius: .2rem;
   }
+
+ /deep/ .pagination .page-link {
+     background-color: #343a40 !important;
+     color: #dddddd !important;
+ }

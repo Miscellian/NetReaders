@@ -43,7 +43,7 @@ public class EmailService {
     	helper.setSubject("Registration confirmation");
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>To finish your registration please click the link below:</h2>\n");
-		builder.append("<a href=http://localhost:8080/confirmRegistration?token=");
+		builder.append("<a href=http://localhost:4200/confirmUser?token=");
 		builder.append(token.getToken());
 		builder.append("><button style=\"width: 200px; padding: 20px; color: #f0f0f0; border: none; background: #5db4e9; font-size: 14px; margin: 20px auto; display: block; cursor: pointer!important;\">Confirm Registration</button></a>");
 		helper.setText(builder.toString(),true);

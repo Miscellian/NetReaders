@@ -6,8 +6,7 @@ import {ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { UserpageComponent } from './userpage/userpage.component';
-import { AdminslistComponent } from './adminslist/adminslist.component';
+import { UserpageComponent } from './profile/userpage/userpage.component';
 import { SignupComponent} from './signup/signup.component';
 import { CommonModule } from '@angular/common';
 import { BooksModule } from './books/books.module';
@@ -15,6 +14,9 @@ import { LoginComponent } from './login/login.component';
 import {AuthGuard} from './_helpers/auth.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { UserbooklistComponent } from './profile/userbooklist/userbooklist.component';
+import { ProfileComponent } from './profile/profile.component';
 
 import {AuthenticationService} from './login/authentication.service';
 import {UserService} from './signup/user.service';
@@ -29,10 +31,12 @@ import { ReviewsModule } from './reviews/reviews.module';
     AppComponent,
     NavbarComponent,
     UserpageComponent,
-    AdminslistComponent,
-    SignupComponent,
     ErrorpageComponent,
+    SignupComponent,
     LoginComponent,
+    HomepageComponent,
+    UserbooklistComponent,
+    ProfileComponent
     ConfirmUserComponent
   ],
   imports: [

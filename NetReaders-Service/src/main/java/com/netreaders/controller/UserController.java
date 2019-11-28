@@ -25,22 +25,30 @@ import com.netreaders.security.JwtProvider;
 import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
 import com.netreaders.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	@Autowired
+
 	private UserService userService;
-	
-	@Autowired
 	private EmailService emailService;
-	@Autowired
 	private RegistrationTokenService registrationTokenService;
+	private AuthenticationManager authenticationManager;
+	private JwtProvider jwtProvider;
+
 	@Autowired
-	AuthenticationManager authenticationManager;
-	@Autowired
-	JwtProvider jwtProvider;
-	
+	public UserController(UserService userService, EmailService emailService, RegistrationTokenService registrationTokenService, AuthenticationManager authenticationManager, JwtProvider jwtProvider){
+		this.userService=userService;
+		this.emailService=emailService;
+		this.registrationTokenService=registrationTokenService;
+		this.authenticationManager=authenticationManager;
+		this.jwtProvider=jwtProvider;
+	}
+
 	@PostMapping("/registration")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) throws SQLException {
 		User user = userService.findByNickname(signUpForm.getUser_name());

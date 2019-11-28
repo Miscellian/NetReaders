@@ -1,0 +1,41 @@
+<div class="container">
+    <hr>
+    <div *ngIf="bookdtos.length > 0; else elseBlock">
+        <div class="row">
+            <div class="col-md-3">
+                <span id="library-text">Library</span>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <a class="btn" href="/books/byuser/{{user.username}}/1" id="profile-booklist-button">View all</a>
+            </div>
+        </div>
+        <div class="row">
+            <div *ngFor="let bookdto of bookdtos; let i = index" class="col-md-3">
+                <div *ngIf="i != 4">
+                    <a href="books/{{bookdto.book.id}}">
+                        <img alt="book-image"
+                             class="rounded profile-booklist-preview-photo"
+                             src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+                    </a>
+                    <br/>
+                    <span>
+                <a class="profile-book-title"
+                   href="books/{{bookdto.book.id}}"><b>
+                    {{bookdto.book.title}}
+                </b></a>
+            </span><br/>
+                    <div *ngFor="let author of bookdto.authors">
+                        <span class="profile-book-author">{{author.name}}</span>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #elseBlock>
+        <span id="empty-library-text">
+            Your library is empty, add books to see them here
+        </span>
+    </ng-template>
+</div>

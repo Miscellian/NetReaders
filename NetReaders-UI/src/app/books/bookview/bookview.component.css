@@ -5,7 +5,7 @@ img#book-title-image {
 a.btn {
   display: block;
   margin-bottom: 5%;
-  background-color: #007BFF;
+  background-color: #343a40;
   border-color: #28a745;
   font-size:x-large
 }
@@ -31,7 +31,7 @@ div.header {
 div#description-container {
   margin-top: 5%;
   padding: 2%;
-  border: .15vw ridge #68C5FA;
+  border: .15vw ridge #343a40;
   border-radius: 10px;
 }
 
