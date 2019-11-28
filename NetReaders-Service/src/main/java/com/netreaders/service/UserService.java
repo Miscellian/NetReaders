@@ -8,27 +8,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.netreaders.dao.role.RoleDao;
 import com.netreaders.dao.user.UserDao;
 import com.netreaders.dto.SignUpForm;
+import com.netreaders.models.ResponseMessage;
 import com.netreaders.models.Role;
 import com.netreaders.models.User;
+import com.netreaders.utils.ResponseMessagePrepearer;
 
 @Service
 public class UserService implements UserDetailsService{
 
 	private UserDao userDao;
 	private RoleDao roleDao;
-	private BCryptPasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(BCryptVersion.$2A);
 
 	@Autowired
-	public UserService(UserDao userDao, RoleDao roleDao, BCryptPasswordEncoder passwordEncoder){
+	public UserService(UserDao userDao, RoleDao roleDao){
 		this.userDao=userDao;
 		this.roleDao=roleDao;
-		this.passwordEncoder=passwordEncoder;
 	}
 
 
@@ -37,8 +39,8 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUser_name());
-		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
+		user.setUsername(signUpForm.getUsername());
+		String hashedPassword = passwordEncoder.encode(signUpForm.getUserPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());
 		Role role;
@@ -59,8 +61,8 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUser_name());
-		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
+		user.setUsername(signUpForm.getUsername());
+		String hashedPassword = passwordEncoder.encode(signUpForm.getUserPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());
 		Role role;
@@ -80,8 +82,8 @@ public class UserService implements UserDetailsService{
 
 	
 
-	public User findByNickname(String username) throws SQLException {
-		return userDao.findByNickname(username);
+	public User findByUsername(String username) throws SQLException {
+		return userDao.findByUsername(username);
 	}
 
 
@@ -91,7 +93,7 @@ public class UserService implements UserDetailsService{
 		User user;
 		Collection<Role> roles;
 		try {
-			user = userDao.findByNickname(username);
+			user = userDao.findByUsername(username);
 			roles= roleDao.findByUserId(user.getUserId());
 			return UserPrinciple.build(user, roles);
 		} catch (SQLException e) {
@@ -101,6 +103,17 @@ public class UserService implements UserDetailsService{
 		 
 		
 	}
+	
+	public ResponseMessage<User> findUserByUsername(String username) {
+        ResponseMessage<User> message = new ResponseMessage<>();
+        try {
+            User user = userDao.findByUsername(username);
+            message.setObj(user);
+        } catch (RuntimeException e) {
+            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
+        }
+        return message;
+    }
 
 
 

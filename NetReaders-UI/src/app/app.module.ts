@@ -36,7 +36,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     LoginComponent,
     HomepageComponent,
     UserbooklistComponent,
-    ProfileComponent
+    ProfileComponent,
     ConfirmUserComponent
   ],
   imports: [

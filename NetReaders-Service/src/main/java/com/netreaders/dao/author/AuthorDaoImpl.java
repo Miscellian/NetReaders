@@ -30,13 +30,8 @@ import java.util.List;
 public class AuthorDaoImpl implements AuthorDao {
 
 	private JdbcTemplate template;
-        private final Environment env;
+    private final Environment env;
     private AuthorMapper authorMapper;
-    public AuthorDaoImpl(AuthorMapper authorMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.authorMapper=authorMapper;
-        this.template=template;
-    }
 
     @Override
     public Author create(Author author) {

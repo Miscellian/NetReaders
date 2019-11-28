@@ -1,5 +1,4 @@
 package com.netreaders.service;
-
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.stream.Collector;
@@ -26,7 +25,7 @@ public class ReviewService {
 		try {
 			book = bookDao.getByReviewId(review.getReviewId());
 			review.setBook(bookService.findBookById(book.getId().toString()).getObj());
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return review;

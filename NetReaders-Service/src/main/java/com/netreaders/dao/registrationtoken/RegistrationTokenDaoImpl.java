@@ -16,24 +16,18 @@ import org.springframework.stereotype.Repository;
 import com.netreaders.models.Author;
 import com.netreaders.models.RegistrationToken;
 
-
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @PropertySource("classpath:query.properties")
 @Repository
+@AllArgsConstructor
 public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
 
     private RegistrationTokenMapper tokenMapper;
     private Environment env;
 	private JdbcTemplate template;
-
-    @Autowired
-    public RegistrationTokenDaoImpl(RegistrationTokenMapper tokenMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.tokenMapper=tokenMapper;
-        this.template=template;
-    }
 	@Override
 	public RegistrationToken findByToken(String token)  throws SQLException{
 		

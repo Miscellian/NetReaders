@@ -46,15 +46,13 @@ public class BookService {
             int numericGenreId = Integer.parseInt(genre_id);
             int numericAmount = Integer.parseInt(amount);
             int numericOffset = Integer.parseInt(offset);
-            Collection<Book> books = bookDao.findBooksByGenre(numericGenreId, numericAmount, numericOffset);
+            Collection<Book> books = bookDao.findByGenre(numericGenreId, numericAmount, numericOffset);
             Collection<BookDto> bookDtos = books.stream()
                     .map(this::tryCreateBookDto)
                     .collect(Collectors.toCollection(ArrayList::new));
             message.setObj(bookDtos);
         } catch (NumberFormatException e) {
             ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
@@ -67,15 +65,13 @@ public class BookService {
             int numericAuthorId = Integer.parseInt(author_id);
             int numericAmount = Integer.parseInt(amount);
             int numericOffset = Integer.parseInt(offset);
-            Collection<Book> books = bookDao.findBooksByAuthor(numericAuthorId, numericAmount, numericOffset);
+            Collection<Book> books = bookDao.findByAuthor(numericAuthorId, numericAmount, numericOffset);
             Collection<BookDto> bookDtos = books.stream()
                     .map(this::tryCreateBookDto)
                     .collect(Collectors.toCollection(ArrayList::new));
             message.setObj(bookDtos);
         } catch (NumberFormatException e) {
             ResponseMessagePrepearer.prepareMessage(message, "Invalid numeric parameters");
-        } catch (RuntimeException | SQLException e) {
-            ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
     }
@@ -117,12 +113,12 @@ public class BookService {
         try {
             int numericAmount = Integer.parseInt(amount);
             int numericOffset = Integer.parseInt(offset);
-            Collection<Book> books = bookDao.getByName(name.toLowerCase(), numericAmount, numericOffset);
+            Collection<Book> books = bookDao.findByName(name.toLowerCase(), numericAmount, numericOffset);
             Collection<BookDto> bookDtos = books.stream()
                     .map(this::tryCreateBookDto)
                     .collect(Collectors.toCollection(ArrayList::new));
             message.setObj(bookDtos);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -149,7 +145,7 @@ public class BookService {
         try {
             Integer count = bookDao.getCount();
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -161,7 +157,7 @@ public class BookService {
             int numericId = Integer.parseInt(id);
             Integer count = bookDao.getCountByAuthor(numericId);
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -173,7 +169,7 @@ public class BookService {
             int numericId = Integer.parseInt(id);
             Integer count = bookDao.getCountByGenre(numericId);
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch ( RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -184,7 +180,7 @@ public class BookService {
         try {
             Integer count = bookDao.getCountByName(name);
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
         }
         return message;
@@ -195,9 +191,9 @@ public class BookService {
         try {
             Integer count = bookDao.getCountByUsername(username);
             message.setObj(count);
-        } catch (SQLException | RuntimeException e) {
+        } catch (RuntimeException | SQLException e) {
             ResponseMessagePrepearer.prepareMessage(message, e.getMessage());
-        }
+        } 
         return message;
     }
 }

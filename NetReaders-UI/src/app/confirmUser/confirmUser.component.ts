@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../login/authentication.service';
 import {Observable, Subscription} from 'rxjs';
-import {Subscription} from "rxjs";
 import {HttpClient} from '@angular/common/http';
 import {ResponseMessage, User} from '../model';
 

@@ -32,11 +32,6 @@ public class GenreDaoImpl implements GenreDao {
     private final JdbcTemplate template;
     private final Environment env;
     private GenreMapper genreMapper;
-    public GenreDaoImpl(GenreMapper genreMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.genreMapper=genreMapper;
-        this.template=template;
-    }
 
     @Override
     public Genre create(Genre genre) {

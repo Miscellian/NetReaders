@@ -4,6 +4,7 @@ import com.netreaders.dao.GenericDao;
 import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Book;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface BookDao extends GenericDao<Book, Integer> {
@@ -15,6 +16,8 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> findAll(int amount, int offset) throws DataBaseSQLException;
 
     Collection<Book> findByName(String name, int amount, int offset) throws DataBaseSQLException;
+    
+    Collection<Book> getById(int amount, int offset) throws SQLException;
 
     Integer getCount() throws DataBaseSQLException;
 
@@ -29,7 +32,10 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> findByAnnouncementWithGenre(Integer announcementId, Integer genreId) throws DataBaseSQLException;
 
     Collection<Book> findByAnnouncementWithAuthor(Integer announcementId, Integer authorId) throws DataBaseSQLException;
-
     
     Book getByReviewId(int id) throws SQLException;
+    
+    Integer getCountByUsername(String username) throws SQLException;
+    
+    Collection<Book> getByUsername(String username, int amount, int offset) throws SQLException;
 }

@@ -33,12 +33,6 @@ public class BookDaoImpl implements BookDao {
     private final JdbcTemplate template;
     private final Environment env;
     private final BookMapper bookMapper;
-
-    public BookDaoImpl(BookMapper bookMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.bookMapper=bookMapper;
-        this.template=template;
-    }
     @Override
     public Book create(Book book) {
 
@@ -356,4 +350,39 @@ public class BookDaoImpl implements BookDao {
             throw new SQLException("Internal sql exception");
         }
 	}
+	@Override
+	public Integer getCountByUsername(String username) throws SQLException {
+		String sql_query = env.getProperty("book.getCountByUsername");
+
+        Integer count = template.queryForObject(sql_query, new Object[] {"root"}, Integer.class);
+
+        log.debug(String.format("Found %d books for user '%s'", count, username));
+        return count;
+	}
+	@Override
+	public Collection<Book> getByUsername(String username, int amount, int offset) throws SQLException {
+        String sql_query = env.getProperty("book.getByUsername");
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any books for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d book(s) for user '%s'", books.size(), username));
+            return books;
+        }
+	}
+	@Override
+	public Collection<Book> getById(int amount, int offset) throws SQLException {
+		String sql_query = env.getProperty("book.getById");
+
+        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Dont find any book with offset '%d'", offset));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Find %d book(s) with offset '%d'", books.size(), offset));
+            return books;
+        }
+    }
 }

@@ -20,6 +20,7 @@ import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
 import com.netreaders.models.RegistrationToken;
+import com.netreaders.models.ResponseMessage;
 import com.netreaders.models.User;
 import com.netreaders.security.JwtProvider;
 import com.netreaders.service.EmailService;
@@ -51,7 +52,7 @@ public class UserController {
 
 	@PostMapping("/registration")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUser_name());
+		User user = userService.findUserByUsername(signUpForm.getUsername()).getObj();
 		if (user != null) {
 			return ResponseEntity.badRequest().body("User already exists");
 		}
@@ -64,7 +65,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginForm loginForm) throws SQLException {
-		User user = userService.findByNickname(loginForm.getUsername());
+		User user = userService.findByUsername(loginForm.getUsername());
 		if(user != null) {
 			if(registrationTokenService.getByUser(user) != null) {
 				return ResponseEntity.badRequest().body("Finish your registration first");
@@ -93,7 +94,7 @@ public class UserController {
 	}
 	@PostMapping("/createAdmin")
 	public boolean createAdmin(@RequestBody SignUpForm signUpForm) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUser_name());
+		User user = userService.findByUsername(signUpForm.getUsername());
 		if (user != null) {
 			return false;
 		}
@@ -105,7 +106,7 @@ public class UserController {
 	@PostMapping("/createModerator")
 	public boolean createModerator(@RequestBody SignUpForm signUpForm,
 								   @RequestBody String[] roles) throws SQLException {
-		User user = userService.findByNickname(signUpForm.getUser_name());
+		User user = userService.findByUsername(signUpForm.getUsername());
 		if (user != null) {
 			return false;
 		}
@@ -113,5 +114,10 @@ public class UserController {
 		
 		return true;
 	}
+	
+	@GetMapping(value = "{username}")
+    public ResponseMessage<User> findUserByUsername(@PathVariable String username) {
+        return userService.findUserByUsername(username);
+    }
 	
 }
