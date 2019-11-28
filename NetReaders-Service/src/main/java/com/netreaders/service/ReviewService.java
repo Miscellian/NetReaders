@@ -19,10 +19,13 @@ import lombok.AllArgsConstructor;
 public class ReviewService {
 	private ReviewDao reviewDao;
 	private BookDao bookDao;
+	private BookService bookService;
 	
 	private Review addBooktoReview(Review review) {
+		Book book;
 		try {
-			review.setBook(bookDao.getByReviewId(review.getReviewId()));
+			book = bookDao.getByReviewId(review.getReviewId());
+			review.setBook(bookService.findBookById(book.getId().toString()).getObj());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,8 +84,13 @@ public class ReviewService {
 	}
 	
 	public Review getById(int id){
+		Book book;
+		Review review;
 		try {
-			return reviewDao.getById(id);
+			book = bookDao.getByReviewId(id);
+			review = reviewDao.getById(id);
+			review.setBook(bookService.findBookById(book.getId().toString()).getObj());
+			return review;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

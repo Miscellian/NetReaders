@@ -15,10 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import com.netreaders.dao.genres.GenreMapper;
-import com.netreaders.models.Author;
-import com.netreaders.models.Book;
 import com.netreaders.models.Review;
 
 import lombok.extern.log4j.Log4j;
@@ -48,7 +44,7 @@ public class ReviewDaoImpl implements ReviewDao {
         try {
             template.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql_query, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, review.getBook().getId());
+                ps.setInt(1, review.getBook().getBook().getId());
                 ps.setInt(2, review.getRating());
                 ps.setString(3, review.getDescription());
                 ps.setBoolean(4, review.isPublished());
@@ -95,7 +91,7 @@ public class ReviewDaoImpl implements ReviewDao {
         long id = review.getReviewId();
 
         int recordCount = template.update(sql_query, new Object[] {
-        		review.getBook().getId(),
+        		review.getBook().getBook().getId(),
         		review.getRating(),
         		review.getDescription(),
         		review.isPublished()

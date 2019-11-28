@@ -1,14 +1,19 @@
 package com.netreaders.controller;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.netreaders.models.Review;
+import com.netreaders.security.JwtProvider;
 import com.netreaders.service.ReviewService;
 
 @RestController
@@ -21,10 +26,27 @@ public class ReviewController {
 	}
 
 	@GetMapping("{id}")
-	public Review getReviewById(@PathVariable int id) {
-		return reviewService.getById(id);
+	public ResponseEntity<?> getReviewById(@PathVariable int id,
+								@RequestHeader(value = "Authorization",required = false) String token) {
+		Review review = reviewService.getById(id);
+		if(!review.isPublished()) {
+			List<String> roles = new JwtProvider().getAuthoritiesFromToken(token);
+			if(roles == null || !roles.contains("REVIEW_MODERATOR"))
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).allow(HttpMethod.GET).build();
+		}
+		return ResponseEntity.ok(review);
 	}
 
+	@GetMapping("published/{id}")
+	public Review getPublishedReviewById(@PathVariable int id) {
+		return reviewService.getById(id);
+	}
+	
+	@GetMapping("unpublished/{id}")
+	public Review getUnpublishedReviewById(@PathVariable int id) {
+		return reviewService.getById(id);
+	}
+	
 	@GetMapping("published/bybook")
 	public Collection<Review> getPublishedReviewsByBook(@RequestParam(name = "id") int bookid,
 			@RequestParam(name = "amount") int amount, @RequestParam(name = "offset") int offset) {
@@ -36,4 +58,6 @@ public class ReviewController {
 			@RequestParam(name = "amount") int amount, @RequestParam(name = "offset") int offset) {
 		return reviewService.getUnpublishedByBookId(bookid, amount, offset);
 	}
+	
+	
 }

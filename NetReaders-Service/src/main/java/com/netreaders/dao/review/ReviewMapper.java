@@ -5,10 +5,12 @@ import java.sql.SQLException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.netreaders.dao.genres.GenreMapper;
 import com.netreaders.models.Review;
 
+@Component
 public class ReviewMapper implements RowMapper<Review> {
 	@Override
     public Review mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -16,7 +18,7 @@ public class ReviewMapper implements RowMapper<Review> {
 		Review review = new Review();
 
 		review.setReviewId(rs.getInt("review_id"));
-		review.setRating(rs.getInt("reating"));
+		review.setRating(rs.getInt("rating"));
 		review.setDescription(rs.getString("description"));
 		review.setPublished(rs.getBoolean("published"));
 
@@ -24,7 +26,7 @@ public class ReviewMapper implements RowMapper<Review> {
     }
 
     @Bean
-    public GenreMapper getGenreMapper() {
-        return new GenreMapper();
+    public ReviewMapper getReviewMapper() {
+        return new ReviewMapper();
     }
 }

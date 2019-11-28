@@ -48,3 +48,11 @@ export class LoginInfo {
 export class Authority {
   authority: string;
 }
+
+export class Review {
+  reviewId: number;
+  rating: number;
+  description: string;
+  published: boolean;
+  book: BookDto;
+}

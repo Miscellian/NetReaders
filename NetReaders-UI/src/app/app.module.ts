@@ -20,8 +20,9 @@ import {AuthenticationService} from './login/authentication.service';
 import {UserService} from './signup/user.service';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
-import {ConfirmUserComponent} from "./confirmUser/confirmUser.component";
+import {ConfirmUserComponent} from './confirmUser/confirmUser.component';
 import { ApiInterceptor } from './_helpers/api.interceptor';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @NgModule({
   declarations: [
@@ -42,14 +43,15 @@ import { ApiInterceptor } from './_helpers/api.interceptor';
     HttpClientModule,
     BooksModule,
     CommonModule,
-    NgbModule
+    NgbModule,
+    ReviewsModule
   ],
   providers: [
     AuthGuard,
     AuthenticationService,
     UserService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     // { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

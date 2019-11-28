@@ -2,37 +2,43 @@ package com.netreaders.security;
 
 import java.security.SignatureException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.netreaders.service.UserPrinciple;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtProvider {
-	@Value("${netreaders.app.jwtSecret}")
-    private String jwtSecret;
-
-    @Value("${netreaders.app.jwtExpiration}")
-    private int jwtExpiration;
+    private final String jwtSecret = "jwtSuperMegaSecretKey";
+    private final int jwtExpiration = 3600;
 
     public String generateJwtToken(Authentication authentication) {
 
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+        Claims claims = Jwts.claims().setSubject((userPrincipal.getUsername()));
+        claims.setIssuedAt(new Date());
+        claims.setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000));
+        claims.put("Authorities", userPrincipal.getAuthorities()
+        		.stream().map(authority -> authority.getAuthority())
+        		.collect(Collectors.toList()));
 
         return Jwts.builder()
-		                .setSubject((userPrincipal.getUsername()))
-		                .setIssuedAt(new Date())
-		                .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
-		                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-		                .compact();
+        			.setClaims(claims)
+        			.signWith(SignatureAlgorithm.HS512, jwtSecret)
+		            .compact();
     }
     
     public boolean validateJwtToken(String authToken) {
@@ -55,9 +61,16 @@ public class JwtProvider {
     }
     
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-			                .setSigningKey(jwtSecret)
+        return Jwts.parser().setSigningKey(jwtSecret)
 			                .parseClaimsJws(token)
 			                .getBody().getSubject();
+    }
+    public List<String> getAuthoritiesFromToken(String token) {
+    	if(token == null) return null;
+    	token = token.substring(token.indexOf(' ') + 1);
+    	Claims claims = Jwts.parser().setSigningKey(jwtSecret)
+    			.parseClaimsJws(token).getBody();
+
+    	return (List<String>) claims.get("Authorities");
     }
 }

@@ -7,17 +7,20 @@ import { AdminslistComponent } from './adminslist/adminslist.component';
 import { SignupComponent } from './signup/signup.component';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
 import { LoginComponent } from './login/login.component';
-import {ConfirmUserComponent} from "./confirmUser/confirmUser.component";
+import { ConfirmUserComponent } from './confirmUser/confirmUser.component';
+import { ReviewviewComponent } from './reviews/reviewview/reviewview.component';
 
 
 const routes: Routes = [
-  {path: '',  redirectTo: '/userpage', pathMatch: 'full' },
-  {path: 'userpage', component: UserpageComponent},
-  {path: 'newadmin', component: AdminslistComponent},
-  {path: 'signup', component: SignupComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'confirmRegistration', component: ConfirmUserComponent},
-  {path: 'books',
+  { path: '', redirectTo: '/userpage', pathMatch: 'full' },
+  { path: 'error', component: ErrorpageComponent },
+  { path: 'userpage', component: UserpageComponent },
+  { path: 'newadmin', component: AdminslistComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'confirmRegistration', component: ConfirmUserComponent },
+  {
+    path: 'books',
     children: [
       { path: ':id', component: BookviewComponent },
       { path: 'byauthor/:id/:page', component: BooklistComponent, data: { filter: 'author' } },
@@ -26,7 +29,12 @@ const routes: Routes = [
       { path: 'range/:page', component: BooklistComponent, data: { filter: 'range' } }
     ]
   },
-  { path: 'error', component: ErrorpageComponent }
+  {
+    path: 'reviews',
+    children: [
+      { path: ':id', component: ReviewviewComponent }
+    ]
+  }
 ];
 
 @NgModule({
