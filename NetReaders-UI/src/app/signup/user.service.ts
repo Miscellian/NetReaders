@@ -12,11 +12,11 @@ export class UserService {
 
     register(registerForm: FormGroup) {
         let user: User = new User();
-        user.user_name = registerForm.value['user_name'];
+        user.username = registerForm.value['user_name'];
         user.firstName = registerForm.value['firstName'];
         user.lastName = registerForm.value['lastName'];
         user.email = registerForm.value['email'];
-        user.password = registerForm.value['password'];
+        user.userPassword = registerForm.value['password'];
 
         return this.httpClient.post(`http://localhost:8080/api/users/registration`, user, {observe: 'response'});
     }

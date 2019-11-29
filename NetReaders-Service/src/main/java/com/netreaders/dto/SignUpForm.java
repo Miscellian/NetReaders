@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpForm {
-	private String user_name;
+	private String username;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String password;
+	private String userPassword;
 }
