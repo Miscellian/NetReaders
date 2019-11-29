@@ -24,21 +24,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 @Log4j
 @PropertySource("classpath:query.properties")
 @AllArgsConstructor
-@Repository
 public class UserDaoImpl implements UserDao {
 
     private final Environment env;
     private final JdbcTemplate template;
     private final UserMapper userMapper;
-
-    public UserDaoImpl(UserMapper userMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.userMapper=userMapper;
-        this.template=template;
-    }
 
     @Override
     public User create(final User user) {
@@ -47,14 +41,12 @@ public class UserDaoImpl implements UserDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateKeyException if record exist in table
         try {
-            final int update = template.update(creator(sql_query, user), holder);
+            template.update(creator(sql_query, user), holder);
 
-            user.setUserId(retrieveId(holder));
+            user.setId(retrieveId(holder));
 
-            log.debug(String.format("Created a new user with id '%s'", user.getUserId()));
+            log.debug(String.format("Created a new user with id '%s'", user.getId()));
             return user;
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUsername()));
@@ -68,7 +60,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getById(Integer id) {
 
-        String sql_query = env.getProperty("user.read");
+        final String sql_query = env.getProperty("user.read");
 
         List<User> users = template.query(sql_query, userMapper, id);
 
@@ -89,7 +81,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void update(User user) {
 
-        String sql_query = env.getProperty("user.update");
+        final String sql_query = env.getProperty("user.update");
 
         int recordCount = template.update(sql_query,
                 user.getUsername(),
@@ -98,24 +90,24 @@ public class UserDaoImpl implements UserDao {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getProfilePhoto(),
-                user.getUserId());
+                user.getId());
 
         if (recordCount == 0) {
-            log.debug(String.format("Didn't update any user by id '%d'", user.getUserId()));
+            log.debug(String.format("Didn't update any user by id '%d'", user.getId()));
         } else if (recordCount == 1) {
-            log.debug(String.format("Updated user by id '%d'", user.getUserId()));
+            log.debug(String.format("Updated user by id '%d'", user.getId()));
         } else {
-            log.error(String.format("Updated more than one user by id '%d'", user.getUserId()));
-            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getUserId()));
+            log.error(String.format("Updated more than one user by id '%d'", user.getId()));
+            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getId()));
         }
     }
 
     @Override
     public void delete(User user) {
 
-        String sql_query = env.getProperty("user.delete");
+        final String sql_query = env.getProperty("user.delete");
 
-        long id = user.getUserId();
+        long id = user.getId();
         int recordCount = template.update(sql_query, id);
 
         if (recordCount == 0) {
@@ -131,7 +123,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Collection<User> getAll() {
 
-        String sql_query = env.getProperty("user.readAll");
+        final String sql_query = env.getProperty("user.readAll");
 
         List<User> users = template.query(sql_query, userMapper);
         if (users.isEmpty()) {
@@ -146,7 +138,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByUsername(String username) {
 
-        String sql_query = env.getProperty("user.findByNickname");
+        final String sql_query = env.getProperty("user.findByNickname");
 
         List<User> users = template.query(sql_query, userMapper, username);
         if (users.isEmpty()) {
@@ -164,7 +156,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Collection<User> findByFirstName(String firstName) {
 
-        String sql_query = env.getProperty("user.findByFirstName");
+        final String sql_query = env.getProperty("user.findByFirstName");
 
         List<User> users = template.query(sql_query, userMapper, firstName);
         if (users.isEmpty()) {
@@ -179,7 +171,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteByUsername(String username) {
 
-        String sql_query = env.getProperty("user.deleteByNickname");
+        final String sql_query = env.getProperty("user.deleteByNickname");
 
         int recordCount = template.update(sql_query, username);
         if (recordCount == 0) {

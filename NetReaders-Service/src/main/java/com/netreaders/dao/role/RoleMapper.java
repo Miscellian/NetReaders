@@ -1,13 +1,12 @@
 package com.netreaders.dao.role;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import com.netreaders.models.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.netreaders.models.Role;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Component
 public class RoleMapper implements RowMapper<Role> {
@@ -17,7 +16,7 @@ public class RoleMapper implements RowMapper<Role> {
 
     	Role role = new Role();
 
-    	role.setRoleId(rs.getInt("role_id"));
+        role.setId(rs.getInt("role_id"));
     	role.setRoleName(rs.getString("role_name"));
 
         return role;

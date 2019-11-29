@@ -1,15 +1,17 @@
 package com.netreaders.dao.role;
 
-import java.sql.SQLException;
-import java.util.Collection;
-
 import com.netreaders.dao.GenericDao;
+import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Role;
 import com.netreaders.models.User;
 
-public interface RoleDao extends GenericDao<Role, Long> {
+import java.util.Collection;
 
-	public Role findByRoleName(String role) throws SQLException;
-	public Collection<Role> findByUserId(int id) throws SQLException;
-	public boolean addUserToRole(Role role, User user) throws SQLException;
+public interface RoleDao extends GenericDao<Role, Integer> {
+
+    Role findByRoleName(String role) throws DataBaseSQLException;
+
+    Collection<Role> findByUserId(Integer id) throws DataBaseSQLException;
+
+    Boolean addUserToRole(Role role, User user) throws DataBaseSQLException;
 }

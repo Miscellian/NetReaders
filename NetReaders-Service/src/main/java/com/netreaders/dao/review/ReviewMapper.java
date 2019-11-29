@@ -1,26 +1,25 @@
 package com.netreaders.dao.review;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import com.netreaders.models.Review;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.netreaders.dao.genres.GenreMapper;
-import com.netreaders.models.Review;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Component
 public class ReviewMapper implements RowMapper<Review> {
-	@Override
+
+    @Override
     public Review mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-		Review review = new Review();
+        Review review = new Review();
 
-		review.setReviewId(rs.getInt("review_id"));
-		review.setRating(rs.getInt("rating"));
-		review.setDescription(rs.getString("description"));
-		review.setPublished(rs.getBoolean("published"));
+        review.setId(rs.getInt("review_id"));
+        review.setRating(rs.getInt("rating"));
+        review.setDescription(rs.getString("description"));
+        review.setPublished(rs.getBoolean("published"));
 
         return review;
     }

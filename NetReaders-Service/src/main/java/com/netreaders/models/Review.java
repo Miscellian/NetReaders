@@ -1,18 +1,17 @@
 package com.netreaders.models;
 
-import com.netreaders.dto.BookDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Review {
-	private int reviewId;
-	private int rating;
-	private String description;
-	private boolean published;
-	private BookDto book;
+
+    private int id;
+    private int rating;
+    private String description;
+    private boolean published;
+    private Book book;
 }

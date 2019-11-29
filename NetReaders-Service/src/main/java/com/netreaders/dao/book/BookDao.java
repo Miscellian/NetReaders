@@ -8,21 +8,25 @@ import java.util.Collection;
 
 public interface BookDao extends GenericDao<Book, Integer> {
 
-    Collection<Book> findByGenre(int genre_id, int amount, int offset) throws DataBaseSQLException;
+    Collection<Book> findByGenre(Integer genreId, Integer amount, Integer offset) throws DataBaseSQLException;
 
-    Collection<Book> findByAuthor(int author_id, int amount, int offset) throws DataBaseSQLException;
+    Collection<Book> findByAuthor(Integer authorId, Integer amount, Integer offset) throws DataBaseSQLException;
 
-    Collection<Book> findAll(int amount, int offset) throws DataBaseSQLException;
+    Collection<Book> findByUsername(String username, Integer amount, Integer offset) throws DataBaseSQLException;
 
-    Collection<Book> findByName(String name, int amount, int offset) throws DataBaseSQLException;
+    Collection<Book> findByName(String name, Integer amount, Integer offset) throws DataBaseSQLException;
+
+    Collection<Book> findAll(Integer amount, Integer offset) throws DataBaseSQLException;
 
     Integer getCount() throws DataBaseSQLException;
 
-    Integer getCountByAuthor(int author_id) throws DataBaseSQLException;
+    Integer getCountByAuthor(Integer authorId) throws DataBaseSQLException;
 
-    Integer getCountByGenre(int genre_id) throws DataBaseSQLException;
+    Integer getCountByGenre(Integer genreId) throws DataBaseSQLException;
 
     Integer getCountByName(String name) throws DataBaseSQLException;
+
+    Integer getCountByUsername(String username) throws DataBaseSQLException;
 
     Collection<Book> findByAnnouncementId(Integer announcementId) throws DataBaseSQLException;
 
@@ -30,6 +34,5 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Collection<Book> findByAnnouncementWithAuthor(Integer announcementId, Integer authorId) throws DataBaseSQLException;
 
-    
-    Book getByReviewId(int id) throws SQLException;
+    Book getByReviewId(int id);
 }

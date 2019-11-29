@@ -29,14 +29,9 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthorDaoImpl implements AuthorDao {
 
-	private JdbcTemplate template;
-        private final Environment env;
-    private AuthorMapper authorMapper;
-    public AuthorDaoImpl(AuthorMapper authorMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.authorMapper=authorMapper;
-        this.template=template;
-    }
+    private final Environment env;
+    private final JdbcTemplate template;
+    private final AuthorMapper authorMapper;
 
     @Override
     public Author create(Author author) {
@@ -45,8 +40,6 @@ public class AuthorDaoImpl implements AuthorDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateModelException if record exist in table
         try {
             template.update(creator(sql_query, author), holder);
 
@@ -66,7 +59,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     public Author getById(Integer id) {
 
-        String sql_query = env.getProperty("author.read");
+        final String sql_query = env.getProperty("author.read");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
 
@@ -87,7 +80,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public void update(Author author) {
 
-        String sql_query = env.getProperty("author.update");
+        final String sql_query = env.getProperty("author.update");
 
         long id = author.getId();
         int recordCount = template.update(sql_query, author.getName(), id);
@@ -104,7 +97,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public void delete(Author author) {
 
-        String sql_query = env.getProperty("author.delete");
+        final String sql_query = env.getProperty("author.delete");
 
         long id = author.getId();
         int recordCount = template.update(sql_query, id);
@@ -120,7 +113,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     public Collection<Author> getAll() {
 
-        String sql_query = env.getProperty("author.readAll");
+        final String sql_query = env.getProperty("author.readAll");
 
         List<Author> authors = template.query(sql_query, authorMapper);
 
@@ -135,9 +128,9 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    public Collection<Author> getByBookId(int id) {
+    public Collection<Author> getByBookId(Integer id) {
 
-        String sql_query = env.getProperty("author.getByBookId");
+        final String sql_query = env.getProperty("author.getByBookId");
 
         List<Author> authors = template.query(sql_query, authorMapper, id);
 

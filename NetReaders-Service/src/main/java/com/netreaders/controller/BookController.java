@@ -1,94 +1,100 @@
 package com.netreaders.controller;
 
-import com.netreaders.dto.BookDto;
-import com.netreaders.models.ResponseMessage;
+import com.netreaders.models.Book;
 import com.netreaders.service.BookService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/books")
 public class BookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
-
     @GetMapping(value = "{id}")
-    public ResponseMessage<BookDto> GetBookById(@PathVariable String id) {
+    public Book getBookById(@PathVariable Integer id) {
+
         return bookService.findBookById(id);
     }
 
     @GetMapping(value = "range")
-    public ResponseMessage<Collection<BookDto>> GetById(
-            @RequestParam(name = "amount", defaultValue = "0") String amount,
-            @RequestParam(name = "offset", defaultValue = "0") String offset) {
-        return bookService.getById(amount, offset);
+    public Collection<Book> getById(
+            @RequestParam(name = "amount", defaultValue = "0") Integer amount,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
+
+        return bookService.getBooksById(amount, offset);
     }
 
     @GetMapping(value = "bygenre")
-    public ResponseMessage<Collection<BookDto>> GetByGenre(
-            @RequestParam(name = "id") String genreid,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
-        return bookService.findBooksByGenre(genreid, amount, offset);
+    public Collection<Book> getByGenre(
+            @RequestParam(name = "id") Integer genreId,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+
+        return bookService.findBooksByGenre(genreId, amount, offset);
     }
 
     @GetMapping(value = "byauthor")
-    public ResponseMessage<Collection<BookDto>> GetByAuthor(
-            @RequestParam(name = "id") String authorid,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
-        return bookService.findBooksByAuthor(authorid, amount, offset);
+    public Collection<Book> getByAuthor(
+            @RequestParam(name = "id") Integer authorId,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+
+        return bookService.findBooksByAuthor(authorId, amount, offset);
     }
 
     @GetMapping(value = "byname")
-    public ResponseMessage<Collection<BookDto>> GetByName(
+    public Collection<Book> getByName(
             @RequestParam(name = "name") String name,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
-        return bookService.getByName(name, amount, offset);
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+
+        return bookService.getBooksByName(name, amount, offset);
     }
 
     @GetMapping(value = "byusername")
-    @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseMessage<Collection<BookDto>> GetByUserName(
+    public Collection<Book> getByUserName(
             @RequestParam(name = "username") String username,
-            @RequestParam(name = "amount") String amount,
-            @RequestParam(name = "offset") String offset) {
-        return bookService.getByUsername(username, amount, offset);
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+
+        return bookService.getByBooksUsername(username, amount, offset);
     }
 
     @GetMapping(value = "count")
-    public ResponseMessage<Integer> GetCount() {
+    public Integer getCount() {
+
         return bookService.getCount();
     }
 
     @GetMapping(value = "countByAuthor")
-    public ResponseMessage<Integer> GetCountByAuthor(
-            @RequestParam(name = "id") String authorid) {
-        return bookService.getCountByAuthor(authorid);
+    public Integer getCountByAuthor(
+            @RequestParam(name = "id") Integer authorId) {
+
+        return bookService.getCountByAuthor(authorId);
     }
 
     @GetMapping(value = "countByGenre")
-    public ResponseMessage<Integer> GetCountByGenre(
-            @RequestParam(name = "id") String genreid) {
-        return bookService.getCountByGenre(genreid);
+    public Integer getCountByGenre(
+            @RequestParam(name = "id") Integer genreId) {
+
+        return bookService.getCountByGenre(genreId);
     }
 
     @GetMapping(value = "countByName")
-    public ResponseMessage<Integer> GetCountByName(
+    public Integer getCountByName(
             @RequestParam(name = "name") String name) {
+
         return bookService.getCountByName(name);
     }
 
     @GetMapping(value = "countByUsername")
-    @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseMessage<Integer> GetCountByUsername(
+    public Integer getCountByUsername(
             @RequestParam(name = "username") String username) {
+
         return bookService.getCountByUsername(username);
     }
 }

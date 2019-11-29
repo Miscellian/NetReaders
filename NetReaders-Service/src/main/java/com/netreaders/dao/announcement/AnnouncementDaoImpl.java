@@ -31,8 +31,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AnnouncementDaoImpl implements AnnouncementDao {
 
-    private final JdbcTemplate template;
     private final Environment env;
+    private final JdbcTemplate template;
     private final AnnouncementMapper announcementMapper;
 
     @Override
@@ -42,8 +42,6 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateModelException if record exist in table
         try {
             template.update(creator(sql_query, announcement), holder);
 
@@ -63,7 +61,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public Announcement getById(Integer id) {
 
-        String sql_query = env.getProperty("announcement.read");
+        final String sql_query = env.getProperty("announcement.read");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, id);
 
@@ -84,7 +82,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public void update(Announcement announcement) {
 
-        String sql_query = env.getProperty("announcement.update");
+        final String sql_query = env.getProperty("announcement.update");
 
         long id = announcement.getId();
         int recordCount = template.update(sql_query, id);
@@ -101,7 +99,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public void delete(Announcement announcement) {
 
-        String sql_query = env.getProperty("announcement.delete");
+        final String sql_query = env.getProperty("announcement.delete");
 
         long id = announcement.getId();
         int recordCount = template.update(sql_query, id);
@@ -118,7 +116,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public Collection<Announcement> getAll() {
 
-        String sql_query = env.getProperty("announcement.readAll");
+        final String sql_query = env.getProperty("announcement.readAll");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper);
 
@@ -136,7 +134,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public Collection<Announcement> findByGenre(Integer genreId, Integer amount, Integer offset) {
 
-        String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
+        final String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, genreId, amount, offset);
 
@@ -154,7 +152,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public Collection<Announcement> findByAuthor(Integer authorId, Integer amount, Integer offset) {
 
-        String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
+        final String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, authorId, amount, offset);
 
@@ -172,7 +170,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public Collection<Announcement> findAll(Integer amount, Integer offset) {
 
-        String sql_query = env.getProperty("announcement.getByIdWithOffset");
+        final String sql_query = env.getProperty("announcement.getByIdWithOffset");
 
         List<Announcement> announcements = template.query(sql_query, announcementMapper, amount, offset);
 
@@ -209,7 +207,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 announcement.getPublished()));
     }
 
-    private Integer retrieveId(KeyHolder holder) {
+    private Integer retrieveId(KeyHolder holder) throws SQLException {
 
         if (holder.getKeys() != null && holder.getKeys().size() > 0) {
             return (Integer) holder.getKeys().get("announcement_id");

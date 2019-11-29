@@ -29,14 +29,9 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreDaoImpl implements GenreDao {
 
-    private final JdbcTemplate template;
     private final Environment env;
-    private GenreMapper genreMapper;
-    public GenreDaoImpl(GenreMapper genreMapper, Environment env, JdbcTemplate template){
-        this.env=env;
-        this.genreMapper=genreMapper;
-        this.template=template;
-    }
+    private final JdbcTemplate template;
+    private final GenreMapper genreMapper;
 
     @Override
     public Genre create(Genre genre) {
@@ -45,8 +40,6 @@ public class GenreDaoImpl implements GenreDao {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        // save object into DB and return auto generated PK via KeyHolder
-        // or throws DuplicateKeyException if record exist in table
         try {
             template.update(creator(sql_query, genre), holder);
 
@@ -66,7 +59,7 @@ public class GenreDaoImpl implements GenreDao {
 
     public Genre getById(Integer id) {
 
-        String sql_query = env.getProperty("genre.read");
+        final String sql_query = env.getProperty("genre.read");
 
         List<Genre> genres = template.query(sql_query, genreMapper, id);
 
@@ -87,7 +80,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public void update(Genre genre) {
 
-        String sql_query = env.getProperty("genre.update");
+        final String sql_query = env.getProperty("genre.update");
         long id = genre.getId();
 
         int recordCount = template.update(sql_query, genre.getName(), id);
@@ -105,7 +98,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public void delete(Genre genre) {
 
-        String sql_query = env.getProperty("genre.delete");
+        final String sql_query = env.getProperty("genre.delete");
 
         long id = genre.getId();
         int recordCount = template.update(sql_query, id);
@@ -122,7 +115,7 @@ public class GenreDaoImpl implements GenreDao {
 
     public Collection<Genre> getAll() {
 
-        String sql_query = env.getProperty("genre.readAll");
+        final String sql_query = env.getProperty("genre.readAll");
 
         List<Genre> genres = template.query(sql_query, genreMapper);
 
@@ -137,9 +130,9 @@ public class GenreDaoImpl implements GenreDao {
         }
     }
 
-    public Collection<Genre> getByBookId(int id) {
+    public Collection<Genre> getByBookId(Integer id) {
 
-        String sql_query = env.getProperty("genre.getByBookId");
+        final String sql_query = env.getProperty("genre.getByBookId");
 
         List<Genre> books = template.query(sql_query, genreMapper, id);
 
@@ -171,7 +164,7 @@ public class GenreDaoImpl implements GenreDao {
         return factory.newPreparedStatementCreator(Collections.singletonList(genre.getName()));
     }
 
-    private Integer retrieveId(KeyHolder holder) {
+    private Integer retrieveId(KeyHolder holder) throws SQLException {
 
         if (holder.getKeys() != null && holder.getKeys().size() > 0) {
             return (Integer) holder.getKeys().get("genre_id");

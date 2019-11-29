@@ -2,18 +2,18 @@ package com.netreaders.controller;
 
 
 import com.netreaders.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class NotificationController {
 
-    @Autowired
-    NotificationService service;
+    private final NotificationService service;
 
     @GetMapping("/notification")
-    public void doNotify()  {
+    public void doNotify() {
 
     }
 }

@@ -8,5 +8,5 @@ import java.util.Collection;
 
 public interface AuthorDao extends GenericDao<Author, Integer> {
 
-    Collection<Author> getByBookId(int id) throws DataBaseSQLException;
+    Collection<Author> getByBookId(Integer id) throws DataBaseSQLException;
 }

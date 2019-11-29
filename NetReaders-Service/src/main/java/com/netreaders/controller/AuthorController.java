@@ -1,31 +1,29 @@
 package com.netreaders.controller;
 
 import com.netreaders.models.Author;
-import com.netreaders.models.ResponseMessage;
 import com.netreaders.service.AuthorService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/authors")
 public class AuthorController {
-	
-	private final AuthorService authorService;
 
-	public AuthorController(AuthorService authorService) {
-		this.authorService = authorService;
-	}
+    private final AuthorService authorService;
 
-	@GetMapping("all")
-	public ResponseMessage<Collection<Author>> GetAllAuthors() {
-		return authorService.getAll();
-	}
-	
 	@GetMapping(value = "{id}")
 	@ResponseBody
-	public ResponseMessage<Author> GetAuthorById(@PathVariable String id) {
-		ResponseMessage<Author> response = authorService.getById(id);
-		return response;
-	}
+    public Author getAuthorById(@PathVariable Integer id) {
+
+        return authorService.getAuthorById(id);
+    }
+
+    @GetMapping("all")
+    public Collection<Author> getAllAuthors() {
+
+        return authorService.getAllAuthors();
+    }
 }
