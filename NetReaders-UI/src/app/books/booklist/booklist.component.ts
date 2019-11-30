@@ -57,7 +57,7 @@ export class BooklistComponent implements OnInit {
                 public router: Router) {
     }
 
-    loadPage(page: number) {
+    loadPage() {
         let newPageUrl = "";
         let urlSplitted = this.router.url.split('/');
         for (let i = 0; i < urlSplitted.length - 1; i++) {
@@ -70,6 +70,7 @@ export class BooklistComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(
             params => {
+                window.scroll(0,0);
                 this.arg = params['id'];
                 this.page = params['page'];
                 this.funcsCount[this.activatedRoute.snapshot.data.filter]();

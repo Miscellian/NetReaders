@@ -51,9 +51,6 @@ public class BookDaoImpl implements BookDao {
         } catch (DuplicateKeyException e) {
             log.error(String.format("Book '%s' is already exist", book.getTitle()));
             throw new DuplicateModelException(String.format("Book '%s' is already exist", book.getTitle()));
-        } catch (SQLException e) {
-            log.error("Book creation fail!");
-            throw new DataBaseSQLException("Book creation fail!");
         }
     }
 
@@ -265,7 +262,7 @@ public class BookDaoImpl implements BookDao {
     public Integer getCountByUsername(String username) {
         String sql_query = env.getProperty("book.getCountByUsername");
 
-        Integer count = template.queryForObject(sql_query, new Object[]{username, username}, Integer.class);
+        Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
 
         log.debug(String.format("Found %d books by username '%s'", count, username));
         return count;
@@ -351,7 +348,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    private PreparedStatementCreator creator(String sql, Book book) throws SQLException {
+    private PreparedStatementCreator creator(String sql, Book book) {
 
         PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
         factory.setReturnGeneratedKeys(true);
@@ -369,7 +366,7 @@ public class BookDaoImpl implements BookDao {
                 book.getBook_language()));
     }
 
-    private Integer retrieveId(KeyHolder holder) throws SQLException {
+    private Integer retrieveId(KeyHolder holder) {
 
         if (holder.getKeys() != null && holder.getKeys().size() > 0) {
             return (Integer) holder.getKeys().get("book_id");

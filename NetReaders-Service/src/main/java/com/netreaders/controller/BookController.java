@@ -61,7 +61,7 @@ public class BookController {
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
 
-        return bookService.getByBooksUsername(username, amount, offset);
+        return bookService.getBooksUsername(username, amount, offset);
     }
 
     @GetMapping(value = "count")

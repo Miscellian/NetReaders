@@ -1,6 +1,6 @@
 <div class="container">
     <hr>
-    <div *ngIf="bookdtos.length > 0; else elseBlock">
+    <div *ngIf="books.length > 0; else elseBlock">
         <div class="row">
             <div class="col-md-3">
                 <span id="library-text">Library</span>
@@ -12,23 +12,21 @@
         </div>
         <div class="row">
             <div *ngFor="let book of books; let i = index" class="col-md-3">
-                <div *ngIf="i != 4">
-                    <a href="books/{{book.id}}">
-                        <img alt="book-image"
-                             class="rounded profile-booklist-preview-photo"
-                             src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
-                    </a>
-                    <br/>
-                    <span>
+                <a href="books/{{book.id}}">
+                    <img alt="book-image"
+                         class="rounded profile-booklist-preview-photo"
+                         src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+                </a>
+                <br/>
+                <span>
                 <a class="profile-book-title"
                    href="books/{{book.id}}"><b>
                     {{book.title}}
                 </b></a>
             </span><br/>
-                    <div *ngFor="let author of book.authors">
-                        <span class="profile-book-author">{{author.name}}</span>
-                        <br/>
-                    </div>
+                <div *ngFor="let author of book.authors">
+                    <span class="profile-book-author">{{author.name}}</span>
+                    <br/>
                 </div>
             </div>
         </div>
