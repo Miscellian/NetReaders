@@ -54,7 +54,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.registerForm = this.formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       user_name: ['', [Validators.required, Validators.minLength(1)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -63,8 +63,7 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, this.passwordValidator]],
       confirm_password: ['', [Validators.required, this.checkPasswords]
       ]
-    }));
-    console.log()
+    });
   }
 
   // convenience getter for easy access to form fields
@@ -83,12 +82,7 @@ export class SignupComponent implements OnInit {
     this.loading = true;
     this.userService.register(this.registerForm)
         .subscribe(response => {
-          if (response.status !== 200) {
-            this.router.navigate['/error'];
-            this.loading = false;
-          } else {
             this.router.navigate['/login'];
-          }
-        });
+          }, error => this.router.navigate(['/error']));
   }
 }

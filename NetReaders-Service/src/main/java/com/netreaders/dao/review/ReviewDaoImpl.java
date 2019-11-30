@@ -196,7 +196,6 @@ public class ReviewDaoImpl implements ReviewDao {
                 review.getBook().getId(),
                 review.getRating(),
                 review.getDescription(),
-                review.getRating(),
                 review.isPublished()));
     }
 

@@ -20,21 +20,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.navbarService.getAllGenres().subscribe(
       response => {
-        if (!response.isSuccessful) {
-          this.router.navigate(['/error']);
-        } else {
-          this.genres = response.obj;
-        }
-      }
-    );
+          this.genres = response;
+      }, error => this.router.navigate(['/error']));
   }
 
   onEnter(bookname: string) {
     if (!bookname) {
-      this.router.navigateByUrl(`/books/range/1`);
+      this.router.navigate(['/books/range/1']);
       return;
     }
-    this.router.navigateByUrl(`/books/byname/${bookname}/1`);
+    this.router.navigate([`/books/byname/${bookname}/1`]);
   }
 
 }

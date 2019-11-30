@@ -24,15 +24,10 @@ export class ConfirmUserComponent implements OnInit {
     }
 
     confirm() {
-        console.dir('b');
-        this.httpClient.get(`http://localhost:8080/api/users/confirmRegistration?token=${this.token}`, {observe: 'response'})
+        this.httpClient.get(`/users/confirmRegistration?token=${this.token}`, {observe: 'response'})
         .subscribe(response => {
-            if (response.status !== 200) {
-                this.router.navigate(['/error']);
-            } else {
                 this.router.navigate(['/login']);
-            }
-        });
+        }, error => this.router.navigate(['/error']));
     }
     ngOnInit(): void {
         this.confirm();

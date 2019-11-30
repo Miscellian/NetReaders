@@ -22,25 +22,17 @@ import com.netreaders.security.JwtAuthEntryPoint;
 import com.netreaders.security.JwtAuthTokenFilter;
 import com.netreaders.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	// add reference to security data source
-	private UserService userService;
+	private UserDetailsService userService;
     private JwtAuthEntryPoint unauthorizedHandler;
-
-	@Autowired
-	public SecurityConfig(JwtAuthEntryPoint unauthorizedHandler, UserService userService){
-		this.unauthorizedHandler=unauthorizedHandler;
-		this.userService=userService;
-	}
-
-	@Bean
-    public JwtAuthTokenFilter authenticationJwtTokenFilter() {
-        return new JwtAuthTokenFilter();
-    }
+    private JwtAuthTokenFilter tokenFilter;
+    private BCryptPasswordEncoder passwordEncoder;
 	
 	@Bean
 	protected CorsConfigurationSource corsConfigurationSource() {
@@ -64,14 +56,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().csrf().disable();
 
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
+        authenticationManagerBuilder 
                 .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder())
+                .passwordEncoder(passwordEncoder)
                 .and()
                 .authenticationProvider(authenticationProvider());
     }
@@ -81,16 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(BCryptVersion.$2A);
-	}
 	
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
 		auth.setUserDetailsService((UserDetailsService) userService); //set the custom user details service
-		auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
+		auth.setPasswordEncoder(passwordEncoder); //set the password encoder - bcrypt
 		auth.setHideUserNotFoundExceptions(false);
 		return auth;
 	}

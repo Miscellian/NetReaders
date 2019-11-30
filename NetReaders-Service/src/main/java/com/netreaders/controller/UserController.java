@@ -28,40 +28,28 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
     private final RegistrationTokenService registrationTokenService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtProvider;
 
     @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) {
-        User user = userService.findByNickname(signUpForm.getUser_name());
-        if (user != null) {
+        if (userService.userExists(signUpForm.getUsername())) {
             return ResponseEntity.badRequest().body("User already exists");
         }
-        user = userService.registerUser(signUpForm);
-        RegistrationToken token = registrationTokenService.createToken(user);
-        emailService.sendEmail(user, token);
-
+        User user = userService.registerUser(signUpForm);
+        emailService.sendEmail(user);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginForm loginForm) {
-        User user = userService.findByNickname(loginForm.getUsername());
-        if (user != null) {
-            if (registrationTokenService.getTokenByUser(user) != null) {
+        if (userService.userExists(loginForm.getUsername())) {
+            if (registrationTokenService.tokenExistsByUser(loginForm.getUsername())) {
                 return ResponseEntity.badRequest().body("Finish your registration first");
             }
         } else {
             return ResponseEntity.badRequest().body("User Already exists");
-        }
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = jwtProvider.generateJwtToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        };
+        JwtResponse response = userService.login(loginForm);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/confirmRegistration")
@@ -76,11 +64,10 @@ public class UserController {
 
     @PostMapping("/createAdmin")
     public boolean createAdmin(@RequestBody SignUpForm signUpForm) {
-        User user = userService.findByNickname(signUpForm.getUser_name());
-        if (user != null) {
+    	if (userService.userExists(signUpForm.getUsername())) {
             return false;
         }
-        user = userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
+        userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
 
         return true;
     }
@@ -88,13 +75,14 @@ public class UserController {
     @PostMapping("/createModerator")
     public boolean createModerator(@RequestBody SignUpForm signUpForm,
                                    @RequestBody String[] roles) {
-        User user = userService.findByNickname(signUpForm.getUser_name());
-        if (user != null) {
+        if (userService.userExists(signUpForm.getUsername())) {
             return false;
         }
-        user = userService.registerPriviledgedUser(signUpForm, roles);
+        userService.registerPriviledgedUser(signUpForm, roles);
 
         return true;
     }
+    
+    
 
 }

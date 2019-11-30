@@ -132,16 +132,36 @@ public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
         List<RegistrationToken> tokens = template.query(sql_query, tokenMapper, userId);
 
         if (tokens.isEmpty()) {
-            log.debug(String.format("Didn't find any token by userId '%s'", userId));
+            log.debug(String.format("Didn't find any token by userId '%d'", userId));
             return null;
         } else if (tokens.size() == 1) {
-            log.debug(String.format("Found a token by userId '%s'", userId));
+            log.debug(String.format("Found a token by userId '%d'", userId));
             return tokens.get(0);
         } else {
-            log.error(String.format("Found more than one token by userId '%s'", userId));
-            throw new DataBaseSQLException(String.format("Found more than one token by userId '%s'", userId));
+            log.error(String.format("Found more than one token by userId '%d'", userId));
+            throw new DataBaseSQLException(String.format("Found more than one token by userId '%d'", userId));
         }
     }
+    
+
+
+	@Override
+	public boolean tokenExistsByUser(Integer userId) throws DataBaseSQLException {
+		String sql_query = env.getProperty("registrationToken.findByUser");
+
+        List<RegistrationToken> tokens = template.query(sql_query, tokenMapper, userId);
+
+        if (tokens.isEmpty()) {
+            log.debug(String.format("Didn't find any token by userId '%d'", userId));
+            return false;
+        } else if (tokens.size() == 1) {
+            log.debug(String.format("Found a token by userId '%d'", userId));
+            return true;
+        } else {
+            log.error(String.format("Found more than one token by userId '%d'", userId));
+            throw new DataBaseSQLException(String.format("Found more than one token by userId '%d'", userId));
+        }
+	}
 
     private void checkIfCollectionIsNull(Collection<RegistrationToken> collection) {
         if (collection == null) {
@@ -155,13 +175,13 @@ public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
 
         PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
         factory.setReturnGeneratedKeys(true);
-        factory.addParameter(new SqlParameter(Types.VARCHAR));
         factory.addParameter(new SqlParameter(Types.INTEGER));
-        factory.addParameter(new SqlParameter(Types.DATE));
+        factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.TIMESTAMP));
 
         return factory.newPreparedStatementCreator(Arrays.asList(
+        		token.getUserId(),
                 token.getToken(),
-                token.getUserId(),
                 token.getCreatedDateTime()));
     }
 

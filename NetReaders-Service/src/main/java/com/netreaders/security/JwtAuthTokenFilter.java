@@ -1,7 +1,10 @@
 package com.netreaders.security;
 
+import com.netreaders.dao.role.RoleDao;
+import com.netreaders.dao.user.UserDao;
 import com.netreaders.models.Role;
 import com.netreaders.models.User;
+import com.netreaders.service.UserService;
 import com.netreaders.service.impl.RoleServiceImpl;
 import com.netreaders.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -9,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,11 +23,12 @@ import java.io.IOException;
 import java.util.Collection;
 
 @AllArgsConstructor
+@Component
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     private final JwtProvider tokenProvider;
-    private final UserServiceImpl userServiceImpl;
-    private final RoleServiceImpl roleServiceImpl;
+    private final UserDao userDao;
+    private final RoleDao roleDao;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -31,16 +36,10 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         try {
 
             String jwt = getJwt(request);
-            if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
-                String username = tokenProvider.getUserNameFromJwtToken(jwt);
-                User user = userServiceImpl.findByNickname(username);
-                Collection<Role> roles = roleServiceImpl.findRolesByUserId(user.getId());
-
-                UserDetails userDetails = UserPrinciple.build(user, roles); // returns UserDetails
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+            if (jwt != null && tokenProvider.validateJwtToken(jwt)) {// returns UserDetails
+            	String username = tokenProvider.getUserNameFromJwtToken(jwt);
+                UsernamePasswordAuthenticationToken authentication = prepareAuthentication(username);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
@@ -48,6 +47,22 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+    
+    private UsernamePasswordAuthenticationToken prepareAuthentication(String username) {
+        User user = userDao.findByUsername(username);
+        Collection<Role> roles = roleDao.findByUserId(user.getId());
+        UserDetails userDetails = UserPrinciple.build(user, roles); // returns UserDetails
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        return authentication;
+    }
+    
+    public UserDetails setContextAuthentication(String username) {
+    	
+    	UsernamePasswordAuthenticationToken authentication = prepareAuthentication(username);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return (UserDetails) authentication.getPrincipal();
     }
 
     private String getJwt(HttpServletRequest request) {

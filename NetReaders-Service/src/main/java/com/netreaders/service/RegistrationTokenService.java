@@ -14,6 +14,8 @@ public interface RegistrationTokenService {
     RegistrationToken getTokenByUser(User user);
 
     boolean tokenIsValid(String token);
+    
+    boolean tokenExistsByUser(String username);
 
     void removeToken(String token);
 }

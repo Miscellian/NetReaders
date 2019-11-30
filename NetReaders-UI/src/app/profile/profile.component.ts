@@ -23,12 +23,8 @@ export class ProfileComponent implements OnInit {
             params => {
                 this.arg = params['username'];
                 this.userService.getByUsername(this.arg).subscribe(response => {
-                    if (!response.isSuccessful) {
-                        this.router.navigate(['/error']);
-                    } else {
-                        this.user = response.obj;
-                    }
-                })
+                        this.user = response;
+                }, error => this.router.navigate(['/error']));
             }
         );
     }

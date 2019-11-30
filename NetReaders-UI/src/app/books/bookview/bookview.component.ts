@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Book, BookDto, Author, Genre } from '../../model';
+import { Book, Author, Genre } from '../../model';
 import { BookService } from '../book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,9 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class BookviewComponent implements OnInit {
   id: number;
   book: Book;
-  genres: Genre[];
-  authors: Author[];
-  bookdto: BookDto;
 
   constructor(private bookService: BookService,
     private activatedRoute: ActivatedRoute,
@@ -22,13 +19,7 @@ export class BookviewComponent implements OnInit {
   ngOnInit() {
     this.id = +this.activatedRoute.snapshot.paramMap.get('id');
     this.bookService.getById(this.id).subscribe(response => {
-      if (!response.isSuccessful) {
-        this.router.navigate(['/error']);
-      } else {
-        this.book = response.obj.book;
-        this.genres = response.obj.genres;
-        this.authors = response.obj.authors;
-      }
-    });
+        this.book = response;
+    }, error => this.router.navigate(['/error']));
   }
 }

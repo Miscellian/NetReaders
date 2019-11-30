@@ -1,6 +1,7 @@
 package com.netreaders.service.impl;
 
 import com.netreaders.dao.registrationtoken.RegistrationTokenDao;
+import com.netreaders.dao.user.UserDao;
 import com.netreaders.models.RegistrationToken;
 import com.netreaders.models.User;
 import com.netreaders.service.RegistrationTokenService;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class RegistrationTokenServiceImpl implements RegistrationTokenService {
 
     private final RegistrationTokenDao tokenDao;
+    private final UserDao userDao;
 
     @Override
     public RegistrationToken createToken(User user) {
@@ -62,4 +64,10 @@ public class RegistrationTokenServiceImpl implements RegistrationTokenService {
         tokenDao.delete(registrationToken);
 
     }
+
+	@Override
+	public boolean tokenExistsByUser(String username) {
+		User user = userDao.findByUsername(username);
+		return tokenDao.tokenExistsByUser(user.getId());
+	}
 }

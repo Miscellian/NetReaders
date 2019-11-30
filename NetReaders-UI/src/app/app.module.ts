@@ -54,9 +54,9 @@ import { ReviewsModule } from './reviews/reviews.module';
     AuthGuard,
     AuthenticationService,
     UserService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-    // { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

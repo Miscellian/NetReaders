@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getByUsername(username: string): Observable<ResponseMessage<User>> {
-    return this.httpClient.get<ResponseMessage<User>>(`http://localhost:8080/api/users/${username}`);
+  getByUsername(username: string): Observable<User> {
+    return this.httpClient.get<User>(`/users/${username}`);
   }
 }

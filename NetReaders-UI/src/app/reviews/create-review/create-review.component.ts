@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { BookDto } from '../../model';
+import { Book } from '../../model';
 import { BookService } from '../../books/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../review.service';
@@ -12,7 +12,7 @@ import { ReviewService } from '../review.service';
 })
 export class CreateReviewComponent implements OnInit {
   reviewForm: FormGroup;
-  book: BookDto;
+  book: Book;
   id: number;
 
   constructor(private formBuilder: FormBuilder,
@@ -22,7 +22,6 @@ export class CreateReviewComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    console.log('b');
     this.id = +this.activatedRoute.snapshot.paramMap.get('bookid');
     this.reviewForm = this.formBuilder.group({
       rating: '',
@@ -30,26 +29,16 @@ export class CreateReviewComponent implements OnInit {
     });
     this.bookService.getById(this.id).subscribe(
       response => {
-        if (response.isSuccessful) {
-          this.book = response.obj;
-        } else {
-          this.router.navigateByUrl('http://localhost:8080/error');
-        }
+          this.book = response;
       }
     );
-    console.log('a');
   }
 
   onSubmit() {
     this.reviewService.createReview(this.reviewForm, this.book).subscribe(
       response => {
-        if (response.status !== 200) {
-          this.router.navigateByUrl('http://localhost:8080/error');
-        } else {
           alert('Success');
-        }
-      }
-    );
+      }, error => this.router.navigate(['/error']));
   }
 
 }

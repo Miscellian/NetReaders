@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BookDto, Book, Genre, Author } from '../../model';
+import { Book, Genre, Author } from '../../model';
 
 @Component({
   selector: 'app-booklist-item',
@@ -7,16 +7,10 @@ import { BookDto, Book, Genre, Author } from '../../model';
   styleUrls: ['./booklist-item.component.css']
 })
 export class BooklistItemComponent implements OnInit {
-  @Input() public bookdto: BookDto;
-  book: Book;
-  genres: Genre[];
-  authors: Author[];
+  @Input() public book: Book;
   constructor() { }
 
   ngOnInit() {
-    this.authors = this.bookdto.authors;
-    this.genres = this.bookdto.genres;
-    this.book = this.bookdto.book;
   }
 
 }

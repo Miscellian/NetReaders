@@ -20,7 +20,7 @@ export class AuthenticationService {
     // }
 
     login(username, password): Observable<LoginInfo> {
-        return this.http.post<LoginInfo>(`http://localhost:8080/api/users/login`, { username, password })
+        return this.http.post<LoginInfo>(`/users/login`, { username, password })
             .pipe(map(user => {
                 localStorage.setItem('TokenValue', user.token);
                 localStorage.setItem('TokenType', user.type);

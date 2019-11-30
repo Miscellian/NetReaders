@@ -18,6 +18,6 @@ export class UserService {
         user.email = registerForm.value['email'];
         user.userPassword = registerForm.value['password'];
 
-        return this.httpClient.post(`http://localhost:8080/api/users/registration`, user, {observe: 'response'});
+        return this.httpClient.post(`/users/registration`, user, {observe: 'response'});
     }
 }

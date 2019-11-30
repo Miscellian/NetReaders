@@ -152,6 +152,23 @@ public class UserDaoImpl implements UserDao {
             throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", username));
         }
     }
+    
+	@Override
+	public boolean userExists(String username) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("user.findByNickname");
+
+        List<User> users = template.query(sql_query, userMapper, username);
+        if (users.isEmpty()) {
+            log.debug(String.format("Didn't find any user by nickname '%s'", username));
+            return false;
+        } else if (users.size() == 1) {
+            log.debug(String.format("Found a user by nickname '%s'", username));
+            return true;
+        } else {
+            log.error(String.format("Found more than one user by nickname '%s'", username));
+            throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", username));
+        }
+	}
 
     @Override
     public Collection<User> findByFirstName(String firstName) {
@@ -218,4 +235,6 @@ public class UserDaoImpl implements UserDao {
             return holder.getKey().intValue();
         }
     }
+
+
 }

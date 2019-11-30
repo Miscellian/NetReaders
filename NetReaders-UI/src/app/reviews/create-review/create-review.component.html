@@ -1,23 +1,23 @@
 <div class="container" id="main">
     <div class="row">
         <div class="col-md-3">
-            <a routerLink="/books/{{book.book.id}}">
+            <a routerLink="/books/{{book.id}}">
                 <img class="rounded" id="book-title-image" src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
             </a>
         </div>
 
         <div class="col-md-6" id="book-data-container">
 
-            <a routerLink="/books/{{book.book.id}}" id="book-title">{{book.book.title}}</a>
+            <a routerLink="/books/{{book.id}}" id="book-title">{{book.title}}</a>
             <br />
 
-            <div class="header" *ngFor="let author of authors">
-                <a class="author-genre-link" routerLink="/books/byauthor/{{book.author.id}}/1">{{book.author.name}} </a>
+            <div class="header" *ngFor="let author of book.authors">
+                <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
             </div>
             <br />
 
-            <div class="header" *ngFor="let genre of genres">
-                <a class="author-genre-link" routerLink="/books/bygenre/{{book.genre.id}}/1">{{book.genre.name}} </a>
+            <div class="header" *ngFor="let genre of book.genres">
+                <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
             </div>
             <br />
             <p class="header">{{book.book.release_date|date}}</p>

@@ -9,4 +9,6 @@ public interface RegistrationTokenDao extends GenericDao<RegistrationToken, Inte
     RegistrationToken findByToken(String token) throws DataBaseSQLException;
 
     RegistrationToken findByUser(Integer userId) throws DataBaseSQLException;
+    
+    boolean tokenExistsByUser(Integer userId) throws DataBaseSQLException;
 }

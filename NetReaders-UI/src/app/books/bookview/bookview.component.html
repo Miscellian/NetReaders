@@ -7,11 +7,11 @@
     <div class="row col-md-9">
       <div class="col-md-8" id="book-data-container">
         <h1 id="book-title">{{book.title}}</h1>
-        <div class="header" *ngFor="let author of authors">
+        <div class="header" *ngFor="let author of book.authors">
           <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
         </div><br />
 
-        <div class="header" *ngFor="let genre of genres">
+        <div class="header" *ngFor="let genre of book.genres">
           <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
         </div><br />
         <p class="header">{{book.release_date|date}}</p>

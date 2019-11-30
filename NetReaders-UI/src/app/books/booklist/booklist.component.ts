@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BookService} from '../book.service';
-import {BookDto} from '../../model';
+import {Book} from '../../model';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -29,13 +29,13 @@ export class BooklistComponent implements OnInit {
 
     funcsCount: any = {
         genre: () => {
-            this.func = () => this.bookService.getCountByGenre(this.arg)
+            this.func = () => this.bookService.getCountByGenre(this.arg);
         },
         author: () => {
             this.func = () => this.bookService.getCountByAuthor(this.arg);
         },
         name: () => {
-            this.func = () => this.bookService.getCountByName(this.arg)
+            this.func = () => this.bookService.getCountByName(this.arg);
         },
         range: () => {
             this.func = () => this.bookService.getCount();
@@ -49,7 +49,7 @@ export class BooklistComponent implements OnInit {
     arg: string;
     paramArgs: any;
     count: number;
-    bookdtos: BookDto[];
+    books: Book[];
     func: any = () => this.bookService.getByRange(this.page.toString());
 
     constructor(private bookService: BookService,
@@ -58,7 +58,7 @@ export class BooklistComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        let newPageUrl = ""
+        let newPageUrl = "";
         let urlSplitted = this.router.url.split('/');
         for (let i = 0; i < urlSplitted.length - 1; i++) {
             newPageUrl += urlSplitted[i] + "/";
@@ -70,25 +70,16 @@ export class BooklistComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(
             params => {
-                window.location.hash = '#top';
                 this.arg = params['id'];
                 this.page = params['page'];
                 this.funcsCount[this.activatedRoute.snapshot.data.filter]();
                 this.func().subscribe(response => {
-                    if (!response.isSuccessful) {
-                        this.router.navigate(['/error']);
-                    } else {
-                        this.count = +response.obj;
-                    }
-                });
+                    this.count = +response;
+                }, error => this.router.navigate(['/error']));
                 this.funcs[this.activatedRoute.snapshot.data.filter]();
                 this.func().subscribe(response => {
-                    if (!response.isSuccessful) {
-                        this.router.navigate(['/error']);
-                    } else {
-                        this.bookdtos = response.obj;
-                    }
-                });
+                    this.books = response;
+                }, error => this.router.navigate(['/error']));
             }
         );
     }

@@ -187,7 +187,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Collection<Book> findByName(String name, Integer amount, Integer offset) {
 
-        final String sql_query = env.getProperty("book.getByNameWithOffset");
+        final String sql_query = env.getProperty("book.getByName");
 
         List<Book> books = template.query(sql_query, bookMapper, name, name, amount, offset);
 
@@ -204,7 +204,7 @@ public class BookDaoImpl implements BookDao {
 
     public Collection<Book> findAll(Integer amount, Integer offset) throws DataBaseSQLException {
 
-        final String sql_query = env.getProperty("book.getByIdWithOffset");
+        final String sql_query = env.getProperty("book.getById");
 
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
 

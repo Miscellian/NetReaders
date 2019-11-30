@@ -5,5 +5,5 @@ import com.netreaders.models.User;
 
 public interface EmailService {
 
-    void sendEmail(User user, RegistrationToken token);
+    void sendEmail(User user);
 }

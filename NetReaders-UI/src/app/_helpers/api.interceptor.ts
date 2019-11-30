@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class ApiInterceptor implements HttpInterceptor  {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // const url = 'http://netreaders.herokuapp.com';
-    const url = 'http://localhost:8080';
+    const url = 'http://localhost:8080/api';
     req = req.clone({
       url: url + req.url
     });
