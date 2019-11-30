@@ -41,7 +41,7 @@ img#navbar-profile-photo {
     height: auto;
 }
 
-a#profile-text {
+div#profile-text {
     display: none;
 }
 nav.navbar {
@@ -52,7 +52,7 @@ nav.navbar {
     img#navbar-profile-photo {
         display: none;
     }
-    a#profile-text {
+    div#profile-text {
         display: inline;
     }
 }

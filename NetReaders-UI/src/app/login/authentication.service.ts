@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {LoginInfo, ResponseMessage, User} from '../model';
+import {LoginInfo} from '../model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -33,7 +33,10 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage and set current user to null
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('UserName');
+        localStorage.removeItem('TokenValue');
+        localStorage.removeItem('TokenType');
+        localStorage.removeItem('Authorities');
         this.currentUserSubject.next(null);
     }
 }

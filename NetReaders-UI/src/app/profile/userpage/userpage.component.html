@@ -8,6 +8,8 @@
             <span id="profile-name">{{user.firstName}} {{user.lastName}}</span><br/>
             <span id="profile-username">Username: {{user.username}}</span><br/>
             <span id="profile-email">Email: {{user.email}}</span></div>
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <div (click)="logout()" class="btn btn-info" role="button" id="want-read-button">Log out</div>
+        </div>
     </div>
 </div>

@@ -18,3 +18,17 @@ div#profile-user-description {
     margin-top: 3%;
 }
 
+div.btn {
+    display: block;
+    margin-bottom: 5%;
+    background-color: #343a40;
+    border-color: #28a745;
+    font-size:x-large
+}
+
+div.btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+
