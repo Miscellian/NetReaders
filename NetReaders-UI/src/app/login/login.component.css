@@ -1,3 +1,23 @@
 .card{
-    background-color: #68C5FA;
+    background-color: #36393E;
+}
+
+.formText {
+    color: white;
+}
+
+a#registerButton {
+    float: right;
+}
+
+.formBtn {
+    background-color: transparent;
+    border: .1rem solid white;
+    color: white;
+}
+
+.formBtn:hover {
+    background-color: white;
+    border: .1rem solid #36393E;
+    color: #36393E;
 }
