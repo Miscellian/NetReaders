@@ -47,13 +47,13 @@ public class UserController {
             }
         } else {
             return ResponseEntity.badRequest().body("User Already exists");
-        };
+        }
         JwtResponse response = userService.login(loginForm);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/confirmRegistration")
-    public ResponseEntity<?> confirmRegistration(@RequestParam(name = "token") String token) throws SQLException {
+    public ResponseEntity<?> confirmRegistration(@RequestParam(name = "token") String token) {
 
         if (registrationTokenService.tokenIsValid(token)) {
             registrationTokenService.removeToken(token);
@@ -83,6 +83,9 @@ public class UserController {
         return true;
     }
     
-    
+    @GetMapping("/{username}")
+    public User getByUsername(@PathVariable String username) {
+            return userService.findByUsername(username);
+    }
 
 }

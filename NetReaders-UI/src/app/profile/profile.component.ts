@@ -22,11 +22,11 @@ export class ProfileComponent implements OnInit {
         this.activatedRoute.params.subscribe(
             params => {
                 this.arg = params['username'];
-                this.userService.getByUsername(this.arg).subscribe(response => {
-                        this.user = response;
-                }, error => this.router.navigate(['/error']));
+                this.userService.getByUsername(this.arg).subscribe(
+                    response => this.user = response,
+                    error => this.router.navigate(['/error'])
+                );
             }
         );
     }
-
 }

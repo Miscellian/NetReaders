@@ -51,9 +51,6 @@ public class UserDaoImpl implements UserDao {
         } catch (DuplicateKeyException e) {
             log.error(String.format("User '%s' is already exist", user.getUsername()));
             throw new DuplicateModelException("Internal sql exception");
-        } catch (SQLException e) {
-            log.error("User creation fail!");
-            throw new DataBaseSQLException("User creation fail!");
         }
     }
 
@@ -138,35 +135,35 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByUsername(String username) {
 
-        final String sql_query = env.getProperty("user.findByNickname");
+        final String sql_query = env.getProperty("user.findByUsername");
 
         List<User> users = template.query(sql_query, userMapper, username);
         if (users.isEmpty()) {
-            log.debug(String.format("Didn't find any user by nickname '%s'", username));
-            throw new NoSuchModelException(String.format("Didn't find any user by nickname '%s'", username));
+            log.debug(String.format("Didn't find any user by username '%s'", username));
+            throw new NoSuchModelException(String.format("Didn't find any user by username '%s'", username));
         } else if (users.size() == 1) {
-            log.debug(String.format("Found a user by nickname '%s'", username));
+            log.debug(String.format("Found a user by username '%s'", username));
             return users.get(0);
         } else {
-            log.error(String.format("Found more than one user by nickname '%s'", username));
-            throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", username));
+            log.error(String.format("Found more than one user by username '%s'", username));
+            throw new DataBaseSQLException(String.format("Found more than one user by username '%s'", username));
         }
     }
     
 	@Override
 	public boolean userExists(String username) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("user.findByNickname");
+		final String sql_query = env.getProperty("user.findByUsername");
 
         List<User> users = template.query(sql_query, userMapper, username);
         if (users.isEmpty()) {
-            log.debug(String.format("Didn't find any user by nickname '%s'", username));
+            log.debug(String.format("Didn't find any user by username '%s'", username));
             return false;
         } else if (users.size() == 1) {
-            log.debug(String.format("Found a user by nickname '%s'", username));
+            log.debug(String.format("Found a user by username '%s'", username));
             return true;
         } else {
-            log.error(String.format("Found more than one user by nickname '%s'", username));
-            throw new DataBaseSQLException(String.format("Found more than one user by nickname '%s'", username));
+            log.error(String.format("Found more than one user by username '%s'", username));
+            throw new DataBaseSQLException(String.format("Found more than one user by username '%s'", username));
         }
 	}
 
@@ -188,16 +185,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteByUsername(String username) {
 
-        final String sql_query = env.getProperty("user.deleteByNickname");
+        final String sql_query = env.getProperty("user.deleteByUsername");
 
         int recordCount = template.update(sql_query, username);
         if (recordCount == 0) {
-            log.debug(String.format("Dont delete any user by nickname '%s'", username));
+            log.debug(String.format("Dont delete any user by username '%s'", username));
         } else if (recordCount == 1) {
-            log.debug(String.format("Delete user by nickname '%s'", username));
+            log.debug(String.format("Delete user by username '%s'", username));
         } else {
-            log.error(String.format("Delete more than one user by nickname '%s'", username));
-            throw new DataBaseSQLException(String.format("Delete more than one user by nickname '%s'", username));
+            log.error(String.format("Delete more than one user by username '%s'", username));
+            throw new DataBaseSQLException(String.format("Delete more than one user by username '%s'", username));
         }
     }
 
@@ -209,7 +206,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private PreparedStatementCreator creator(String sql, User user) throws SQLException {
+    private PreparedStatementCreator creator(String sql, User user) {
 
         PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
         factory.setReturnGeneratedKeys(true);

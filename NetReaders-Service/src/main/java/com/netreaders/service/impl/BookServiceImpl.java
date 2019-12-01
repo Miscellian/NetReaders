@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Collection<Book> getByBooksUsername(String username, Integer amount, Integer offset) {
+    public Collection<Book> getBooksUsername(String username, Integer amount, Integer offset) {
 
         Collection<Book> books = bookDao.findByUsername(username.toLowerCase(), amount, offset);
         return createDtoCollection(books);

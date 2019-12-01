@@ -12,6 +12,7 @@ img#logo {
 
 button {
     background-color: #007BFF;
+    background-color: transparent;
 }
 li.nav-item {
     padding: .2rem .5rem .2rem .5rem;
