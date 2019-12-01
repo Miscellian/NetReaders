@@ -95,4 +95,10 @@ public class UserServiceImpl implements UserService {
         return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
 	}
 
+	@Override
+	public boolean checkCredentials(LoginForm loginForm) {
+		User user = userDao.findByUsername(loginForm.getUsername());
+		return passwordEncoder.matches(loginForm.getPassword(), user.getUserPassword());
+	}
+
 }
