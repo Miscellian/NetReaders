@@ -3,22 +3,15 @@ package com.netreaders.controller;
 import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
-import com.netreaders.models.RegistrationToken;
 import com.netreaders.models.User;
-import com.netreaders.security.JwtProvider;
 import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
 import com.netreaders.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+import java.util.Collection;
 
 @RestController
 @AllArgsConstructor
@@ -82,7 +75,17 @@ public class UserController {
 
         return true;
     }
-    
+
+    @GetMapping("/getAdminsList")
+    public Collection<User> getAdminsList() {
+        return userService.getAdminsList();
+    }
+
+    @GetMapping("/getModeratorsList")
+    public Collection<User> getModeratorsList() {
+        return userService.getModeratorsList();
+    }
+
     @GetMapping("/{username}")
     public User getByUsername(@PathVariable String username) {
             return userService.findByUsername(username);

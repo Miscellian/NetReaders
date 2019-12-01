@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
@@ -166,6 +165,34 @@ public class UserDaoImpl implements UserDao {
             throw new DataBaseSQLException(String.format("Found more than one user by username '%s'", username));
         }
 	}
+
+    @Override
+    public Collection<User> getAdminsList() {
+        final String sql_query = env.getProperty("user.getAdminsList");
+
+        List<User> admins = template.query(sql_query, userMapper);
+        if (admins.isEmpty()) {
+            log.debug(String.format("Didn't find admins"));
+            throw new NoSuchModelException(String.format("Didn't find admins"));
+        } else {
+            log.error(String.format("Found %d admins", admins.size()));
+            return admins;
+        }
+    }
+
+    @Override
+    public Collection<User> getModeratorsList() {
+        final String sql_query = env.getProperty("user.getModeratorsList");
+
+        List<User> moderators = template.query(sql_query, userMapper);
+        if (moderators.isEmpty()) {
+            log.debug(String.format("Didn't find moderators"));
+            throw new NoSuchModelException(String.format("Didn't find moderators"));
+        } else {
+            log.error(String.format("Found %d moderators", moderators.size()));
+            return moderators;
+        }
+    }
 
     @Override
     public Collection<User> findByFirstName(String firstName) {

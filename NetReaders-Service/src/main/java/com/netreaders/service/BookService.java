@@ -34,4 +34,6 @@ public interface BookService {
     Integer getCountByName(String name);
 
     Integer getCountByUsername(String username);
+
+    void addBookToUserLibrary(String username, Integer bookId);
 }

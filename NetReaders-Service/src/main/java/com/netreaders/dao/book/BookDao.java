@@ -35,4 +35,6 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> findByAnnouncementWithAuthor(Integer announcementId, Integer authorId) throws DataBaseSQLException;
 
     Book getByReviewId(int id);
+
+    void addBookToUserLibrary(String username, Integer bookId);
 }

@@ -12,13 +12,8 @@ import com.netreaders.security.JwtProvider;
 import com.netreaders.security.UserPrinciple;
 import com.netreaders.service.UserService;
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,5 +89,15 @@ public class UserServiceImpl implements UserService {
         String jwt = jwtProvider.generateJwtToken(SecurityContextHolder.getContext().getAuthentication());
         return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
 	}
+
+    @Override
+    public Collection<User> getAdminsList() {
+        return userDao.getAdminsList();
+    }
+
+    @Override
+    public Collection<User> getModeratorsList() {
+        return userDao.getModeratorsList();
+    }
 
 }

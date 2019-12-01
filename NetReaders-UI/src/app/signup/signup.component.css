@@ -1,5 +1,5 @@
 .card{
-    background-color: #68C5FA;
+    background-color: #36393E;
 }
 input.ng-valid[required], input.ng-valid.required  {
     border-left: 5px solid #42A948; /* green */
@@ -14,4 +14,25 @@ input.ng-touched.ng-invalid{
     font-size: 14px;
     margin-top: -10px;
     margin-bottom: 5px;
+}
+
+.formText {
+    color: white;
+}
+
+
+.formBtn {
+    background-color: transparent;
+    border: .1rem solid white;
+    color: white;
+}
+
+.formBtn:hover {
+    background-color: white;
+    border: .1rem solid #36393E;
+    color: #36393E;
+}
+
+a#cancelButton {
+    float: right;
 }

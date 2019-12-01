@@ -15,4 +15,8 @@ public interface UserDao extends GenericDao<User, Integer> {
     void deleteByUsername(String username) throws DataBaseSQLException;
     
     boolean userExists(String username) throws DataBaseSQLException;
+
+    Collection<User> getAdminsList();
+
+    Collection<User> getModeratorsList();
 }

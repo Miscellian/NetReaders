@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Book, Genre, Author } from '../../model';
+import {Component, Input, OnInit} from '@angular/core';
+import {Book} from '../../model';
+import {Router} from "@angular/router";
+import {BookService} from "../book.service";
 
 @Component({
   selector: 'app-booklist-item',
@@ -8,9 +10,22 @@ import { Book, Genre, Author } from '../../model';
 })
 export class BooklistItemComponent implements OnInit {
   @Input() public book: Book;
-  constructor() { }
+
+  constructor(public router: Router,
+              private bookService: BookService) {
+  }
 
   ngOnInit() {
+  }
+
+  addToLibrary() {
+    if (localStorage.getItem('UserName') === null) {
+      this.router.navigate(['login']);
+    } else {
+      let username = localStorage.getItem("UserName");
+      this.bookService.addToLibrary(username, this.book.id);
+      this.router.navigateByUrl('/users/' + username);
+    }
   }
 
 }

@@ -2,7 +2,7 @@ img#book-title-image {
   width: 100%;
 }
 
-a.btn {
+div.btn {
   display: block;
   margin-bottom: 5%;
   background-color: #343a40;
@@ -10,7 +10,7 @@ a.btn {
   font-size: x-large
 }
 
-a.btn:hover {
+div.btn:hover {
   background-color: #218838;
   border-color: #1e7e34;
 }
