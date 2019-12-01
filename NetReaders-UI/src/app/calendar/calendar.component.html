@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="calendar">
+    <div class="front">
+      <div class="current-date">
+        <h1>{{getDay()}}</h1>
+        <h1>{{getMonthYear()}}</h1>
+      </div>
+      <div class="current-month">
+        <ul class="week-days">
+          <li *ngFor="let d of dlist">{{d.substr(0, 3)}}</li>
+        </ul>
+        <div class="weeks">
+          <div *ngFor="let number of [0,1,2,3,4,5]">
+            <div>
+              <span *ngFor="let j of [0, 1, 2, 3, 4, 5, 6]"
+                    [ngClass]="{'before-days' : setNewDay(j+number*7).getMonth() != currentMonth}">
+                {{setNewDay(j + number * 7).getDate()}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="back">
+      <div class="info" *ngFor="let j of [0, 1, 2, 3]">
+        <div class="date">
+          <p class="info-time">
+            Title:
+            <span>{{'title' + j}}</span>
+          </p>
+          <p>
+            Description:
+            <span>{{'description' + j}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="dismiss">
+          Back <i class="ion-android-close"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
