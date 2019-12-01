@@ -13,7 +13,7 @@ export class BookService {
     }
 
     getById(id: number): Observable<Book> {
-        return this.httpClient.get<Book>(`/books/${id}`) ;
+        return this.httpClient.get<Book>(`/books/${id}`);
     }
 
     getByAuthor(arg: string, page: string): Observable<Book[]> {
@@ -59,5 +59,9 @@ export class BookService {
 
     getCountByUser(username: string): Observable<number> {
         return this.httpClient.get<number>(`/books/countByUsername?username=${username}`);
+    }
+
+    addToLibrary(username: string, bookId: number) {
+        this.httpClient.post(`/books/addToLibrary`, {username, bookId});
     }
 }

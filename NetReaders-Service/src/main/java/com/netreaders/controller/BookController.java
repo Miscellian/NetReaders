@@ -97,4 +97,11 @@ public class BookController {
 
         return bookService.getCountByUsername(username);
     }
+
+    @PostMapping(value = "addToLibrary")
+    public void addBookToUserLibrary(
+            @RequestBody String username,
+            @RequestBody Integer bookId) {
+        bookService.addBookToUserLibrary(username, bookId);
+    }
 }

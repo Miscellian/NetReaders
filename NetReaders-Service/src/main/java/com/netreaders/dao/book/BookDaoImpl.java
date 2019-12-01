@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
@@ -338,6 +337,15 @@ public class BookDaoImpl implements BookDao {
             log.error(String.format("Find more than one book by review_id '%s'", id));
             throw new DataBaseSQLException(String.format("Find more than one book by review_id '%s'", id));
         }
+    }
+
+    @Override
+    public void addBookToUserLibrary(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.addBookToUserLibrary");
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Add a book with id %d to %s library", bookId, username));
     }
 
     private void checkIfCollectionIsNull(Collection<Book> collection) {

@@ -11,9 +11,11 @@ import {Router} from "@angular/router";
 export class UserpageComponent implements OnInit {
     @Input() public user: User;
     arg: string;
+    storageUsername: String;
 
     constructor(private authentificationService: AuthenticationService,
                 public router: Router) {
+        this.storageUsername = localStorage.getItem("UserName");
     }
 
     ngOnInit() {
