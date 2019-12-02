@@ -348,6 +348,32 @@ public class BookDaoImpl implements BookDao {
         log.debug(String.format("Add a book with id %d to %s library", bookId, username));
     }
 
+    @Override
+    public boolean checkIfBookInUserLibrary(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.checkIfBookInUserLibrary");
+
+        List<Book> books = template.query(sql_query, bookMapper, username, bookId);
+        if (books.isEmpty()) {
+            log.debug(String.format("Book with id %d not in %s library", bookId, username));
+            return false;
+        } else if (books.size() == 1) {
+            log.debug(String.format("Book with id %d already in %s library", bookId, username));
+            return true;
+        } else {
+            log.error(String.format("Find more than one book with id %d for user %s", bookId, username));
+            throw new DataBaseSQLException(String.format("Find more than one book with id %d for user %s", bookId, username));
+        }
+    }
+
+    @Override
+    public void removeBookFromUserLibrary(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.removeBookFromUserLibrary");
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Remove a book with id %d to %s library", bookId, username));
+    }
+
     private void checkIfCollectionIsNull(Collection<Book> collection) {
         if (collection == null) {
             // unreachable, but who knows (:

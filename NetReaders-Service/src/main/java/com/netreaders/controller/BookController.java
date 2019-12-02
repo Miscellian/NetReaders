@@ -1,5 +1,6 @@
 package com.netreaders.controller;
 
+import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
@@ -100,8 +101,19 @@ public class BookController {
 
     @PostMapping(value = "addToLibrary")
     public void addBookToUserLibrary(
-            @RequestBody String username,
-            @RequestBody Integer bookId) {
-        bookService.addBookToUserLibrary(username, bookId);
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.addBookToUserLibrary(userBookLibrary);
+    }
+
+    @PostMapping(value = "removeFromLibrary")
+    public void removeBookFromUserLibrary(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.removeBookFromUserLibrary(userBookLibrary);
+    }
+
+    @PostMapping(value = "checkInLibrary")
+    public boolean checkIfBookInLibrary(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        return bookService.checkIfBookInLibrary(userBookLibrary);
     }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 
-import {Book} from '../model';
+import {Book, UserBookLibrary} from '../model';
 
 @Injectable({
     providedIn: 'root'
@@ -61,7 +61,15 @@ export class BookService {
         return this.httpClient.get<number>(`/books/countByUsername?username=${username}`);
     }
 
-    addToLibrary(username: string, bookId: number) {
-        this.httpClient.post(`/books/addToLibrary`, {username, bookId});
+    addToLibrary(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/addToLibrary`, userBook, {observe: 'response'});
+    }
+
+    checkInLibrary(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/checkInLibrary`, userBook);
+    }
+
+    removeFromLibrary(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/removeFromLibrary`, userBook, {observe: 'response'});
     }
 }

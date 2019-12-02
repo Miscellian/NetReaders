@@ -3,6 +3,7 @@ package com.netreaders.service.impl;
 import com.netreaders.dao.author.AuthorDao;
 import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
+import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
@@ -92,8 +93,28 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBookToUserLibrary(String username, Integer bookId) {
-        bookDao.addBookToUserLibrary(username, bookId);
+    public void addBookToUserLibrary(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (!bookDao.checkIfBookInUserLibrary(username, bookId)) {
+            bookDao.addBookToUserLibrary(username, bookId);
+        }
+    }
+
+    @Override
+    public boolean checkIfBookInLibrary(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        return bookDao.checkIfBookInUserLibrary(username, bookId);
+    }
+
+    @Override
+    public void removeBookFromUserLibrary(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (bookDao.checkIfBookInUserLibrary(username, bookId)) {
+            bookDao.removeBookFromUserLibrary(username, bookId);
+        }
     }
 
     @Override
