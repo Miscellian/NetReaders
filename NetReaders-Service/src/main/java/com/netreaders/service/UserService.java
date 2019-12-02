@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUser_name());
+		user.setUsername(signUpForm.getUser_name());
 		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService{
 		User user = new User();
 		user.setFirstName(signUpForm.getFirstName());
 		user.setLastName(signUpForm.getLastName());
-		user.setUserNickname(signUpForm.getUser_name());
+		user.setUsername(signUpForm.getUser_name());
 		String hashedPassword = passwordEncoder.encode(signUpForm.getPassword());
 		user.setUserPassword(hashedPassword);
 		user.setEmail(signUpForm.getEmail());
@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService{
 	
 
 	public User findByNickname(String username) throws SQLException {
-		return userDao.findByNickname(username);
+		return userDao.findByUsername(username);
 	}
 
 
@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService{
 		User user;
 		Collection<Role> roles;
 		try {
-			user = userDao.findByNickname(username);
+			user = userDao.findByUsername(username);
 			roles= roleDao.findByUserId(user.getUserId());
 			return UserPrinciple.build(user, roles);
 		} catch (SQLException e) {

@@ -34,7 +34,7 @@ import {ConfirmUserComponent} from "./confirmUser/confirmUser.component";
     LoginComponent,
     HomepageComponent,
     UserbooklistComponent,
-    ProfileComponent
+    ProfileComponent,
     ConfirmUserComponent
   ],
   imports: [

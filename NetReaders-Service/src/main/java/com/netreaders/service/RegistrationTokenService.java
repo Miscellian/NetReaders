@@ -18,7 +18,7 @@ public class RegistrationTokenService {
 	
 	public RegistrationToken createToken(User user) {
 		RegistrationToken token = new RegistrationToken();
-		token.setToken(UUID.nameUUIDFromBytes(user.getUserNickname().getBytes()).toString());
+		token.setToken(UUID.nameUUIDFromBytes(user.getUsername().getBytes()).toString());
 		token.setUserId(user.getUserId());
 		token.setCreatedDateTime(LocalDateTime.now());
 		try {

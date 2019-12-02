@@ -21,20 +21,20 @@ public class UserPrinciple implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private Long id;
     private String username;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(Long id, String username, String lastname, String firstname,
-    					String email, String password, 
-			    		Collection<? extends GrantedAuthority> authorities) {
+    public UserPrinciple(Long id, String username, String lastName, String firstName,
+                         String email, String password,
+                         Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.lastname = lastname;
-        this.firstname = firstname;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -48,7 +48,7 @@ public class UserPrinciple implements UserDetails {
 
         return new UserPrinciple(
                 (long)user.getUserId(),
-                user.getUserNickname(),
+                user.getUsername(),
                 user.getLastName(),
                 user.getFirstName(),
                 user.getEmail(),

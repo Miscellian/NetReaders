@@ -9,11 +9,11 @@ import java.util.Collection;
 
 public interface UserDao extends GenericDao<User, Integer> {
 
-    User findByNickname(String nickname) throws SQLException;
+    User findByUsername(String username) throws SQLException;
 
     Collection<User> findByFirstName(String firstName);
 
-    void deleteByNickname(String nickname) throws SQLException;
+    void deleteByUsername(String username) throws SQLException;
 
     User create(final User user) throws SQLException;
     User getById(Integer id) throws SQLException;
