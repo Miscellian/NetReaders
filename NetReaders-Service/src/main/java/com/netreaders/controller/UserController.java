@@ -8,6 +8,8 @@ import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
 import com.netreaders.service.UserService;
 import lombok.AllArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +41,10 @@ public class UserController {
                 return ResponseEntity.badRequest().body("Finish your registration first");
             }
         } else {
-            return ResponseEntity.badRequest().body("User Already exists");
+            return ResponseEntity.badRequest().body("User doesn't exists");
+        }
+        if(!userService.checkCredentials(loginForm)) {
+        	return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
         JwtResponse response = userService.login(loginForm);
         return ResponseEntity.ok(response);

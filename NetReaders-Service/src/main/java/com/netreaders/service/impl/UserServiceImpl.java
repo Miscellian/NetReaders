@@ -100,4 +100,10 @@ public class UserServiceImpl implements UserService {
         return userDao.getModeratorsList();
     }
 
+	@Override
+	public boolean checkCredentials(LoginForm loginForm) {
+		User user = userDao.findByUsername(loginForm.getUsername());
+		return passwordEncoder.matches(loginForm.getPassword(), user.getUserPassword());
+	}
+
 }
