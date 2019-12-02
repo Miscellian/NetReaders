@@ -1,5 +1,6 @@
 package com.netreaders.service;
 
+import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.models.Book;
 
@@ -35,5 +36,9 @@ public interface BookService {
 
     Integer getCountByUsername(String username);
 
-    void addBookToUserLibrary(String username, Integer bookId);
+    void addBookToUserLibrary(UserBookLibrary userBookLibrary);
+
+    boolean checkIfBookInLibrary(UserBookLibrary userBookLibrary);
+
+    void removeBookFromUserLibrary(UserBookLibrary userBookLibrary);
 }

@@ -1,31 +1,54 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Book} from '../../model';
+import {Book, UserBookLibrary} from '../../model';
 import {Router} from "@angular/router";
 import {BookService} from "../book.service";
 
 @Component({
-  selector: 'app-booklist-item',
-  templateUrl: './booklist-item.component.html',
-  styleUrls: ['./booklist-item.component.css']
+    selector: 'app-booklist-item',
+    templateUrl: './booklist-item.component.html',
+    styleUrls: ['./booklist-item.component.css']
 })
+
 export class BooklistItemComponent implements OnInit {
-  @Input() public book: Book;
+    @Input() public book: Book;
+    userBook: UserBookLibrary;
+    inUserLibrary: boolean;
+    username: string;
 
-  constructor(public router: Router,
-              private bookService: BookService) {
-  }
-
-  ngOnInit() {
-  }
-
-  addToLibrary() {
-    if (localStorage.getItem('UserName') === null) {
-      this.router.navigate(['login']);
-    } else {
-      let username = localStorage.getItem("UserName");
-      this.bookService.addToLibrary(username, this.book.id);
-      this.router.navigateByUrl('/users/' + username);
+    constructor(public router: Router,
+                private bookService: BookService) {
+        this.userBook = new UserBookLibrary();
+        this.username = localStorage.getItem("UserName");
     }
-  }
 
+    ngOnInit() {
+        this.LoadUserBook();
+    }
+
+    LoadUserBook() {
+        this.userBook.username = this.username;
+        this.userBook.bookId = this.book.id;
+        this.bookService.checkInLibrary(this.userBook).subscribe(
+            response => this.inUserLibrary = (<boolean>response),
+            error => this.router.navigate(['/error'])
+        )
+    }
+
+    addToLibrary() {
+        if (this.username === null) {
+            this.router.navigate(['login']);
+        } else {
+            this.bookService.addToLibrary(this.userBook).subscribe(
+                response => this.router.navigateByUrl('/users/' + this.username),
+                error => this.router.navigate(['/error'])
+            );
+        }
+    }
+
+    removeFromLibrary() {
+        this.bookService.removeFromLibrary(this.userBook).subscribe(
+            response => this.router.navigateByUrl('/users/' + this.username),
+            error => this.router.navigate(['/error'])
+        );
+    }
 }

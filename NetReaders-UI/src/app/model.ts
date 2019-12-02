@@ -52,3 +52,8 @@ export class Review {
   published: boolean;
   book: Book;
 }
+
+export class UserBookLibrary {
+    username: string;
+    bookId: number;
+}

@@ -22,7 +22,16 @@
     </div>
 
     <div class="col-md-3">
-      <div (click)="addToLibrary()" class="btn btn-info" id="want-read-button" role="button">Add to library</div>
+        <div *ngIf="inUserLibrary; else notInUserLibrary">
+            <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
+                Remove from library
+            </div>
+        </div>
+        <ng-template #notInUserLibrary>
+            <div (click)="addToLibrary()" class="btn btn-info" role="button">
+                Add to library
+            </div>
+        </ng-template>
     </div>
   </div>
 </div>

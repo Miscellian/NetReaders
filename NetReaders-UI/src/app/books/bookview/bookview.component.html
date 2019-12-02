@@ -1,34 +1,45 @@
 <div class="container" id="main">
-  <div class="row">
-    <div class="col-md-3" id="photo-container">
-      <img alt="book image" class="rounded" id="book-title-image"
-        src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
-    </div>
-    <div class="row col-md-9">
-      <div class="col-md-8" id="book-data-container">
-        <h1 id="book-title">{{book.title}}</h1>
-        <div class="header" *ngFor="let author of book.authors">
-          <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
-        </div><br />
+    <div class="row">
+        <div class="col-md-3" id="photo-container">
+            <img alt="book image" class="rounded" id="book-title-image"
+                 src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+        </div>
+        <div class="row col-md-9">
+            <div class="col-md-8" id="book-data-container">
+                <h1 id="book-title">{{book.title}}</h1>
+                <div *ngFor="let author of book.authors" class="header">
+                    <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
+                </div>
+                <br/>
 
-        <div class="header" *ngFor="let genre of book.genres">
-          <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
-        </div><br />
-        <p class="header">{{book.release_date|date}}</p>
-      </div>
-      <div class="col-md-4" id="side-buttons-container">
-        <a href="#" class="btn btn-info" role="button" id="want-read-button">Add to library</a>
-        <a href="#" class="btn btn-info" role="button" id="download-button">Download</a>
-      </div>
-      <div class="col-md-12" id="description-container">
-        <h2>
-          Description
-        </h2>
-        <hr>
-        <p>
-          {{book.description}}
-        </p>
-      </div>
+                <div *ngFor="let genre of book.genres" class="header">
+                    <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
+                </div>
+                <br/>
+                <p class="header">{{book.release_date|date}}</p>
+            </div>
+            <div class="col-md-4" id="side-buttons-container">
+                <div *ngIf="inUserLibrary; else notInUserLibrary">
+                    <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
+                        Remove from library
+                    </div>
+                </div>
+                <ng-template #notInUserLibrary>
+                    <div (click)="addToLibrary()" class="btn btn-info" role="button">
+                        Add to library
+                    </div>
+                </ng-template>
+                <a class="btn btn-info" href="#" id="download-button" role="button">Download</a>
+            </div>
+            <div class="col-md-12" id="description-container">
+                <h2>
+                    Description
+                </h2>
+                <hr>
+                <p>
+                    {{book.description}}
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
