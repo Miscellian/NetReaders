@@ -57,7 +57,7 @@ export class BooklistComponent implements OnInit {
                 public router: Router) {
     }
 
-    loadPage() {
+    loadPage(page: number) {
         let newPageUrl = "";
         let urlSplitted = this.router.url.split('/');
         for (let i = 0; i < urlSplitted.length - 1; i++) {

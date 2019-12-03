@@ -116,4 +116,22 @@ public class BookController {
             @RequestBody UserBookLibrary userBookLibrary) {
         return bookService.checkIfBookInLibrary(userBookLibrary);
     }
+
+    @PostMapping(value = "addToFavourites")
+    public void addBookToFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.addBookToUserFavourites(userBookLibrary);
+    }
+
+    @PostMapping(value = "removeFromFavourites")
+    public void removeBookFromFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.removeBookFromUserFavourites(userBookLibrary);
+    }
+
+    @PostMapping(value = "checkInFavourites")
+    public boolean checkIfBookInFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        return bookService.checkIfBookInFavourites(userBookLibrary);
+    }
 }

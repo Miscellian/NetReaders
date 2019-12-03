@@ -3,22 +3,22 @@ img#profile-photo {
 }
 
 span#profile-name {
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 span#profile-username {
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 span#profile-email {
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 div#profile-user-description {
     margin-top: 3%;
 }
 
-div.btn {
+.btn {
     display: block;
     margin-bottom: 5%;
     background-color: #343a40;
@@ -26,7 +26,7 @@ div.btn {
     font-size:x-large
 }
 
-div.btn:hover {
+.btn:hover {
     background-color: #218838;
     border-color: #1e7e34;
 }

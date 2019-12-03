@@ -1,0 +1,15 @@
+<div class="container" id="admins-list-page">
+    <div class="row">
+        <div class="col-md-12">
+            <ul>
+                <span id="admin-list-title">Admins list:</span>
+                <li *ngFor="let user of users">
+                    <span id="admin-list-item">
+                        <a href="/users/{{user.username}}">@{{user.username}},</a>
+                        {{user.firstName}} {{user.lastName}}, {{user.email}}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

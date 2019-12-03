@@ -39,7 +39,7 @@ export class BooklistItemComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToLibrary(this.userBook).subscribe(
-                response => this.router.navigateByUrl('/users/' + this.username),
+                response => window.location.reload(),
                 error => this.router.navigate(['/error'])
             );
         }
@@ -47,7 +47,7 @@ export class BooklistItemComponent implements OnInit {
 
     removeFromLibrary() {
         this.bookService.removeFromLibrary(this.userBook).subscribe(
-            response => this.router.navigateByUrl('/users/' + this.username),
+            response => window.location.reload(),
             error => this.router.navigate(['/error'])
         );
     }

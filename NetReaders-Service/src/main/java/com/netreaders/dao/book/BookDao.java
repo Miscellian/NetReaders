@@ -41,4 +41,10 @@ public interface BookDao extends GenericDao<Book, Integer> {
     boolean checkIfBookInUserLibrary(String username, Integer bookId);
 
     void removeBookFromUserLibrary(String username, Integer bookId);
+
+    boolean checkIfBookInFavourites(String username, Integer bookId);
+
+    void addBookToUserFavourites(String username, Integer bookId);
+
+    void removeBookToUserFavourites(String username, Integer bookId);
 }

@@ -17,27 +17,27 @@ export class BookService {
     }
 
     getByAuthor(arg: string, page: string): Observable<Book[]> {
-        const offset = (Number(page) - 1) * 5;
+        const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/byauthor?id=${arg}&amount=8&offset=${offset}`);
     }
 
     getByGenre(arg: string, page: string): Observable<Book[]> {
-        const offset = (Number(page) - 1) * 5;
+        const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/bygenre?id=${arg}&amount=8&offset=${offset}`);
     }
 
     getByName(name: string, page: string): Observable<Book[]> {
-        const offset = (Number(page) - 1) * 5;
+        const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/byname?name=${name}&amount=8&offset=${offset}`);
     }
 
     getByRange(page: string): Observable<Book[]> {
-        const offset = (Number(page) - 1) * 5;
+        const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/range?amount=8&offset=${offset}`);
     }
 
     getByUser(username: string, page: string): Observable<Book[]> {
-        const offset = (Number(page) - 1) * 5;
+        const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/byusername?username=${username}&amount=8&offset=${offset}`);
     }
 
@@ -71,5 +71,17 @@ export class BookService {
 
     removeFromLibrary(userBook: UserBookLibrary) {
         return this.httpClient.post(`/books/removeFromLibrary`, userBook, {observe: 'response'});
+    }
+
+    addToFavourites(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/addToFavourites`, userBook, {observe: 'response'});
+    }
+
+    checkInFavourites(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/checkInFavourites`, userBook);
+    }
+
+    removeFromFavourites(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/removeFromFavourites`, userBook, {observe: 'response'});
     }
 }

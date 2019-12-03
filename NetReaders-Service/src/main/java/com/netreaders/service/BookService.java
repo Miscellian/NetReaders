@@ -41,4 +41,10 @@ public interface BookService {
     boolean checkIfBookInLibrary(UserBookLibrary userBookLibrary);
 
     void removeBookFromUserLibrary(UserBookLibrary userBookLibrary);
+
+    void addBookToUserFavourites(UserBookLibrary userBookLibrary);
+
+    void removeBookFromUserFavourites(UserBookLibrary userBookLibrary);
+
+    boolean checkIfBookInFavourites(UserBookLibrary userBookLibrary);
 }

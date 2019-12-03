@@ -118,6 +118,33 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void addBookToUserFavourites(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (bookDao.checkIfBookInUserLibrary(username, bookId)
+                && !bookDao.checkIfBookInFavourites(username, bookId)) {
+            bookDao.addBookToUserFavourites(username, bookId);
+        }
+    }
+
+    @Override
+    public void removeBookFromUserFavourites(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (bookDao.checkIfBookInUserLibrary(username, bookId)
+                && bookDao.checkIfBookInFavourites(username, bookId)) {
+            bookDao.removeBookToUserFavourites(username, bookId);
+        }
+    }
+
+    @Override
+    public boolean checkIfBookInFavourites(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        return bookDao.checkIfBookInFavourites(username, bookId);
+    }
+
+    @Override
     public Collection<Book> findByAnnouncementId(Integer announcementId) {
 
         return bookDao.findByAnnouncementId(announcementId);

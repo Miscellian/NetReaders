@@ -14,6 +14,7 @@ button {
     background-color: #007BFF;
     background-color: transparent;
 }
+
 li.nav-item {
     padding: .2rem .5rem .2rem .5rem;
 }
@@ -44,14 +45,16 @@ img#navbar-profile-photo {
 div#profile-text {
     display: none;
 }
+
 nav.navbar {
     margin-bottom: 5%;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 991px) {
     img#navbar-profile-photo {
         display: none;
     }
+
     div#profile-text {
         display: inline;
     }
