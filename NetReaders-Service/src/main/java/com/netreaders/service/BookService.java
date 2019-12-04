@@ -9,6 +9,8 @@ import java.util.Collection;
 public interface BookService {
 
     Book findBookById(Integer id);
+    
+    Book findBookByReviewId(Integer id);
 
     Collection<Book> getBooksById(Integer amount, Integer offset);
 

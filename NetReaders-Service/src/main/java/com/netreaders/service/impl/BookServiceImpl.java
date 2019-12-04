@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -157,6 +157,16 @@ public class BookServiceImpl implements BookService {
 
         return book;
     }
+
+	@Override
+	public Book findBookByReviewId(Integer id) {
+		Book book = bookDao.getByReviewId(id);
+        return modelToDto(book);
+	}
+
+
+	
+
     
 	public Collection<Book> getByUserPreferences(String username){
 		Collection<Book> preparedBooks = bookDao.findByUsername(username, getCountByUsername(username), 0)

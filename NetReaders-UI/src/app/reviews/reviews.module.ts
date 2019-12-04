@@ -8,6 +8,7 @@ import { NgbPagination, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { BooksModule } from '../books/books.module';
 import { CreateReviewComponent } from './create-review/create-review.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ReviewPreviewComponent } from './review-preview/review-preview.component';
 
 
 
@@ -16,14 +17,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReviewitemComponent,
     ReviewviewComponent,
     ReviewlistComponent,
-    CreateReviewComponent
+    CreateReviewComponent,
+    ReviewPreviewComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    BooksModule,
     NgbPaginationModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    ReviewPreviewComponent
   ]
 })
 export class ReviewsModule { }

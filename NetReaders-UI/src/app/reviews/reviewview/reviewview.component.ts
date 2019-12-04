@@ -28,7 +28,7 @@ export class ReviewviewComponent implements OnInit {
 
   isReviewModerator(): boolean {
     const authorities: Authority[]  = JSON.parse(localStorage.getItem('Authorities'));
-    if(authorities === null) return false;
+    if(!authorities) return false;
     return authorities
     .map((val,index,arr) => val.authority)
     .includes('REVIEW_MODERATOR');

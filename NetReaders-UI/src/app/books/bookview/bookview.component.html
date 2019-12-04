@@ -42,4 +42,20 @@
             </div>
         </div>
     </div>
+    <hr>
+    <div *ngIf="reviews; else noReviews" class="reviews">
+        <div *ngFor="let review of publishedReviews" class="review-previews-div">
+            <app-review-preview [review]="review"></app-review-preview>
+        </div>
+        <a routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
+        <ng-template #noReviews>
+            <h2>There are currently no reviews for this book</h2>
+        </ng-template>
+    </div>
+    <div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
+        <h2>Unpublished reviews:</h2>
+        <div *ngFor="let review of unpublishedReviews" class="review-previews-div">
+            <app-review-preview [review]="review"></app-review-preview>
+        </div>
+    </div>
 </div>

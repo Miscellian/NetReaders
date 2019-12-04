@@ -1,1 +1,29 @@
-<p>reviewitem works!</p>
+<div class="container" id="main">
+    <a routerLink="/reviews/{{review.id}}"> 
+        <h2>Rating : {{review.rating}}</h2>
+        <h1>{{review.description}}</h1>
+    </a>
+        <hr>
+        <div class="row">
+          <div class="col-md-3">
+            <a routerLink="/books/{{review.book.id}}"> 
+            <img alt="book image" class="rounded" id="book-title-image"
+              src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+            </a>
+          </div>
+      
+          <div class="col-md-6" id="book-data-container">
+      
+            <a routerLink="/books/{{review.book.id}}" id="book-title">{{review.book.title}}</a><br />
+      
+            <div class="header" *ngFor="let author of review.book.authors">
+              <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
+            </div><br />
+      
+            <div class="header" *ngFor="let genre of review.book.genres">
+              <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
+            </div><br />
+          </div>
+    </div>
+</div>
+
