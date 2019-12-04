@@ -3,6 +3,7 @@ package com.netreaders.service.impl;
 import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.review.ReviewDao;
 import com.netreaders.models.Review;
+import com.netreaders.service.BookService;
 import com.netreaders.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewDao reviewDao;
-    private final BookDao bookDao;
+    private final BookService bookService;
 
     @Override
     public Review getReviewById(Integer id) {
@@ -75,7 +76,28 @@ public class ReviewServiceImpl implements ReviewService {
 
     private Review modelToDto(Review review) {
 
-        review.setBook(bookDao.getByReviewId(review.getId()));
+        review.setBook(bookService.findBookByReviewId(review.getId()));
         return review;
     }
+
+	@Override
+	public Collection<Review> getUnpublishedReviews(Integer amount, Integer offset) {
+		Collection<Review> reviews = reviewDao.getUnpublished(amount, offset);
+		return createDtoCollection(reviews);
+	}
+
+	@Override
+	public Integer getReviewsPublishedByBookCount(Integer bookId) {
+		return reviewDao.getReviewsPublishedByBookCount(bookId);
+	}
+
+	@Override
+	public Integer getReviewsUnpublishedByBookCount(Integer bookId) {
+		return reviewDao.getReviewsUnpublishedByBookCount(bookId);
+	}
+
+	@Override
+	public Integer getUnpublishedReviewsCount() {
+		return reviewDao.getUnpublishedReviewsCount();
+	}
 }

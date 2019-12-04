@@ -33,21 +33,43 @@ public class ReviewController {
 
     @GetMapping("published/bybook")
     public Collection<Review> getPublishedReviewsByBook(@RequestParam(name = "id") Integer bookId,
-                                                        @RequestParam(name = "amount") Integer amount, @RequestParam(name = "offset") Integer offset) {
+                                                        @RequestParam(name = "amount") Integer amount,
+                                                        @RequestParam(name = "offset") Integer offset) {
 
         return reviewService.getReviewsPublishedByBook(bookId, amount, offset);
     }
 
     @GetMapping("unpublished/bybook")
     public Collection<Review> getUnpublishedReviewsByBook(@RequestParam(name = "id") Integer bookId,
-                                                          @RequestParam(name = "amount") Integer amount, @RequestParam(name = "offset") Integer offset) {
-
+                                                          @RequestParam(name = "amount") Integer amount,
+                                                          @RequestParam(name = "offset") Integer offset) {
         return reviewService.getReviewsUnpublishedByBookId(bookId, amount, offset);
     }
 
+    @GetMapping("unpublished")
+    public Collection<Review> getUnpublishedReviews(@RequestParam(name = "amount") Integer amount,
+                                                          @RequestParam(name = "offset") Integer offset){
+    	return reviewService.getUnpublishedReviews(amount, offset);
+    }
+    
+    
+    @GetMapping("published/countBybook")
+    public Integer getPublishedReviewsByBookCount(@RequestParam(name = "id") Integer bookId){
+    	return reviewService.getReviewsPublishedByBookCount(bookId);
+    }
+    @GetMapping("unpublished/countBybook")
+    public Integer getUnpublishedReviewsByBookCount(@RequestParam(name = "id") Integer bookId){
+    	return reviewService.getReviewsUnpublishedByBookCount(bookId);
+    }
+    @GetMapping("unpublishedCount")
+    public Integer getUnpublishedReviewsCount(){
+    	return reviewService.getUnpublishedReviewsCount();
+    }
+    
+    
+    
     @PostMapping("add")
     public ResponseEntity<?> createReview(@RequestBody Review review) {
-
         review.setPublished(false);
         reviewService.addReview(review);
         return ResponseEntity.ok().build();

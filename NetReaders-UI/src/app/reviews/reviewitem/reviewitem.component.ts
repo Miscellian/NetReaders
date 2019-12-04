@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Review } from '../../model';
+import { ReviewService } from '../review.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviewitem',
@@ -6,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reviewitem.component.css']
 })
 export class ReviewitemComponent implements OnInit {
-
-  constructor() { }
+  @Input() public review: Review;
+  constructor(private reviewService: ReviewService,
+              private activatedRoute: ActivatedRoute,
+              public router: Router) { }
 
   ngOnInit() {
   }

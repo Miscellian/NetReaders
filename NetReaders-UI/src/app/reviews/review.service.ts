@@ -14,24 +14,36 @@ export class ReviewService {
   getById(id: number) {
     return this.httpClient.get(`/reviews/${id}`, {observe: 'response'});
   }
-  getByBookId(arg: string, page: string): Observable<Review[]> {
-    const offset = (Number(page) - 1) * 5;
+  getByBookId(arg: number, page: number): Observable<Review[]> {
+    const offset = (page - 1) * 5;
     return this.httpClient.get<Review[]>(`/reviews/byauthor?id=${arg}&amount=5&offset=${offset}`);
   }
-  getPublishedByBookId(arg: string, page: string): Observable<Review[]> {
-    const offset = (Number(page) - 1) * 5;
+  getPublishedByBookId(arg: number, page: number): Observable<Review[]> {
+    const offset = (page - 1) * 5;
     return this.httpClient.get<Review[]>(`/reviews/published/bybook?id=${arg}&amount=5&offset=${offset}`);
   }
-  getUnpublishedByBookId(arg: string, page: string): Observable<Review[]> {
-    const offset = (Number(page) - 1) * 5;
+  getUnpublishedByBookId(arg: number, page: number): Observable<Review[]> {
+    const offset = (page - 1) * 5;
     return this.httpClient.get<Review[]>(`/reviews/unpublished/bybook?id=${arg}&amount=5&offset=${offset}`);
   }
+  getUnpublished(page: number): Observable<Review[]> {
+    const offset = (page - 1) * 5;
+    return this.httpClient.get<Review[]>(`/reviews/unpublished?amount=5&offset=${offset}`);
+  }
+  getPublishedByBookIdCount(arg: number): Observable<number> {
+    return this.httpClient.get<number>(`/reviews/published/countBybook?id=${arg}`);
+  }
+  getUnpublishedByBookIdCount(arg: number): Observable<number> {
+    return this.httpClient.get<number>(`/reviews/unpublished/countBybook?id=${arg}`);
+  }
+  getUnpublishedCount(): Observable<number> {
+    return this.httpClient.get<number>(`/reviews/unpublishedCount`);
+  }
+
   createReview(reviewForm: FormGroup, book: Book) {
-    let review: Review = new Review();
-    review.rating = reviewForm.value['rating'];
-    review.description = reviewForm.value['description'];
-    review.published = false;
-    review.book = book;
+    const review: Review = { id: 0, rating: reviewForm.value['rating'],
+                          description: reviewForm.value['description'],
+                          published: false, book: book};
     return this.httpClient.post(`/reviews/add`, review, {observe: 'response'});
   }
   publishReview(review: Review) {
