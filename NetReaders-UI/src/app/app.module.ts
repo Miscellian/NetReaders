@@ -17,13 +17,10 @@ import {ErrorpageComponent} from './errorpage/errorpage.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {UserbooklistComponent} from './profile/userbooklist/userbooklist.component';
 import {ProfileComponent} from './profile/profile.component';
-
 import {AuthenticationService} from './login/authentication.service';
 import {UserService} from './signup/user.service';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ConfirmUserComponent} from './confirmUser/confirmUser.component';
-import {ApiInterceptor} from './_helpers/api.interceptor';
-import {ReviewsModule} from './reviews/reviews.module';
 import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {AdminslistComponent} from './profile/adminslist/adminslist.component';
 import {ModeratorslistComponent} from './profile/moderatorslist/moderatorslist.component';
@@ -43,7 +40,10 @@ import {CalendarComponent} from "./calendar/calendar.component";
         UserbooklistComponent,
         ProfileComponent,
         ConfirmUserComponent,
-        CalendarComponent
+        CalendarComponent,
+        EditProfileComponent,
+        AdminslistComponent,
+        ModeratorslistComponent
     ],
     imports: [
         ReactiveFormsModule,
@@ -65,41 +65,6 @@ import {CalendarComponent} from "./calendar/calendar.component";
         {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true}
     ],
     bootstrap: [AppComponent]
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    UserpageComponent,
-    ErrorpageComponent,
-    SignupComponent,
-    LoginComponent,
-    HomepageComponent,
-    UserbooklistComponent,
-    ProfileComponent,
-    ConfirmUserComponent,
-    EditProfileComponent,
-    AdminslistComponent,
-    ModeratorslistComponent
-  ],
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BooksModule,
-    CommonModule,
-    NgbModule,
-    ReviewsModule
-  ],
-  providers: [
-    AuthGuard,
-    AuthenticationService,
-    UserService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true}
-  ],
-  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
