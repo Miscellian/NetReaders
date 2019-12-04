@@ -36,18 +36,20 @@ export class BookviewComponent implements OnInit {
                 this.id = +this.activatedRoute.snapshot.paramMap.get('id');
                 this.bookService.getById(this.id).subscribe(response => {
                     this.book = response;
-		    this.loadBookReviews();
+		            this.loadBookReviews();
                     this.LoadUserBook();
                 }, error => this.router.navigate(['/error']));
             });
         if (this.username) {
-        this.bookService.getByUserPreferences(this.username).subscribe(
-            response => {
-                this.bookRecomendations = response;
-            }
-        );
+            this.bookService.getByUserPreferences(this.username).subscribe(
+                response => {
+                    this.bookRecomendations = response;
+                }
+            );
         }
-        if (this.username) {
+    }
+
+    LoadUserBook() {
         if (this.username === null) {
             this.inUserLibrary = false;
             this.inFavourites = false;
@@ -62,7 +64,7 @@ export class BookviewComponent implements OnInit {
                 response => this.inFavourites = (<boolean>response),
                 error => this.router.navigate(['error'])
             );
-    	};
+    	}
     }
 
     loadBookReviews() {
@@ -76,12 +78,6 @@ export class BookviewComponent implements OnInit {
                 response => {
                     this.unpublishedReviews = response;
                 }
-            );
-        }
-    }              response => this.inFavourites = (<boolean>response),
-                error => this.router.navigate(['error'])
-            );
-                error => this.router.navigate(['error'])
             );
         }
     }
