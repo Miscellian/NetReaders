@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -158,17 +159,24 @@ public class BookServiceImpl implements BookService {
     }
     
 	public Collection<Book> getByUserPreferences(String username){
-		Collection<Book> preparedBooks = 
-				bookDao.findBooksMinusSelected(getBooksUsername(username, getCountByUsername(username), 0));
+		Collection<Book> preparedBooks = bookDao.findByUsername(username, getCountByUsername(username), 0)
+				.stream()
+				.map(this::modelToDto)
+				.collect(Collectors.toList());
 		Map<Genre, Long> userGenres = preparedBooks
 				.stream()
 				.flatMap(book -> book.getGenres().stream())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		
 		List<Book> pickedBooks = userGenres.entrySet().stream()
 				.sorted((entry1, entry2) -> {return (int) (entry1.getValue() - entry2.getValue());})
 				.limit(3)
-				.flatMap(entry -> findBooksByGenre(entry.getKey().getId(), 2, 0).stream())
+				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 5, 0).stream())
 				.collect(Collectors.toList());
-		return pickedBooks;
+		
+		return bookDao.findBooksMinusSelected(pickedBooks,6,0)
+				.stream()
+				.map(this::modelToDto)
+				.collect(Collectors.toList());
 	}
 }

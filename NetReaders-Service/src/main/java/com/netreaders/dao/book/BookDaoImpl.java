@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLData;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
@@ -411,16 +412,16 @@ public class BookDaoImpl implements BookDao {
     }
 
 	@Override
-	public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("book.getMinusSelected");
+	public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks, Integer amount, Integer offset) throws DataBaseSQLException {
+		String sql_query = env.getProperty("book.getMinusSelected");
 		
 		String selectedBookIds = selectedBooks.stream()
 				.map(book -> book.getId().toString())
 				//.reduce("", (acc, id) -> acc + id.toString() + ",");
 				.collect(Collectors.joining(","));
 		//selectedBookIds = selectedBookIds.substring(0, selectedBookIds.length() - 1);
-
-        List<Book> books = template.query(sql_query, bookMapper, selectedBookIds);
+		sql_query = sql_query.substring(0, sql_query.indexOf('?')) + selectedBookIds + sql_query.substring(sql_query.indexOf('?')+1);
+        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
 
         checkIfCollectionIsNull(books);
 
