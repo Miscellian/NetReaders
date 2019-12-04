@@ -1,2 +1,13 @@
 <app-userpage [user]="user"></app-userpage>
-<app-userbooklist [user]="user"></app-userbooklist>
+<hr>
+<div *ngIf="hasAuthority('USER')">
+    <app-userbooklist [user]="user"></app-userbooklist>
+</div>
+<div *ngIf="storageUsername === user.username">
+    <div *ngIf="hasAuthority('SUPER_ADMIN')">
+        <app-adminslist></app-adminslist>
+    </div>
+    <div *ngIf="hasAuthority('ADMIN')">
+        <app-moderatorslist></app-moderatorslist>
+    </div>
+</div>

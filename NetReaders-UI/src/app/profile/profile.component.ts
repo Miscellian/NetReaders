@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "./user.service";
-import {User} from "../model";
+import {Authority, User} from "../model";
 
 @Component({
     selector: 'app-profile',
@@ -12,10 +12,12 @@ export class ProfileComponent implements OnInit {
 
     user: User;
     arg: string;
+    storageUsername: String;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private  userService: UserService,
                 public router: Router) {
+        this.storageUsername = localStorage.getItem("UserName");
     }
 
     ngOnInit() {
@@ -28,5 +30,13 @@ export class ProfileComponent implements OnInit {
                 );
             }
         );
+    }
+
+    hasAuthority(authority: string): boolean {
+        const authorities: Authority[] = JSON.parse(localStorage.getItem('Authorities'));
+        if (!authorities) return false;
+        return authorities
+            .map(val => val.authority)
+            .includes(authority);
     }
 }

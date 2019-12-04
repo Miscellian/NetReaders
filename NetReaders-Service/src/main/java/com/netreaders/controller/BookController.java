@@ -59,7 +59,7 @@ public class BookController {
     }
 
     @GetMapping(value = "byusername")
-    public Collection<Book> getByUserName(
+    public Collection<Book> getByUsername(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
@@ -71,6 +71,14 @@ public class BookController {
     public Collection<Book> getByUserPreferences(
             @RequestParam(name = "username") String username) {
         return bookService.getByUserPreferences(username);
+    }
+
+    @GetMapping(value = "byusernameFavourites")
+    public Collection<Book> getFavouritesByUsername(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+        return bookService.getFavouritesByUsername(username, amount, offset);
     }
 
     @GetMapping(value = "count")
@@ -107,6 +115,13 @@ public class BookController {
         return bookService.getCountByUsername(username);
     }
 
+    @GetMapping(value = "countFavouritesByUsername")
+    public Integer getFavouritesCountByUsername(
+            @RequestParam(name = "username") String username) {
+
+        return bookService.getFavouritesCountByUsername(username);
+    }
+
     @PostMapping(value = "addToLibrary")
     public void addBookToUserLibrary(
             @RequestBody UserBookLibrary userBookLibrary) {
@@ -123,5 +138,23 @@ public class BookController {
     public boolean checkIfBookInLibrary(
             @RequestBody UserBookLibrary userBookLibrary) {
         return bookService.checkIfBookInLibrary(userBookLibrary);
+    }
+
+    @PostMapping(value = "addToFavourites")
+    public void addBookToFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.addBookToUserFavourites(userBookLibrary);
+    }
+
+    @PostMapping(value = "removeFromFavourites")
+    public void removeBookFromFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.removeBookFromUserFavourites(userBookLibrary);
+    }
+
+    @PostMapping(value = "checkInFavourites")
+    public boolean checkIfBookInFavorites(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        return bookService.checkIfBookInFavourites(userBookLibrary);
     }
 }

@@ -5,7 +5,7 @@
                  src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
         </div>
         <div class="row col-md-9">
-            <div class="col-md-8" id="book-data-container">
+            <div class="col-md-7" id="book-data-container">
                 <h1 id="book-title">{{book.title}}</h1>
                 <div *ngFor="let author of book.authors" class="header">
                     <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
@@ -18,11 +18,21 @@
                 <br/>
                 <p class="header">{{book.release_date|date}}</p>
             </div>
-            <div class="col-md-4" id="side-buttons-container">
+            <div class="col-md-5" id="side-buttons-container">
                 <div *ngIf="inUserLibrary; else notInUserLibrary">
                     <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
                         Remove from library
                     </div>
+                    <div *ngIf="inFavourites; else notInFavourites">
+                        <div (click)="removeFromFavourites()" class="btn btn-info" role="button">
+                            Remove from favourites
+                        </div>
+                    </div>
+                    <ng-template #notInFavourites>
+                        <div (click)="addToFavourites()" class="btn btn-info" role="button">
+                            Add to favorites
+                        </div>
+                    </ng-template>
                 </div>
                 <ng-template #notInUserLibrary>
                     <div (click)="addToLibrary()" class="btn btn-info" role="button">
