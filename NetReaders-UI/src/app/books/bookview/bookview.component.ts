@@ -36,11 +36,13 @@ export class BookviewComponent implements OnInit {
             this.loadBookReviews();
             this.LoadUserBook();
         }, error => this.router.navigate(['/error']));
+        if (this.username) {
         this.bookService.getByUserPreferences(this.username).subscribe(
             response => {
                 this.bookRecomendations = response;
             }
         );
+        }
     }
 
     LoadUserBook() {
