@@ -19,6 +19,8 @@ public interface UserService extends UserDetailsService {
     boolean userExists(String username);
     
     JwtResponse login(LoginForm loginForm);
+    
+    boolean checkCredentials(LoginForm loginForm);
 
     Collection<User> getAdminsList();
 
