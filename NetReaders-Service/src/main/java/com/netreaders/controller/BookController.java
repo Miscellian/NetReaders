@@ -64,6 +64,12 @@ public class BookController {
 
         return bookService.getBooksUsername(username, amount, offset);
     }
+    
+    @GetMapping(value = "preferences")
+    public Collection<Book> getByUserPreferences(
+            @RequestParam(name = "username") String username) {
+        return bookService.getByUserPreferences(username);
+    }
 
     @GetMapping(value = "count")
     public Integer getCount() {

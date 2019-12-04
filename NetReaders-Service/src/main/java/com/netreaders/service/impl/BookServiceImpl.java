@@ -5,11 +5,18 @@ import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
 import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
+import com.netreaders.models.Genre;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
+
+import org.assertj.core.internal.Lists;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,4 +156,19 @@ public class BookServiceImpl implements BookService {
 
         return book;
     }
+    
+	public Collection<Book> getByUserPreferences(String username){
+		Collection<Book> preparedBooks = 
+				bookDao.findBooksMinusSelected(getBooksUsername(username, getCountByUsername(username), 0));
+		Map<Genre, Long> userGenres = preparedBooks
+				.stream()
+				.flatMap(book -> book.getGenres().stream())
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		List<Book> pickedBooks = userGenres.entrySet().stream()
+				.sorted((entry1, entry2) -> {return (int) (entry1.getValue() - entry2.getValue());})
+				.limit(3)
+				.flatMap(entry -> findBooksByGenre(entry.getKey().getId(), 2, 0).stream())
+				.collect(Collectors.toList());
+		return pickedBooks;
+	}
 }

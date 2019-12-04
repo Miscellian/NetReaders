@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Log4j
@@ -408,4 +409,27 @@ public class BookDaoImpl implements BookDao {
             return holder.getKey().intValue();
         }
     }
+
+	@Override
+	public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("book.getMinusSelected");
+		
+		String selectedBookIds = selectedBooks.stream()
+				.map(book -> book.getId().toString())
+				//.reduce("", (acc, id) -> acc + id.toString() + ",");
+				.collect(Collectors.joining(","));
+		//selectedBookIds = selectedBookIds.substring(0, selectedBookIds.length() - 1);
+
+        List<Book> books = template.query(sql_query, bookMapper, selectedBookIds);
+
+        checkIfCollectionIsNull(books);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any new books, selectedBooks count: '%d'", selectedBooks.size()));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d book(s) that are not in selected", books.size()));
+            return books;
+        }
+	}
 }

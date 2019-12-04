@@ -14,6 +14,7 @@ export class BookviewComponent implements OnInit {
     userBook: UserBookLibrary;
     inUserLibrary: boolean;
     username: string;
+    bookRecomendations: Book[];
 
     constructor(private bookService: BookService,
                 private activatedRoute: ActivatedRoute,
@@ -28,6 +29,11 @@ export class BookviewComponent implements OnInit {
             this.book = response;
             this.LoadUserBook();
         }, error => this.router.navigate(['/error']));
+        this.bookService.getByUserPreferences(this.username).subscribe(
+            response => {
+                this.bookRecomendations = response;
+            }
+        );
     }
 
     LoadUserBook() {

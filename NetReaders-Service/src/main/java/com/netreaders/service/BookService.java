@@ -15,6 +15,8 @@ public interface BookService {
     Collection<Book> getBooksByName(String name, Integer amount, Integer offset);
 
     Collection<Book> getBooksUsername(String username, Integer amount, Integer offset);
+    
+    Collection<Book> getByUserPreferences(String username);
 
     Collection<Book> findBooksByGenre(Integer genreId, Integer amount, Integer offset);
 
