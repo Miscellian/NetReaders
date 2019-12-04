@@ -167,7 +167,6 @@ public class BookDaoImpl implements BookDao {
     }
 
     public Collection<Book> findByUsername(String username, Integer amount, Integer offset) {
-
         final String sql_query = env.getProperty("book.getByUsername");
 
         List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
@@ -176,6 +175,20 @@ public class BookDaoImpl implements BookDao {
             return Collections.emptyList();
         } else {
             log.debug(String.format("Found %d book(s) for user '%s'", books.size(), username));
+            return books;
+        }
+    }
+
+    @Override
+    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getFavouritesByUsername");
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any favourites for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
             return books;
         }
     }
@@ -264,6 +277,16 @@ public class BookDaoImpl implements BookDao {
         Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
 
         log.debug(String.format("Found %d books by username '%s'", count, username));
+        return count;
+    }
+
+    @Override
+    public Integer getFavouritesCountByUsername(String username) {
+        String sql_query = env.getProperty("book.getFavouritesCountByUsername");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
+
+        log.debug(String.format("Found %d favourites by username '%s'", count, username));
         return count;
     }
 
@@ -372,6 +395,41 @@ public class BookDaoImpl implements BookDao {
         template.update(sql_query, username, bookId);
 
         log.debug(String.format("Remove a book with id %d to %s library", bookId, username));
+    }
+
+    @Override
+    public boolean checkIfBookInFavourites(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.checkIfBookInFavourites");
+
+        List<Book> books = template.query(sql_query, bookMapper, username, bookId);
+        if (books.isEmpty()) {
+            log.debug(String.format("Book with id %d not in %s favourites", bookId, username));
+            return false;
+        } else if (books.size() == 1) {
+            log.debug(String.format("Book with id %d already in %s favourites", bookId, username));
+            return true;
+        } else {
+            log.error(String.format("Find more than one book with id %d for user %s", bookId, username));
+            throw new DataBaseSQLException(String.format("Find more than one book with id %d for user %s", bookId, username));
+        }
+    }
+
+    @Override
+    public void addBookToUserFavourites(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.addBookToUserFavourites");
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Add a book with id %d to %s favourites", bookId, username));
+    }
+
+    @Override
+    public void removeBookToUserFavourites(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.removeBookToUserFavourites");
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Remove a book with id %d to %s favourites", bookId, username));
     }
 
     private void checkIfCollectionIsNull(Collection<Book> collection) {

@@ -11,12 +11,15 @@
             <span id="profile-email">Email: {{user.email}}</span></div>
         <div class="col-md-3">
             <div *ngIf="storageUsername === user.username ; else addFriend">
-                <div (click)="logout()" class="btn btn-info" id="want-read-button"
+                <div (click)="logout()" class="btn btn-info"
                      role="button">Log out
                 </div>
+                <a class="btn btn-info" href="/users/editProfile/{{user.username}}"
+                   role="button">Edit profile
+                </a>
             </div>
             <ng-template #addFriend>
-                <div class="btn btn-info" id="add-friend-button"
+                <div class="btn btn-info"
                      role="button">Add to friends
                 </div>
             </ng-template>
