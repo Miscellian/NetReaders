@@ -5,11 +5,15 @@ import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
 import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
+import com.netreaders.models.Genre;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,4 +153,14 @@ public class BookServiceImpl implements BookService {
 
         return book;
     }
+
+	@Override
+	public Book findBookByReviewId(Integer id) {
+		Book book = bookDao.getByReviewId(id);
+        return modelToDto(book);
+	}
+
+
+	
+
 }

@@ -5,6 +5,7 @@ import { BooklistComponent } from './booklist/booklist.component';
 import { BooklistItemComponent } from './booklist-item/booklist-item.component';
 import { RouterModule } from '@angular/router';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReviewsModule } from '../reviews/reviews.module';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     RouterModule,
+    ReviewsModule,
     NgbPaginationModule
   ],
   exports: [

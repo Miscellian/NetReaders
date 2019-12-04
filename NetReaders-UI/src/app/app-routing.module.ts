@@ -8,8 +8,9 @@ import { LoginComponent } from './login/login.component';
 import { ConfirmUserComponent } from './confirmUser/confirmUser.component';
 import { ReviewviewComponent } from './reviews/reviewview/reviewview.component';
 import { CreateReviewComponent } from './reviews/create-review/create-review.component';
-import {HomepageComponent} from "./homepage/homepage.component";
-import {ProfileComponent} from "./profile/profile.component";
+import {HomepageComponent} from './homepage/homepage.component';
+import {ProfileComponent} from './profile/profile.component';
+import { ReviewlistComponent } from './reviews/reviewlist/reviewlist.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,9 @@ const routes: Routes = [
     path: 'reviews',
     children: [
       { path: 'add/:bookid', component: CreateReviewComponent},
+      { path: 'published/:bookid/:page', component: ReviewlistComponent, data: {filter: 'publishedByBook'}},
+      { path: 'unpublished/:bookid/:page', component: ReviewlistComponent, data: {filter: 'unpublishedByBook'}},
+      { path: 'unpublished/:page', component: ReviewlistComponent, data: {filter: 'unpublishedAll'}},
       { path: ':id', component: ReviewviewComponent }
     ]
   },
