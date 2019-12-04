@@ -28,6 +28,8 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Integer getCountByUsername(String username) throws DataBaseSQLException;
 
+    Integer getFavouritesCountByUsername(String username);
+
     Collection<Book> findByAnnouncementId(Integer announcementId) throws DataBaseSQLException;
 
     Collection<Book> findByAnnouncementWithGenre(Integer announcementId, Integer genreId) throws DataBaseSQLException;
@@ -47,4 +49,7 @@ public interface BookDao extends GenericDao<Book, Integer> {
     void addBookToUserFavourites(String username, Integer bookId);
 
     void removeBookToUserFavourites(String username, Integer bookId);
+
+    Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset);
+
 }

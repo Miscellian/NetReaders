@@ -12,6 +12,7 @@ export class UserbooklistComponent implements OnInit {
     @Input() public user: User;
     arg: string;
     books: Book[];
+    favourites: Book[];
 
     constructor(private activatedRoute: ActivatedRoute,
                 private bookService: BookService,
@@ -22,9 +23,12 @@ export class UserbooklistComponent implements OnInit {
         this.activatedRoute.params.subscribe(
             params => {
                 this.arg = params['username'];
-                this.bookService.getByUser(this.arg, "1").subscribe(response => {
-                        this.books = response;
-                }, error => this.router.navigate(['/error']));
+                this.bookService.getByUser(this.arg, "1").subscribe(
+                    response => this.books = response,
+                    error => this.router.navigate(['/error']));
+                this.bookService.getFavouritesByUser(this.arg, "1").subscribe(
+                    response => this.favourites = response,
+                    error => this.router.navigate(['/error']));
             }
         );
     }

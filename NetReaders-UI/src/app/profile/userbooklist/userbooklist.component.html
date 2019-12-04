@@ -1,12 +1,12 @@
 <div class="container">
-    <div *ngIf="books.length > 0; else elseBlock">
+    <div *ngIf="books.length > 0; else LibraryElseBlock">
         <div class="row">
             <div class="col-md-3">
-                <span id="library-text">Library</span>
+                <span class="library-title">Library</span>
             </div>
             <div class="col-md-6"></div>
             <div class="col-md-3">
-                <a class="btn" href="/books/byuser/{{user.username}}/1" id="profile-booklist-button">View all</a>
+                <a class="btn view-all-btn" href="/books/byuser/{{user.username}}/1">View all</a>
             </div>
         </div>
         <div class="row">
@@ -29,9 +29,46 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <div *ngIf="favourites.length > 0; else FavouritesElseBlock">
+            <div class="row">
+                <div class="col-md-3">
+                    <span class="library-title">Favourites</span>
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-3">
+                    <a class="btn view-all-btn" href="/books/byuserFavourites/{{user.username}}/1">View all</a>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngFor="let favourite of favourites; let i = index" class="col-md-3">
+                    <a href="books/{{favourite.id}}">
+                        <img alt="book-image"
+                             class="rounded profile-booklist-preview-photo"
+                             src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+                    </a>
+                    <br/>
+                    <span>
+                <a class="profile-book-title"
+                   href="books/{{favourite.id}}"><b>
+                    {{favourite.title}}
+                </b></a>
+            </span><br/>
+                    <div *ngFor="let author of favourite.authors">
+                        <span class="profile-book-author">{{author.name}}</span>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #FavouritesElseBlock>
+        <span class="empty-text">
+            Your favourites is empty, add books to favourites to see them here
+        </span>
+        </ng-template>
     </div>
-    <ng-template #elseBlock>
-        <span id="empty-library-text">
+    <ng-template #LibraryElseBlock>
+        <span class="empty-text">
             Your library is empty, add books to see them here
         </span>
     </ng-template>

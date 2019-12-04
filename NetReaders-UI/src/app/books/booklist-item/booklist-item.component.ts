@@ -26,12 +26,16 @@ export class BooklistItemComponent implements OnInit {
     }
 
     LoadUserBook() {
-        this.userBook.username = this.username;
-        this.userBook.bookId = this.book.id;
-        this.bookService.checkInLibrary(this.userBook).subscribe(
-            response => this.inUserLibrary = (<boolean>response),
-            error => this.router.navigate(['/error'])
-        )
+        if (this.username === null) {
+            this.inUserLibrary = false;
+        } else {
+            this.userBook.username = this.username;
+            this.userBook.bookId = this.book.id;
+            this.bookService.checkInLibrary(this.userBook).subscribe(
+                response => this.inUserLibrary = (<boolean>response),
+                error => this.router.navigate(['/error'])
+            );
+        }
     }
 
     addToLibrary() {

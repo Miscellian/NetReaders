@@ -2,11 +2,11 @@ img.profile-booklist-preview-photo {
     width: 100%;
 }
 
-span#library-text {
+span.library-title {
     font-size: 2em;
 }
 
-a#profile-booklist-button {
+a.view-all-btn {
     font-size: 2em;
     text-decoration: none;
     float: right;
@@ -17,7 +17,7 @@ a#profile-booklist-button {
     border-color: #28a745;
 }
 
-a#profile-booklist-button:hover {
+a.view-all-btn:hover {
     background-color: #218838;
     border-color: #1e7e34;
 }
@@ -32,6 +32,6 @@ span.profile-book-author {
     font-size: 1.2em;
 }
 
-span#empty-library-text {
+span.empty-text {
     font-size: 2em;
 }

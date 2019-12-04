@@ -41,6 +41,11 @@ export class BookService {
         return this.httpClient.get<Book[]>(`/books/byusername?username=${username}&amount=8&offset=${offset}`);
     }
 
+    getFavouritesByUser(username: string, page: string): Observable<Book[]> {
+        const offset = (Number(page) - 1) * 8;
+        return this.httpClient.get<Book[]>(`/books/byusernameFavourites?username=${username}&amount=8&offset=${offset}`);
+    }
+
     getCount(): Observable<number> {
         return this.httpClient.get<number>(`/books/count`);
     }
@@ -83,5 +88,9 @@ export class BookService {
 
     removeFromFavourites(userBook: UserBookLibrary) {
         return this.httpClient.post(`/books/removeFromFavourites`, userBook, {observe: 'response'});
+    }
+
+    getFavouritesCountByUser(username: string): Observable<number> {
+        return this.httpClient.get<number>(`/books/countFavouritesByUsername?username=${username}`);
     }
 }

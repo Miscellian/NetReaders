@@ -24,6 +24,9 @@ export class BooklistComponent implements OnInit {
         },
         user: () => {
             this.func = () => this.bookService.getByUser(this.arg, this.page.toString());
+        },
+        favourite: () => {
+            this.func = () => this.bookService.getFavouritesByUser(this.arg, this.page.toString());
         }
     };
 
@@ -42,6 +45,9 @@ export class BooklistComponent implements OnInit {
         },
         user: () => {
           this.func = () => this.bookService.getCountByUser(this.arg);
+        },
+        favourite: () => {
+            this.func = () => this.bookService.getFavouritesCountByUser(this.arg);
         }
     };
 

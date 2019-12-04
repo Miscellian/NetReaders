@@ -29,7 +29,8 @@ const routes: Routes = [
             {path: 'bygenre/:id/:page', component: BooklistComponent, data: {filter: 'genre'}},
             {path: 'byname/:id/:page', component: BooklistComponent, data: {filter: 'name'}},
             {path: 'range/:page', component: BooklistComponent, data: {filter: 'range'}},
-            {path: 'byuser/:id/:page', component: BooklistComponent, data: {filter: 'user'}}
+            {path: 'byuser/:id/:page', component: BooklistComponent, data: {filter: 'user'}},
+            {path: 'byuserFavourites/:id/:page', component: BooklistComponent, data: {filter: 'favourite'}}
         ]
     },
     {

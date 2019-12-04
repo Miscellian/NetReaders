@@ -43,7 +43,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Collection<Book> getBooksUsername(String username, Integer amount, Integer offset) {
-
         Collection<Book> books = bookDao.findByUsername(username.toLowerCase(), amount, offset);
         return createDtoCollection(books);
     }
@@ -88,8 +87,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Integer getCountByUsername(String username) {
-
         return bookDao.getCountByUsername(username);
+    }
+
+    @Override
+    public Integer getFavouritesCountByUsername(String username) {
+        return bookDao.getFavouritesCountByUsername(username);
     }
 
     @Override
@@ -142,6 +145,12 @@ public class BookServiceImpl implements BookService {
         String username = userBookLibrary.getUsername();
         Integer bookId = userBookLibrary.getBookId();
         return bookDao.checkIfBookInFavourites(username, bookId);
+    }
+
+    @Override
+    public Collection<Book> getFavouritesByUsername(String username, Integer amount, Integer offset) {
+        Collection<Book> books = bookDao.findByFavouritesUsername(username.toLowerCase(), amount, offset);
+        return createDtoCollection(books);
     }
 
     @Override

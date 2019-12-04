@@ -57,12 +57,20 @@ public class BookController {
     }
 
     @GetMapping(value = "byusername")
-    public Collection<Book> getByUserName(
+    public Collection<Book> getByUsername(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "amount") Integer amount,
             @RequestParam(name = "offset") Integer offset) {
 
         return bookService.getBooksUsername(username, amount, offset);
+    }
+
+    @GetMapping(value = "byusernameFavourites")
+    public Collection<Book> getFavouritesByUsername(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+        return bookService.getFavouritesByUsername(username, amount, offset);
     }
 
     @GetMapping(value = "count")
@@ -97,6 +105,13 @@ public class BookController {
             @RequestParam(name = "username") String username) {
 
         return bookService.getCountByUsername(username);
+    }
+
+    @GetMapping(value = "countFavouritesByUsername")
+    public Integer getFavouritesCountByUsername(
+            @RequestParam(name = "username") String username) {
+
+        return bookService.getFavouritesCountByUsername(username);
     }
 
     @PostMapping(value = "addToLibrary")

@@ -36,6 +36,8 @@ public interface BookService {
 
     Integer getCountByUsername(String username);
 
+    Integer getFavouritesCountByUsername(String username);
+
     void addBookToUserLibrary(UserBookLibrary userBookLibrary);
 
     boolean checkIfBookInLibrary(UserBookLibrary userBookLibrary);
@@ -47,4 +49,7 @@ public interface BookService {
     void removeBookFromUserFavourites(UserBookLibrary userBookLibrary);
 
     boolean checkIfBookInFavourites(UserBookLibrary userBookLibrary);
+
+    Collection<Book> getFavouritesByUsername(String username, Integer amount, Integer offset);
+
 }

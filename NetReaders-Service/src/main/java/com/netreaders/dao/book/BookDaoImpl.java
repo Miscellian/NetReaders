@@ -167,7 +167,6 @@ public class BookDaoImpl implements BookDao {
     }
 
     public Collection<Book> findByUsername(String username, Integer amount, Integer offset) {
-
         final String sql_query = env.getProperty("book.getByUsername");
 
         List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
@@ -176,6 +175,20 @@ public class BookDaoImpl implements BookDao {
             return Collections.emptyList();
         } else {
             log.debug(String.format("Found %d book(s) for user '%s'", books.size(), username));
+            return books;
+        }
+    }
+
+    @Override
+    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getFavouritesByUsername");
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any favourites for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
             return books;
         }
     }
@@ -264,6 +277,16 @@ public class BookDaoImpl implements BookDao {
         Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
 
         log.debug(String.format("Found %d books by username '%s'", count, username));
+        return count;
+    }
+
+    @Override
+    public Integer getFavouritesCountByUsername(String username) {
+        String sql_query = env.getProperty("book.getFavouritesCountByUsername");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
+
+        log.debug(String.format("Found %d favourites by username '%s'", count, username));
         return count;
     }
 
