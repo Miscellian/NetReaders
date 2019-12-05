@@ -25,6 +25,14 @@ export class Author {
   name: string;
 }
 
+export class EditUser {
+  userId: number;
+  username: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+}
+
 export class User {
   userId: number;
   username: string;

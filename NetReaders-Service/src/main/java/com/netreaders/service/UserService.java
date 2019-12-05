@@ -1,5 +1,6 @@
 package com.netreaders.service;
 
+import com.netreaders.dto.EditUserForm;
 import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
@@ -25,4 +26,6 @@ public interface UserService extends UserDetailsService {
     Collection<User> getAdminsList();
 
     Collection<User> getModeratorsList();
+
+    void editUser(EditUserForm editUserForm);
 }

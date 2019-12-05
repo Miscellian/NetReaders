@@ -16,7 +16,7 @@ import {EditProfileComponent} from "./profile/edit-profile/edit-profile.componen
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomepageComponent},
-    {path: 'users/:username', component: ProfileComponent},
+    {path: 'users/:username', component: ProfileComponent, pathMatch: 'full'},
     {path: 'users/editProfile/:username', component: EditProfileComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'login', component: LoginComponent},

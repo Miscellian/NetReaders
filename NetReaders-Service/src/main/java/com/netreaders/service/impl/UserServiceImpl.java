@@ -2,6 +2,7 @@ package com.netreaders.service.impl;
 
 import com.netreaders.dao.role.RoleDao;
 import com.netreaders.dao.user.UserDao;
+import com.netreaders.dto.EditUserForm;
 import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
@@ -12,6 +13,7 @@ import com.netreaders.security.JwtProvider;
 import com.netreaders.security.UserPrinciple;
 import com.netreaders.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 
 @Service
+@Log4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -40,6 +43,12 @@ public class UserServiceImpl implements UserService {
         Role role = roleDao.findByRoleName("USER");
         roleDao.addUserToRole(role, user);
         return user;
+    }
+
+    @Override
+    public void editUser(EditUserForm editUserForm) {
+        User user = CreateUser(editUserForm);
+        userDao.updateByEditForm(user);
     }
 
     @Transactional
@@ -63,6 +72,16 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = passwordEncoder.encode(signUpForm.getUserPassword());
         user.setUserPassword(hashedPassword);
         user.setEmail(signUpForm.getEmail());
+        return user;
+    }
+
+    private User CreateUser(EditUserForm editUserForm) {
+        User user = new User();
+        user.setFirstName(editUserForm.getFirstname());
+        user.setLastName(editUserForm.getLastname());
+        user.setUsername(editUserForm.getUsername());
+        user.setEmail(editUserForm.getEmail());
+        user.setId(editUserForm.getUserId());
         return user;
     }
 
@@ -100,7 +119,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getModeratorsList();
     }
 
-	@Override
+    @Override
 	public boolean checkCredentials(LoginForm loginForm) {
 		User user = userDao.findByUsername(loginForm.getUsername());
 		return passwordEncoder.matches(loginForm.getPassword(), user.getUserPassword());

@@ -88,14 +88,7 @@ public class UserDaoImpl implements UserDao {
                 user.getProfilePhoto(),
                 user.getId());
 
-        if (recordCount == 0) {
-            log.debug(String.format("Didn't update any user by id '%d'", user.getId()));
-        } else if (recordCount == 1) {
-            log.debug(String.format("Updated user by id '%d'", user.getId()));
-        } else {
-            log.error(String.format("Updated more than one user by id '%d'", user.getId()));
-            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getId()));
-        }
+        checkForUpdatedRowsCount(user, recordCount);
     }
 
     @Override
@@ -148,8 +141,24 @@ public class UserDaoImpl implements UserDao {
             throw new DataBaseSQLException(String.format("Found more than one user by username '%s'", username));
         }
     }
-    
-	@Override
+
+    @Override
+    public void updateByEditForm(User user) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("user.updateByEditForm");
+
+        log.debug(String.format("%s %s %s %s %s", user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getId()));
+
+        int recordCount = template.update(sql_query,
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getId());
+
+        checkForUpdatedRowsCount(user, recordCount);
+    }
+
+    @Override
 	public boolean userExists(String username) throws DataBaseSQLException {
 		final String sql_query = env.getProperty("user.findByUsername");
 
@@ -260,5 +269,14 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
+    private void checkForUpdatedRowsCount(User user, int recordCount) {
+        if (recordCount == 0) {
+            log.debug(String.format("Didn't update any user by id '%d'", user.getId()));
+        } else if (recordCount == 1) {
+            log.debug(String.format("Updated user by id '%d'", user.getId()));
+        } else {
+            log.error(String.format("Updated more than one user by id '%d'", user.getId()));
+            throw new DataBaseSQLException(String.format("Updated more than one user by id '%d'", user.getId()));
+        }
+    }
 }

@@ -1,1 +1,50 @@
-<p>edit-profile works!</p>
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body">
+                <h3 class="text-center mb-4 formText">Edit profile</h3>
+                <form (ngSubmit)="onSubmit()" [formGroup]="editUserForm">
+                    <div class="form-group">
+                        <label class="formText" for="username">Username</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.username.errors }"
+                               class="form-control" formControlName="username" id="username" type="text"/>
+                        <div *ngIf="submitted && getFormValue.username.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.username.errors.required">Username is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="formText" for="firstname">First Name</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.firstname.errors }"
+                               class="form-control" formControlName="firstname" id="firstname" type="text"/>
+                        <div *ngIf="submitted && getFormValue.firstname.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.firstname.errors.required">First Name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="formText" for="lastname">Last Name</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.lastname.errors }"
+                               class="form-control" formControlName="lastname" id="lastname" type="text"/>
+                        <div *ngIf="submitted && getFormValue.lastname.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.lastname.errors.required">Last Name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="formText" for="email">Email</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.email.errors }" class="form-control"
+                               formControlName="email" id="email" type="email"/>
+                        <div *ngIf="submitted && getFormValue.email.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.email.errors.required">Username is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="btn btn-primary formBtn">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Submit
+                        </button>
+                        <a [routerLink]="['/users', user.username]" class="btn formBtn" id="cancelButton">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
