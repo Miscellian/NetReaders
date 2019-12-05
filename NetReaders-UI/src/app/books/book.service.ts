@@ -45,6 +45,9 @@ export class BookService {
         const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/byusernameFavourites?username=${username}&amount=8&offset=${offset}`);
     }
+    getByUserPreferences(username: string): Observable<Book[]> {
+        return this.httpClient.get<Book[]>(`/books/preferences?username=${username}`);
+    }
 
     getCount(): Observable<number> {
         return this.httpClient.get<number>(`/books/count`);

@@ -9,12 +9,16 @@ import java.util.Collection;
 public interface BookService {
 
     Book findBookById(Integer id);
+    
+    Book findBookByReviewId(Integer id);
 
     Collection<Book> getBooksById(Integer amount, Integer offset);
 
     Collection<Book> getBooksByName(String name, Integer amount, Integer offset);
 
     Collection<Book> getBooksUsername(String username, Integer amount, Integer offset);
+    
+    Collection<Book> getByUserPreferences(String username);
 
     Collection<Book> findBooksByGenre(Integer genreId, Integer amount, Integer offset);
 

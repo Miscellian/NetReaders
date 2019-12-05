@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Book, UserBookLibrary} from '../../model';
+import {Book, UserBookLibrary, Review, Authority} from '../../model';
 import {BookService} from '../book.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import { ReviewService } from '../../reviews/review.service';
 
 @Component({
     selector: 'app-bookview',
@@ -15,12 +16,18 @@ export class BookviewComponent implements OnInit {
     inUserLibrary: boolean;
     inFavourites: boolean;
     username: string;
+    bookRecomendations: Book[];
+    authorities: string[];
+    publishedReviews: Review[];
+    unpublishedReviews: Review[];
 
     constructor(private bookService: BookService,
                 private activatedRoute: ActivatedRoute,
+                private reviewService: ReviewService,
                 public router: Router) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
+        this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
     }
 
     ngOnInit() {
@@ -29,9 +36,17 @@ export class BookviewComponent implements OnInit {
                 this.id = +this.activatedRoute.snapshot.paramMap.get('id');
                 this.bookService.getById(this.id).subscribe(response => {
                     this.book = response;
+		            this.loadBookReviews();
                     this.LoadUserBook();
                 }, error => this.router.navigate(['/error']));
             });
+        if (this.username) {
+            this.bookService.getByUserPreferences(this.username).subscribe(
+                response => {
+                    this.bookRecomendations = response;
+                }
+            );
+        }
     }
 
     LoadUserBook() {
@@ -48,6 +63,21 @@ export class BookviewComponent implements OnInit {
             this.bookService.checkInFavourites(this.userBook).subscribe(
                 response => this.inFavourites = (<boolean>response),
                 error => this.router.navigate(['error'])
+            );
+    	}
+    }
+
+    loadBookReviews() {
+        this.reviewService.getPublishedByBookId(this.book.id, 1).subscribe(
+            response => {
+                this.publishedReviews = response;
+            }
+        );
+        if (this.authorities.indexOf('REVIEW_MODERATOR') > -1) {
+            this.reviewService.getUnpublishedByBookId(this.book.id, 1).subscribe(
+                response => {
+                    this.unpublishedReviews = response;
+                }
             );
         }
     }

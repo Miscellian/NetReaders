@@ -45,6 +45,13 @@ a.author-genre-link:hover {
   color: #218838; 
 }
 
+.review-previews-div{
+  border-width: 2px;
+  border-style: solid;
+  display: flex;
+  flex-direction: row;
+}
+
 @media screen and (max-width: 600px) {
   div#description-container {
     border: none;

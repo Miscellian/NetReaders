@@ -1,0 +1,45 @@
+img#book-title-image {
+    width: 100%;
+  }
+  
+  a#book-title {
+    margin-bottom: 5%;
+    text-decoration: none;
+    color: black;
+    font-size: xx-large;
+  }
+  
+  p.header {
+    margin-top: 1%;
+    font-size: large;
+  }
+  
+  div#main {
+    padding: 2%;
+    margin-bottom: 2%;
+    border: .15vw ridge #343a40;
+    border-radius: 10px;
+  }
+  
+  div.header {
+    display: inline;
+  }
+  .hr{
+      border-width: 2px;
+  }
+  
+  a.author-genre-link {
+    text-decoration: none;
+    font-size: large;
+    color: black;
+  }
+  
+  a.author-genre-link:hover {
+    color: #218838;
+  }
+  
+  @media screen and (max-width: 767px) {
+    div#main {
+      border: none;
+    }
+  }

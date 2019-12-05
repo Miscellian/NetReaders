@@ -5,11 +5,19 @@ import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
 import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
+import com.netreaders.models.Genre;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
+
+import org.assertj.core.internal.Lists;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -185,4 +193,36 @@ public class BookServiceImpl implements BookService {
 
         return book;
     }
+
+	@Override
+	public Book findBookByReviewId(Integer id) {
+		Book book = bookDao.getByReviewId(id);
+        return modelToDto(book);
+	}
+
+
+	
+
+    
+	public Collection<Book> getByUserPreferences(String username){
+		Collection<Book> preparedBooks = bookDao.findByUsername(username, getCountByUsername(username), 0)
+				.stream()
+				.map(this::modelToDto)
+				.collect(Collectors.toList());
+		Map<Genre, Long> userGenres = preparedBooks
+				.stream()
+				.flatMap(book -> book.getGenres().stream())
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		
+		List<Book> pickedBooks = userGenres.entrySet().stream()
+				.sorted((entry1, entry2) -> {return (int) (entry1.getValue() - entry2.getValue());})
+				.limit(3)
+				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 5, 0).stream())
+				.collect(Collectors.toList());
+		
+		return bookDao.findBooksMinusSelected(pickedBooks,6,0)
+				.stream()
+				.map(this::modelToDto)
+				.collect(Collectors.toList());
+	}
 }
