@@ -74,7 +74,6 @@ SET profile_photo = (
     SELECT DISTINCT photo_id
     FROM photos
     WHERE link = '<user_default_photo');
-
 /*----------------------------------------------------------------------------------------*/
 
 
@@ -837,7 +836,6 @@ VALUES ('Miguel de Cervantes'),
        ('Jack London'),
        ('Ray Bradbury');
 
-
 INSERT INTO book_author(book_id, author_id)
 VALUES ((SELECT book_id
          FROM books
@@ -1124,39 +1122,32 @@ VALUES ((SELECT book_id
         (SELECT author_id
          FROM authors
          WHERE author_name = 'Ray Bradbury'));
-
-SELECT *
-FROM "authors";
 /*-----------------------------------------------------------------------------------------*/
 
 
 /*----------------------------DEFAULT Announcements----------------------------------------*/
-
 INSERT INTO "announcements"(announcement_date, description, published)
-VALUES (TO_DATE('24/12/2019', 'DD/MM/YYYY'), 'New books will be published', true),
-       (TO_DATE('01/01/2020', 'DD/MM/YYYY'), '2020 New Year book`s event', true),
+VALUES (TO_DATE('19/11/2020', 'DD/MM/YYYY'), 'Autumn event', true),
+       (TO_DATE('24/11/2020', 'DD/MM/YYYY'), '2020 New Year book`s event', true),
+       (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Add a new genre of books for children', true),
+       (TO_DATE('24/12/2019', 'DD/MM/YYYY'), 'New books will be published', true),
        (TO_DATE('25/12/2019', 'DD/MM/YYYY'), 'Stephen King books will be translated in ukrainian', true),
-       (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Add a new genre of books for children', true);
+       (TO_DATE('07/01/2020', 'DD/MM/YYYY'), 'Christmas event', true),
+       (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Not published yet', false);
 
 INSERT INTO book_announcement(book_id, announcement_id)
 VALUES ((SELECT book_id
          FROM books
-         WHERE title = 'Harry Potter and the Prisoner of Azkaban'),
+         WHERE title = 'The Great Gatsby'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = 'New books will be published')),
+         WHERE description = 'Autumn event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'The Da Vinci Code'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = 'New books will be published')),
-       ((SELECT book_id
-         FROM books
-         WHERE title = 'The Dark Tower VII: The Dark Tower'),
-        (SELECT announcement_id
-         FROM announcements
-         WHERE description = 'New books will be published')),
+         WHERE description = 'Autumn event')),
 
        ((SELECT book_id
          FROM books
@@ -1197,6 +1188,44 @@ VALUES ((SELECT book_id
 
        ((SELECT book_id
          FROM books
+         WHERE title = 'Harry Potter and the Prisoner of Azkaban'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of books for children')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Da Vinci Code'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of books for children')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Dark Tower VII: The Dark Tower'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of books for children')),
+
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Hobbit'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'The Lord of the Rings : The Return of the King'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'White Fang'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'New books will be published')),
+
+       ((SELECT book_id
+         FROM books
          WHERE title = 'The Dark Tower: The Gunslinger'),
         (SELECT announcement_id
          FROM announcements
@@ -1234,20 +1263,21 @@ VALUES ((SELECT book_id
 
        ((SELECT book_id
          FROM books
-         WHERE title = 'The Hobbit'),
+         WHERE title = 'Robinson Crusoe'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = 'New books will be published')),
+         WHERE description = 'Christmas event')),
        ((SELECT book_id
          FROM books
-         WHERE title = 'The Lord of the Rings : The Return of the King'),
+         WHERE title = 'Kobzar'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = 'New books will be published')),
+         WHERE description = 'Christmas event')),
+
        ((SELECT book_id
          FROM books
-         WHERE title = 'White Fang'),
+         WHERE title = 'War and Peace'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = 'New books will be published'));
+         WHERE description = 'Not published yet'));
 /*-----------------------------------------------------------------------------------------*/
