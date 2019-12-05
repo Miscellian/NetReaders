@@ -14,11 +14,13 @@ export class BooklistItemComponent implements OnInit {
     userBook: UserBookLibrary;
     inUserLibrary: boolean;
     username: string;
+    authorities: string[];
 
     constructor(public router: Router,
                 private bookService: BookService) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
+        this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(a => a.authority);
     }
 
     ngOnInit() {
@@ -26,7 +28,7 @@ export class BooklistItemComponent implements OnInit {
     }
 
     LoadUserBook() {
-        if (this.username === null) {
+        if (this.username === null || this.authorities.indexOf('USER') < 0) {
             this.inUserLibrary = false;
         } else {
             this.userBook.username = this.username;

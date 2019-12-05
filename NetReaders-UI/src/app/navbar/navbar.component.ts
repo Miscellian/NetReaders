@@ -11,6 +11,9 @@ import {Genre} from '../model';
 })
 export class NavbarComponent implements OnInit {
 
+    // needed for announcements
+    date : Date = new Date();
+
     public navbarCollapsed = true;
 
     genres: Genre[];

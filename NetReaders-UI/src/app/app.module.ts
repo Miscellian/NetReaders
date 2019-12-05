@@ -25,8 +25,8 @@ import {AdminslistComponent} from './profile/adminslist/adminslist.component';
 import {ModeratorslistComponent} from './profile/moderatorslist/moderatorslist.component';
 import {ApiInterceptor} from './_helpers/api.interceptor';
 import {ReviewsModule} from './reviews/reviews.module';
-import {CalendarComponent} from "./calendar/calendar.component";
 import {UserService} from "./profile/user.service";
+import {AnnouncementModule} from "./announcements/announcement.module";
 
 @NgModule({
     declarations: [
@@ -40,7 +40,7 @@ import {UserService} from "./profile/user.service";
         UserbooklistComponent,
         ProfileComponent,
         ConfirmUserComponent,
-        CalendarComponent,
+        AnnouncementModule,
         EditProfileComponent,
         AdminslistComponent,
         ModeratorslistComponent

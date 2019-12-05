@@ -20,29 +20,29 @@ public class AnnouncementController {
         return announcementService.findById(id);
     }
 
+    @GetMapping(value = "all")
+    public Collection<Announcement> getById(
+            @RequestParam(name = "year") Integer year,
+            @RequestParam(name = "month") Integer month) {
+
+        return announcementService.findAll(year, month);
+    }
+
     @GetMapping(value = "bygenre")
     public Collection<Announcement> getByGenre(
             @RequestParam(name = "id") Integer genreId,
-            @RequestParam(name = "amount") Integer amount,
-            @RequestParam(name = "offset") Integer offset) {
+            @RequestParam(name = "year") Integer year,
+            @RequestParam(name = "month") Integer month) {
 
-        return announcementService.findByGenre(genreId, amount, offset);
+        return announcementService.findByGenre(genreId, year, month);
     }
 
     @GetMapping(value = "byauthor")
     public Collection<Announcement> getByAuthor(
             @RequestParam(name = "id") Integer authorId,
-            @RequestParam(name = "amount") Integer amount,
-            @RequestParam(name = "offset") Integer offset) {
+            @RequestParam(name = "year") Integer year,
+            @RequestParam(name = "month") Integer month) {
 
-        return announcementService.findByAuthor(authorId, amount, offset);
-    }
-
-    @GetMapping("all")
-    public Collection<Announcement> getAllAnnouncements(
-            @RequestParam(name = "amount", defaultValue = "0") Integer amount,
-            @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
-
-        return announcementService.findAll(amount, offset);
+        return announcementService.findByAuthor(authorId, year, month);
     }
 }

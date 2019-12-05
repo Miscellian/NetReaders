@@ -52,39 +52,16 @@
             </div>
         </div>
     </div>
-    <div *ngIf="username">
     <hr>
-    <div class="row">
-            <div *ngFor="let book of bookRecomendations" class="col-md-3">
-                <a href="books/{{book.id}}">
-                    <img alt="book-image"
-                         class="rounded profile-booklist-preview-photo"
-                         src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
-                </a>
-                <br/>
-                <span>
-                <a class="profile-book-title"
-                   href="books/{{book.id}}"><b>
-                    {{book.title}}
-                </b></a>
-                </span><br/>
-                <div *ngFor="let author of book.authors">
-                    <span class="profile-book-author">{{author.name}}</span>
-                    <br/>
-                </div>
-            </div>
-    </div>
-    </div>
-    <hr>
-    <div *ngIf="publishedReviews; else noReviews" class="reviews">
+    <div *ngIf="publishedReviews !== undefined && publishedReviews.length; else noReviews" class="reviews">
         <div *ngFor="let review of publishedReviews" class="review-previews-div">
             <app-review-preview [review]="review"></app-review-preview>
         </div>
         <a routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
-        <ng-template #noReviews>
-            <h2>There are currently no reviews for this book</h2>
-        </ng-template>
     </div>
+    <ng-template #noReviews>
+        <h2>There are currently no reviews for this book</h2>
+    </ng-template>
     <div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
         <h2>Unpublished reviews:</h2>
         <div *ngFor="let review of unpublishedReviews" class="review-previews-div">

@@ -477,7 +477,9 @@ public class BookDaoImpl implements BookDao {
 				.map(book -> book.getId().toString())
 				//.reduce("", (acc, id) -> acc + id.toString() + ",");
 				.collect(Collectors.joining(","));
-		//selectedBookIds = selectedBookIds.substring(0, selectedBookIds.length() - 1);
+		if(selectedBookIds.isEmpty()) {
+			return Collections.emptyList();
+		}
 		sql_query = sql_query.substring(0, sql_query.indexOf('?')) + selectedBookIds + sql_query.substring(sql_query.indexOf('?')+1);
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
 

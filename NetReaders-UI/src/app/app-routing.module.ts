@@ -11,7 +11,9 @@ import {CreateReviewComponent} from './reviews/create-review/create-review.compo
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {HomepageComponent} from './homepage/homepage.component';
 import {ProfileComponent} from './profile/profile.component';
-import { ReviewlistComponent } from './reviews/reviewlist/reviewlist.component';
+import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
+import {AnnouncementDetailComponent} from "./announcements/announcement-detail/announcement-detail.component";
+import {CalendarComponent} from "./announcements/calendar/calendar.component";
 
 
 const routes: Routes = [
@@ -34,16 +36,25 @@ const routes: Routes = [
             {path: 'byuserFavourites/:id/:page', component: BooklistComponent, data: {filter: 'favourite'}}
         ]
     },
-  {
-    path: 'reviews',
-    children: [
-      { path: 'add/:bookid', component: CreateReviewComponent},
-      { path: 'published/:bookid/:page', component: ReviewlistComponent, data: {filter: 'publishedByBook'}},
-      { path: 'unpublished/:bookid/:page', component: ReviewlistComponent, data: {filter: 'unpublishedByBook'}},
-      { path: 'unpublished/:page', component: ReviewlistComponent, data: {filter: 'unpublishedAll'}},
-      { path: ':id', component: ReviewviewComponent }
-    ]
-  },
+    {
+        path: 'reviews',
+        children: [
+            {path: 'add/:bookid', component: CreateReviewComponent},
+            {path: 'published/:bookid/:page', component: ReviewlistComponent, data: {filter: 'publishedByBook'}},
+            {path: 'unpublished/:bookid/:page', component: ReviewlistComponent, data: {filter: 'unpublishedByBook'}},
+            {path: 'unpublished/:page', component: ReviewlistComponent, data: {filter: 'unpublishedAll'}},
+            {path: ':id', component: ReviewviewComponent}
+        ]
+    },
+    {
+        path: 'announcements',
+        children: [
+            {path: ':id', component: AnnouncementDetailComponent},
+            {path: 'byauthor/:id/:year/:month', component: CalendarComponent, data: {filter: 'author'}},
+            {path: 'bygenre/:id/:year/:month', component: CalendarComponent, data: {filter: 'genre'}},
+            {path: 'all/:year/:month', component: CalendarComponent, data: {filter: 'all'}},
+        ]
+    },
     {path: 'error', component: ErrorpageComponent}
 ];
 
