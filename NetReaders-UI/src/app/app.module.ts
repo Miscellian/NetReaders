@@ -54,7 +54,8 @@ import {AnnouncementModule} from "./announcements/announcement.module";
         BooksModule,
         CommonModule,
         NgbModule,
-        ReviewsModule
+        ReviewsModule,
+        AnnouncementModule
     ],
     providers: [
         AuthGuard,
