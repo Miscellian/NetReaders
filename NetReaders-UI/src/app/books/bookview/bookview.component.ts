@@ -27,8 +27,11 @@ export class BookviewComponent implements OnInit {
                 public router: Router) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
-        if(localStorage.getItem("Authorities"))
+        if(this.username){
             this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+        } else {
+            this.authorities = [];
+        }
     }
 
     ngOnInit() {
