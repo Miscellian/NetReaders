@@ -1,3 +1,29 @@
 img#navbar-profile-photo {
     width: 100%;
 }
+
+a.btn {
+    display: block;
+    color: white;
+    margin-bottom: 5%;
+    background-color: #343a40;
+    border-color: #28a745;
+    font-size: x-large
+}
+
+a.btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+span#text-between-buttons {
+    font-size: 2rem;
+}
+
+a#login-button {
+    margin-right: 5%;
+}
+
+a#register-button {
+    margin-left: 5%;
+}

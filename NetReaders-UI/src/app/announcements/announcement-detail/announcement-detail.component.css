@@ -1,0 +1,13 @@
+.main {
+    border: 5px solid #1a1a1a;
+    border-radius: 10px;
+}
+
+.date {
+    color: red;
+}
+
+.back-button {
+    margin-bottom: 10px;
+   width: 30%;
+}

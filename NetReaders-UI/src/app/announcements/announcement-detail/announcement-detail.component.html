@@ -1,0 +1,27 @@
+<div class="container main">
+    <div class="col-lg-12 text-center">
+        <h1>{{announcement.description}}</h1>
+    </div>
+    <div class="col-lg-12 text-center">
+        <h3 class="date">{{announcement.announcement_date}}</h3>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>List of announced books:</h4>
+            <p *ngIf="announcement.books.length === 0"><em>No books added</em></p>
+            <ul>
+                <li *ngFor="let book of announcement.books">
+                    <a routerLink="/books/{{book.id}}">
+                        {{ book.title }}
+                    </a>
+                </li>
+            </ul>
+            <div class="btn btn-secondary btn-block back-button"
+                 (click)="backClicked()">
+                Back
+            </div>
+        </div>
+    </div>
+</div>
+

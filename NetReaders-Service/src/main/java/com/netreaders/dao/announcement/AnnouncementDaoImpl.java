@@ -132,11 +132,11 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findByGenre(Integer genreId, Integer amount, Integer offset) {
+    public Collection<Announcement> findByGenre(Integer genreId, Integer year, Integer month) {
 
         final String sql_query = env.getProperty("announcement.findAnnouncementsByGenre");
 
-        List<Announcement> announcements = template.query(sql_query, announcementMapper, genreId, amount, offset);
+        List<Announcement> announcements = template.query(sql_query, announcementMapper, genreId, year, month);
 
         checkIfCollectionIsNull(announcements);
 
@@ -150,11 +150,11 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findByAuthor(Integer authorId, Integer amount, Integer offset) {
+    public Collection<Announcement> findByAuthor(Integer authorId, Integer year, Integer month) {
 
         final String sql_query = env.getProperty("announcement.findAnnouncementsByAuthor");
 
-        List<Announcement> announcements = template.query(sql_query, announcementMapper, authorId, amount, offset);
+        List<Announcement> announcements = template.query(sql_query, announcementMapper, authorId, year, month);
 
         checkIfCollectionIsNull(announcements);
 
@@ -168,19 +168,19 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public Collection<Announcement> findAll(Integer amount, Integer offset) {
+    public Collection<Announcement> findAll(Integer year, Integer month) {
 
         final String sql_query = env.getProperty("announcement.getByIdWithOffset");
 
-        List<Announcement> announcements = template.query(sql_query, announcementMapper, amount, offset);
+        List<Announcement> announcements = template.query(sql_query, announcementMapper, year, month);
 
         checkIfCollectionIsNull(announcements);
 
         if (announcements.isEmpty()) {
-            log.debug(String.format("Didn't find any announcement with offset '%d'", offset));
+            log.debug(String.format("Didn't find any announcement year=%d and month=%d ", year, month));
             return Collections.emptyList();
         } else {
-            log.debug(String.format("Found %d announcement(s) with offset '%d'", announcements.size(), offset));
+            log.debug(String.format("Found %d announcement(s) year=%d and month=%d ", announcements.size(), year, month));
             return announcements;
         }
     }

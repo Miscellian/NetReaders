@@ -1,5 +1,6 @@
 package com.netreaders.controller;
 
+import com.netreaders.dto.EditUserForm;
 import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
@@ -8,7 +9,7 @@ import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
 import com.netreaders.service.UserService;
 import lombok.AllArgsConstructor;
-
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Collection;
 
 @RestController
 @AllArgsConstructor
+@Log4j
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -31,6 +33,14 @@ public class UserController {
         }
         User user = userService.registerUser(signUpForm);
         emailService.sendEmail(user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/editUser")
+    public ResponseEntity<?> editUser(@RequestBody EditUserForm editUserForm) {
+        log.debug(editUserForm);
+        log.debug(String.format("%s %s %s %s %s", editUserForm.getUsername(), editUserForm.getFirstname(), editUserForm.getLastname(), editUserForm.getEmail(), editUserForm.getUserId()));
+        userService.editUser(editUserForm);
         return ResponseEntity.ok().build();
     }
 

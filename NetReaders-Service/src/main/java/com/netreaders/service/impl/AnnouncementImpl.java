@@ -25,9 +25,9 @@ public class AnnouncementImpl implements AnnouncementService {
     }
 
     @Override
-    public Collection<Announcement> findByGenre(Integer genreId, Integer amount, Integer offset) {
+    public Collection<Announcement> findByGenre(Integer genreId, Integer year, Integer month) {
 
-        Collection<Announcement> announcements = announcementDao.findByGenre(genreId, amount, offset);
+        Collection<Announcement> announcements = announcementDao.findByGenre(genreId, year, month);
 
         announcements.forEach(announcement ->
                 announcement.setBooks(bookService.findByAnnouncementWithGenre(announcement.getId(), genreId))
@@ -37,9 +37,9 @@ public class AnnouncementImpl implements AnnouncementService {
     }
 
     @Override
-    public Collection<Announcement> findByAuthor(Integer authorId, Integer amount, Integer offset) {
+    public Collection<Announcement> findByAuthor(Integer authorId, Integer year, Integer month) {
 
-        Collection<Announcement> announcements = announcementDao.findByAuthor(authorId, amount, offset);
+        Collection<Announcement> announcements = announcementDao.findByAuthor(authorId, year, month);
 
         announcements.forEach(announcement ->
                 announcement.setBooks(bookService.findByAnnouncementWithAuthor(announcement.getId(), authorId))
@@ -49,8 +49,8 @@ public class AnnouncementImpl implements AnnouncementService {
     }
 
     @Override
-    public Collection<Announcement> findAll(Integer amount, Integer offset) {
+    public Collection<Announcement> findAll(Integer year, Integer month) {
 
-        return announcementDao.findAll(amount, offset);
+        return announcementDao.findAll(year, month);
     }
 }
