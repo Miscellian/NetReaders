@@ -40,17 +40,10 @@ export class BookviewComponent implements OnInit {
                     this.LoadUserBook();
                 }, error => this.router.navigate(['/error']));
             });
-        if (this.username) {
-            this.bookService.getByUserPreferences(this.username).subscribe(
-                response => {
-                    this.bookRecomendations = response;
-                }
-            );
-        }
     }
 
     LoadUserBook() {
-        if (this.username === null) {
+        if (this.username === null || this.authorities.indexOf('USER') < 0) {
             this.inUserLibrary = false;
             this.inFavourites = false;
         } else {

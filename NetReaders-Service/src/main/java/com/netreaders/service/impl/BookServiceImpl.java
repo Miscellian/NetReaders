@@ -213,7 +213,6 @@ public class BookServiceImpl implements BookService {
 				.stream()
 				.flatMap(book -> book.getGenres().stream())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-		
 		List<Book> pickedBooks = userGenres.entrySet().stream()
 				.sorted((entry1, entry2) -> {return (int) (entry1.getValue() - entry2.getValue());})
 				.limit(3)
