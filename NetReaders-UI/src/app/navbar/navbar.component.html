@@ -12,6 +12,11 @@
     <div class="collapse navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
+                <a class="nav-link"
+                   [routerLink]="['/announcements/all/', date.getFullYear(), date.getMonth()+1]">
+                    Announcements</a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link" href="/books/range/1">Books</a>
             </li>
             <li class="nav-item dropdown-genres">
