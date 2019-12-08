@@ -1,15 +1,22 @@
-<div class="container" id="admins-list-page">
-    <div class="row">
-        <div class="col-md-12">
-            <ul>
-                <span id="admin-list-title">Admins list:</span>
-                <li *ngFor="let user of users">
+<div class="container row" id="admins-list-page">
+    <div class="col-md-12">
+        <ul>
+            <span id="admin-list-title">Admins list:</span>
+            <div *ngFor="let user of users" class="row">
+                <div class="col-md-10">
+                    <li>
                     <span id="admin-list-item">
                         <a routerLink="/users/{{user.username}}">@{{user.username}},</a>
                         {{user.firstName}} {{user.lastName}}, {{user.email}}
                     </span>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                </div>
+                <div class="col-md-2">
+                    <div (click)="removeAdmin()" class="btn btn-info"
+                         role="button">Remove
+                    </div>
+                </div>
+            </div>
+        </ul>
     </div>
 </div>
