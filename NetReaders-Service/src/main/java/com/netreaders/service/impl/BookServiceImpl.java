@@ -100,6 +100,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Integer getToReadListCountByUsername(String username) {
+        return bookDao.getToReadListCountByUsername(username);
+    }
+
+    @Override
     public void addBookToUserLibrary(UserBookLibrary userBookLibrary) {
         String username = userBookLibrary.getUsername();
         Integer bookId = userBookLibrary.getBookId();

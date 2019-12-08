@@ -32,6 +32,8 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Integer getFavouritesCountByUsername(String username);
 
+    Integer getToReadListCountByUsername(String username);
+
     Collection<Book> findByAnnouncementId(Integer announcementId) throws DataBaseSQLException;
 
     Collection<Book> findByAnnouncementWithGenre(Integer announcementId, Integer genreId) throws DataBaseSQLException;

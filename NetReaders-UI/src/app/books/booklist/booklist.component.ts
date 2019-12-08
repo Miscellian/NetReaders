@@ -9,6 +9,11 @@ import {ActivatedRoute, Router} from '@angular/router';
     styleUrls: ['./booklist.component.css']
 })
 export class BooklistComponent implements OnInit {
+    page: number = 1;
+    previousPage: number;
+
+    func: any = () => this.bookService.getByRange("1");
+
     funcs: any = {
         genre: () => {
             this.func = () => this.bookService.getByGenre(this.arg, this.page.toString());
@@ -27,9 +32,14 @@ export class BooklistComponent implements OnInit {
         },
         favourite: () => {
             this.func = () => this.bookService.getFavouritesByUser(this.arg, this.page.toString());
+        },
+        toReadList: () => {
+            this.func = () => this.bookService.getToReadListByUser(this.arg, this.page.toString());
         }
     };
-
+    arg: string;
+    count: number;
+    books: Book[];
     funcsCount: any = {
         genre: () => {
             this.func = () => this.bookService.getCountByGenre(this.arg);
@@ -44,19 +54,15 @@ export class BooklistComponent implements OnInit {
             this.func = () => this.bookService.getCount();
         },
         user: () => {
-          this.func = () => this.bookService.getCountByUser(this.arg);
+            this.func = () => this.bookService.getCountByUser(this.arg);
         },
         favourite: () => {
             this.func = () => this.bookService.getFavouritesCountByUser(this.arg);
+        },
+        toReadList: () => {
+            this.func = () => this.bookService.getToReadListCountByUser(this.arg);
         }
     };
-
-    page: number;
-    arg: string;
-    paramArgs: any;
-    count: number;
-    books: Book[];
-    func: any = () => this.bookService.getByRange(this.page.toString());
 
     constructor(private bookService: BookService,
                 private activatedRoute: ActivatedRoute,
@@ -64,21 +70,18 @@ export class BooklistComponent implements OnInit {
     }
 
     loadPage(page: number) {
-        let newPageUrl = "";
-        let urlSplitted = this.router.url.split('/');
-        for (let i = 0; i < urlSplitted.length - 1; i++) {
-            newPageUrl += urlSplitted[i] + "/";
+        if (page !== this.previousPage) {
+            window.scroll(0, 0);
+            this.previousPage = page;
+            this.page = page;
+            this.loadBooks();
         }
-
-        this.router.navigateByUrl(`${newPageUrl}${this.page}`);
     }
 
-    ngOnInit() {
+    loadBooks() {
         this.activatedRoute.params.subscribe(
             params => {
-                window.scroll(0,0);
                 this.arg = params['id'];
-                this.page = params['page'];
                 this.funcsCount[this.activatedRoute.snapshot.data.filter]();
                 this.func().subscribe(response => {
                     this.count = +response;
@@ -89,5 +92,9 @@ export class BooklistComponent implements OnInit {
                 }, error => this.router.navigate(['/error']));
             }
         );
+    }
+
+    ngOnInit() {
+        this.loadBooks();
     }
 }

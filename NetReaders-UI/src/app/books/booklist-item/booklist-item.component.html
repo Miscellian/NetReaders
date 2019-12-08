@@ -12,11 +12,11 @@
       <a routerLink="/books/{{book.id}}" id="book-title">{{book.title}}</a><br />
 
       <div class="header" *ngFor="let author of book.authors">
-        <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}/1">{{author.name}} </a>
+        <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
       </div><br />
 
       <div class="header" *ngFor="let genre of book.genres">
-        <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
+          <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
       </div><br />
       <p class="header">{{book.release_date|date}}</p>
     </div>

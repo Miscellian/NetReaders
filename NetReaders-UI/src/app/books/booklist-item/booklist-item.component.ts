@@ -37,11 +37,15 @@ export class BooklistItemComponent implements OnInit {
         } else {
             this.userBook.username = this.username;
             this.userBook.bookId = this.book.id;
-            this.bookService.checkInLibrary(this.userBook).subscribe(
-                response => this.inUserLibrary = (<boolean>response),
-                error => this.router.navigate(['/error'])
-            );
+            this.checkInLibrary();
         }
+    }
+
+    checkInLibrary() {
+        this.bookService.checkInLibrary(this.userBook).subscribe(
+            response => this.inUserLibrary = (<boolean>response),
+            error => this.router.navigate(['/error'])
+        );
     }
 
     addToLibrary() {
@@ -49,7 +53,7 @@ export class BooklistItemComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToLibrary(this.userBook).subscribe(
-                response => window.location.reload(),
+                response => this.checkInLibrary(),
                 error => this.router.navigate(['/error'])
             );
         }
@@ -57,7 +61,7 @@ export class BooklistItemComponent implements OnInit {
 
     removeFromLibrary() {
         this.bookService.removeFromLibrary(this.userBook).subscribe(
-            response => window.location.reload(),
+            response => this.checkInLibrary(),
             error => this.router.navigate(['/error'])
         );
     }

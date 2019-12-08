@@ -5,12 +5,13 @@
     <hr>
     <app-recomendations [user]="user"></app-recomendations>
 </div>
-<hr>
 <div *ngIf="storageUsername === user.username">
     <div *ngIf="hasAuthority('SUPER_ADMIN')">
+        <hr>
         <app-adminslist></app-adminslist>
     </div>
     <div *ngIf="hasAuthority('ADMIN')">
+        <hr>
         <app-moderatorslist></app-moderatorslist>
     </div>
 </div>

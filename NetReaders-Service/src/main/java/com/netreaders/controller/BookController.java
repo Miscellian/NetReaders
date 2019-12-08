@@ -133,7 +133,7 @@ public class BookController {
     public Integer getToReadListCountByUsername(
             @RequestParam(name = "username") String username) {
 
-        return bookService.getFavouritesCountByUsername(username);
+        return bookService.getToReadListCountByUsername(username);
     }
 
     @PostMapping(value = "addToLibrary")

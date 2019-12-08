@@ -391,6 +391,21 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public Integer getToReadListCountByUsername(String username) {
+        String sql_query = env.getProperty("book.getToReadListCountByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
+
+        log.debug(String.format("Found %d favourites by username '%s'", count, username));
+        return count;
+    }
+
+    @Override
     public Collection<Book> findByAnnouncementId(Integer announcementId) {
         final String sql_query = env.getProperty("book.findByAnnouncementId");
 

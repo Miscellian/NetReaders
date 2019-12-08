@@ -55,20 +55,33 @@ export class BookviewComponent implements OnInit {
         } else {
             this.userBook.username = this.username;
             this.userBook.bookId = this.book.id;
-            this.bookService.checkInLibrary(this.userBook).subscribe(
-                response => this.inUserLibrary = (<boolean>response),
-                error => this.router.navigate(['/error'])
-            );
-            this.bookService.checkInFavourites(this.userBook).subscribe(
-                response => this.inFavourites = (<boolean>response),
-                error => this.router.navigate(['error'])
-            );
-            this.bookService.checkInToReadList(this.userBook).subscribe(
-                response => this.inToReadList = (<boolean>response),
-                error => this.router.navigate(['error'])
-            );
+            this.checkInLibrary();
+            this.checkInFavourites();
+            this.checkInToReadList();
         }
     }
+
+    checkInLibrary() {
+        this.bookService.checkInLibrary(this.userBook).subscribe(
+            response => this.inUserLibrary = (<boolean>response),
+            error => this.router.navigate(['/error'])
+        );
+    }
+
+    checkInFavourites() {
+        this.bookService.checkInFavourites(this.userBook).subscribe(
+            response => this.inFavourites = (<boolean>response),
+            error => this.router.navigate(['error'])
+        );
+    }
+
+    checkInToReadList() {
+        this.bookService.checkInToReadList(this.userBook).subscribe(
+            response => this.inToReadList = (<boolean>response),
+            error => this.router.navigate(['error'])
+        );
+    }
+
 
     loadBookReviews() {
         this.reviewService.getPublishedByBookId(this.book.id, 1).subscribe(
@@ -90,7 +103,7 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToLibrary(this.userBook).subscribe(
-                response => window.location.reload(),
+                response => this.checkInLibrary(),
                 error => this.router.navigate(['/error'])
             );
         }
@@ -98,7 +111,7 @@ export class BookviewComponent implements OnInit {
 
     removeFromLibrary() {
         this.bookService.removeFromLibrary(this.userBook).subscribe(
-            response => window.location.reload(),
+            response => this.checkInLibrary(),
             error => this.router.navigate(['/error'])
         );
     }
@@ -108,7 +121,7 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToFavourites(this.userBook).subscribe(
-                response => window.location.reload(),
+                response => this.checkInFavourites(),
                 error => this.router.navigate(['/error'])
             );
         }
@@ -116,7 +129,7 @@ export class BookviewComponent implements OnInit {
 
     removeFromFavourites() {
         this.bookService.removeFromFavourites(this.userBook).subscribe(
-            response => window.location.reload(),
+            response => this.checkInFavourites(),
             error => this.router.navigate(['/error'])
         );
     }
@@ -126,7 +139,7 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToToReadList(this.userBook).subscribe(
-                response => window.location.reload(),
+                response => this.checkInToReadList(),
                 error => this.router.navigate(['/error'])
             );
         }
@@ -134,7 +147,7 @@ export class BookviewComponent implements OnInit {
 
     removeFromToReadList() {
         this.bookService.removeFromToReadList(this.userBook).subscribe(
-            response => window.location.reload(),
+            response => this.checkInToReadList(),
             error => this.router.navigate(['/error'])
         );
     }

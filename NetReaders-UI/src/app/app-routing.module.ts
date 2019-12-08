@@ -28,12 +28,13 @@ const routes: Routes = [
         path: 'books',
         children: [
             {path: ':id', component: BookviewComponent},
-            {path: 'byauthor/:id/:page', component: BooklistComponent, data: {filter: 'author'}},
-            {path: 'bygenre/:id/:page', component: BooklistComponent, data: {filter: 'genre'}},
-            {path: 'byname/:id/:page', component: BooklistComponent, data: {filter: 'name'}},
+            {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
+            {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
+            {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}},
             {path: 'range/:page', component: BooklistComponent, data: {filter: 'range'}},
-            {path: 'byuser/:id/:page', component: BooklistComponent, data: {filter: 'user'}},
-            {path: 'byuserFavourites/:id/:page', component: BooklistComponent, data: {filter: 'favourite'}}
+            {path: 'byuser/:id', component: BooklistComponent, data: {filter: 'user'}},
+            {path: 'byuserFavourites/:id', component: BooklistComponent, data: {filter: 'favourite'}},
+            {path: 'byusernameToReadList/:id', component: BooklistComponent, data: {filter: 'toReadList'}}
         ]
     },
     {
