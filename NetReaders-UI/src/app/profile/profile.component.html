@@ -2,30 +2,10 @@
 <hr>
 <div *ngIf="hasAuthority('USER')">
     <app-userbooklist [user]="user"></app-userbooklist>
-
-<hr>
-<h1>Recommended books based on your preferences</h1>
-    <div class="row">
-            <div *ngFor="let book of bookRecomendations" class="col-md-3">
-                <a routerLink="books/{{book.id}}">
-                    <img alt="book-image"
-                         class="rounded profile-booklist-preview-photo"
-                         src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
-                </a>
-                <br/>
-                <span>
-                <a class="profile-book-title"
-                   routerLink="books/{{book.id}}"><b>
-                    {{book.title}}
-                </b></a>
-                </span><br/>
-                <div *ngFor="let author of book.authors">
-                    <span class="profile-book-author">{{author.name}}</span>
-                    <br/>
-                </div>
-            </div>
-    </div>
+    <hr>
+    <app-recomendations [user]="user"></app-recomendations>
 </div>
+<hr>
 <div *ngIf="storageUsername === user.username">
     <div *ngIf="hasAuthority('SUPER_ADMIN')">
         <app-adminslist></app-adminslist>

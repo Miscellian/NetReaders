@@ -11,15 +11,15 @@
         </div>
         <div class="row">
             <div *ngFor="let book of books; let i = index" class="col-md-3">
-                <a routerLink="books/{{book.id}}">
+                <a [routerLink]="['/books', book.id]">
                     <img alt="book-image"
                          class="rounded profile-booklist-preview-photo"
                          src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
                 </a>
                 <br/>
                 <span>
-                <a class="profile-book-title"
-                   [routerLink]="['/books', book.id]"><b>
+                <a [routerLink]="['/books', book.id]"
+                   class="profile-book-title"><b>
                     {{book.title}}
                 </b></a>
             </span><br/>
@@ -42,7 +42,7 @@
             </div>
             <div class="row">
                 <div *ngFor="let favourite of favourites; let i = index" class="col-md-3">
-                    <a routerLink="books/{{favourite.id}}">
+                    <a [routerLink]="['/books', favourite.id]">
                         <img alt="book-image"
                              class="rounded profile-booklist-preview-photo"
                              src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
@@ -50,7 +50,7 @@
                     <br/>
                     <span>
                 <a class="profile-book-title"
-                   routerLink="books/{{favourite.id}}"><b>
+                   [routerLink]="['/books', favourite.id]"><b>
                     {{favourite.title}}
                 </b></a>
             </span><br/>
