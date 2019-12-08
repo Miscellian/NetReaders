@@ -33,6 +33,16 @@
                             Add to favorites
                         </div>
                     </ng-template>
+                    <div *ngIf="inToReadList; else notInToReadList">
+                        <div (click)="removeFromToReadList()" class="btn btn-info" role="button">
+                            Remove from read list
+                        </div>
+                    </div>
+                    <ng-template #notInToReadList>
+                        <div (click)="addToToReadList()" class="btn btn-info" role="button">
+                            Add to read list
+                        </div>
+                    </ng-template>
                 </div>
                 <ng-template #notInUserLibrary>
                     <div (click)="addToLibrary()" class="btn btn-info" role="button">

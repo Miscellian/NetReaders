@@ -4,8 +4,6 @@ import com.netreaders.dto.UserBookLibrary;
 import com.netreaders.models.Book;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -81,6 +79,14 @@ public class BookController {
         return bookService.getFavouritesByUsername(username, amount, offset);
     }
 
+    @GetMapping(value = "byusernameToReadList")
+    public Collection<Book> getToReadListByUsername(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "amount") Integer amount,
+            @RequestParam(name = "offset") Integer offset) {
+        return bookService.getToReadListByUsername(username, amount, offset);
+    }
+
     @GetMapping(value = "count")
     public Integer getCount() {
 
@@ -122,6 +128,14 @@ public class BookController {
         return bookService.getFavouritesCountByUsername(username);
     }
 
+    // not done
+    @GetMapping(value = "countToReadListByUsername")
+    public Integer getToReadListCountByUsername(
+            @RequestParam(name = "username") String username) {
+
+        return bookService.getFavouritesCountByUsername(username);
+    }
+
     @PostMapping(value = "addToLibrary")
     public void addBookToUserLibrary(
             @RequestBody UserBookLibrary userBookLibrary) {
@@ -156,5 +170,26 @@ public class BookController {
     public boolean checkIfBookInFavorites(
             @RequestBody UserBookLibrary userBookLibrary) {
         return bookService.checkIfBookInFavourites(userBookLibrary);
+    }
+
+    //not done
+    @PostMapping(value = "addToToReadList")
+    public void addBookToToReadList(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.addBookToUserToReadList(userBookLibrary);
+    }
+
+    //not done
+    @PostMapping(value = "removeFromToReadList")
+    public void removeBookToReadList(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        bookService.removeBookFromUserToReadList(userBookLibrary);
+    }
+
+    //not done
+    @PostMapping(value = "checkInToReadList")
+    public boolean checkIfBookInToReadList(
+            @RequestBody UserBookLibrary userBookLibrary) {
+        return bookService.checkIfBookInUserToReadList(userBookLibrary);
     }
 }

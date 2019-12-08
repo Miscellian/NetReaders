@@ -54,4 +54,11 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset);
 
+    Collection<Book> findToReadListByUsername(String toLowerCase, Integer amount, Integer offset);
+
+    boolean checkIfBookInUserToReadList(String username, Integer bookId);
+
+    void addBookToUserToReadList(String username, Integer bookId);
+
+    void removeBookFromUserToReadList(String username, Integer bookId);
 }

@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLData;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,8 +30,48 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BookDaoImpl implements BookDao {
 
+    @Override
+    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getFavouritesByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any favourites for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
+            return books;
+        }
+    }
+
+
+    @Override
+    public Collection<Book> findToReadListByUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getToReadListByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any to read books for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d to read book(s) for user '%s'", books.size(), username));
+            return books;
+        }
+    }
+
     private final Environment env;
     private final JdbcTemplate template;
+
     private final BookMapper bookMapper;
 
     @Override
@@ -57,8 +96,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book getById(Integer id) {
-
         final String sql_query = env.getProperty("book.read");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, id);
 
@@ -80,6 +123,11 @@ public class BookDaoImpl implements BookDao {
     public void update(Book book) {
 
         final String sql_query = env.getProperty("book.update");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         long id = book.getId();
         int recordCount = template.update(sql_query,
@@ -104,6 +152,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.delete");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         long id = book.getId();
         int recordCount = template.update(sql_query, id);
         if (recordCount == 0) {
@@ -120,6 +173,11 @@ public class BookDaoImpl implements BookDao {
     public Collection<Book> getAll() {
 
         final String sql_query = env.getProperty("book.readAll");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper);
 
@@ -138,6 +196,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.findBooksByGenre");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, genre_id, amount, offset);
 
         checkIfCollectionIsNull(books);
@@ -155,6 +218,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.findBooksByAuthor");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, authorId, amount, offset);
 
         checkIfCollectionIsNull(books);
@@ -171,6 +239,11 @@ public class BookDaoImpl implements BookDao {
     public Collection<Book> findByUsername(String username, Integer amount, Integer offset) {
         final String sql_query = env.getProperty("book.getByUsername");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
         if (books.isEmpty()) {
             log.debug(String.format("Didn't find any books for user '%s'", username));
@@ -182,23 +255,14 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
-        final String sql_query = env.getProperty("book.getFavouritesByUsername");
-
-        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any favourites for user '%s'", username));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
-            return books;
-        }
-    }
-
-    @Override
     public Collection<Book> findByName(String name, Integer amount, Integer offset) {
 
         final String sql_query = env.getProperty("book.getByName");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, name, name, amount, offset);
 
@@ -216,6 +280,11 @@ public class BookDaoImpl implements BookDao {
     public Collection<Book> findAll(Integer amount, Integer offset) throws DataBaseSQLException {
 
         final String sql_query = env.getProperty("book.getById");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
 
@@ -235,6 +304,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.getCount");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         Integer count = template.queryForObject(sql_query, Integer.class);
 
         log.debug(String.format("Found %d books", count));
@@ -245,6 +319,11 @@ public class BookDaoImpl implements BookDao {
     public Integer getCountByAuthor(Integer author_id) {
         String sql_query = env.getProperty("book.getCountByAuthor");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         Integer count = template.queryForObject(sql_query, new Object[]{author_id}, Integer.class);
 
         log.debug(String.format("Found %d books by authorID '%d' ", count, author_id));
@@ -253,8 +332,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Integer getCountByGenre(Integer genreId) {
-
         final String sql_query = env.getProperty("book.getCountByGenre");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         Integer count = template.queryForObject(sql_query, new Object[]{genreId}, Integer.class);
 
@@ -266,6 +349,11 @@ public class BookDaoImpl implements BookDao {
     public Integer getCountByName(String name) {
         String sql_query = env.getProperty("book.getCountByName");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         Integer count = template.queryForObject(sql_query, new Object[]{name, name}, Integer.class);
 
         log.debug(String.format("Found %d books by name '%s'", count, name));
@@ -275,6 +363,11 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Integer getCountByUsername(String username) {
         String sql_query = env.getProperty("book.getCountByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
 
@@ -286,6 +379,11 @@ public class BookDaoImpl implements BookDao {
     public Integer getFavouritesCountByUsername(String username) {
         String sql_query = env.getProperty("book.getFavouritesCountByUsername");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         Integer count = template.queryForObject(sql_query, new Object[]{username}, Integer.class);
 
         log.debug(String.format("Found %d favourites by username '%s'", count, username));
@@ -294,8 +392,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Collection<Book> findByAnnouncementId(Integer announcementId) {
-
         final String sql_query = env.getProperty("book.findByAnnouncementId");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, announcementId);
 
@@ -315,6 +417,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.findByAnnouncementIdWithGenre");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, announcementId, genreId);
 
         checkIfCollectionIsNull(books);
@@ -333,6 +440,11 @@ public class BookDaoImpl implements BookDao {
 
         final String sql_query = env.getProperty("book.findByAnnouncementIdWithAuthor");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, announcementId, authorId);
 
         checkIfCollectionIsNull(books);
@@ -348,8 +460,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book getByReviewId(int id) throws DataBaseSQLException {
-
         final String sql_query = env.getProperty("book.getByReviewId");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, id);
         if (books.isEmpty()) {
@@ -368,6 +484,11 @@ public class BookDaoImpl implements BookDao {
     public void addBookToUserLibrary(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.addBookToUserLibrary");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         template.update(sql_query, username, bookId);
 
         log.debug(String.format("Add a book with id %d to %s library", bookId, username));
@@ -376,6 +497,11 @@ public class BookDaoImpl implements BookDao {
     @Override
     public boolean checkIfBookInUserLibrary(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.checkIfBookInUserLibrary");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         List<Book> books = template.query(sql_query, bookMapper, username, bookId);
         if (books.isEmpty()) {
@@ -394,6 +520,11 @@ public class BookDaoImpl implements BookDao {
     public void removeBookFromUserLibrary(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.removeBookFromUserLibrary");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         template.update(sql_query, username, bookId);
 
         log.debug(String.format("Remove a book with id %d to %s library", bookId, username));
@@ -403,6 +534,11 @@ public class BookDaoImpl implements BookDao {
     public boolean checkIfBookInFavourites(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.checkIfBookInFavourites");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         List<Book> books = template.query(sql_query, bookMapper, username, bookId);
         if (books.isEmpty()) {
             log.debug(String.format("Book with id %d not in %s favourites", bookId, username));
@@ -411,14 +547,19 @@ public class BookDaoImpl implements BookDao {
             log.debug(String.format("Book with id %d already in %s favourites", bookId, username));
             return true;
         } else {
-            log.error(String.format("Find more than one book with id %d for user %s", bookId, username));
-            throw new DataBaseSQLException(String.format("Find more than one book with id %d for user %s", bookId, username));
+            log.error(String.format("Find more than one favourite book with id %d for user %s", bookId, username));
+            throw new DataBaseSQLException(String.format("Find more than one favourite book with id %d for user %s", bookId, username));
         }
     }
 
     @Override
     public void addBookToUserFavourites(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.addBookToUserFavourites");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
 
         template.update(sql_query, username, bookId);
 
@@ -429,9 +570,64 @@ public class BookDaoImpl implements BookDao {
     public void removeBookToUserFavourites(String username, Integer bookId) {
         final String sql_query = env.getProperty("book.removeBookToUserFavourites");
 
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
         template.update(sql_query, username, bookId);
 
-        log.debug(String.format("Remove a book with id %d to %s favourites", bookId, username));
+        log.debug(String.format("Remove a book with id %d from %s favourites", bookId, username));
+    }
+
+    @Override
+    public boolean checkIfBookInUserToReadList(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.checkIfBookInToReadList");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        List<Book> books = template.query(sql_query, bookMapper, username, bookId);
+        if (books.isEmpty()) {
+            log.debug(String.format("Book with id %d not in %s to read list", bookId, username));
+            return false;
+        } else if (books.size() == 1) {
+            log.debug(String.format("Book with id %d already in %s to read list", bookId, username));
+            return true;
+        } else {
+            log.error(String.format("Find more than one to read book with id %d for user %s", bookId, username));
+            throw new DataBaseSQLException(String.format("Find more than one to read book with id %d for user %s", bookId, username));
+        }
+    }
+
+    @Override
+    public void addBookToUserToReadList(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.addBookToUserToReadList");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Add a book with id %d to %s to read list", bookId, username));
+    }
+
+    @Override
+    public void removeBookFromUserToReadList(String username, Integer bookId) {
+        final String sql_query = env.getProperty("book.removeBookToUserToReadList");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        template.update(sql_query, username, bookId);
+
+        log.debug(String.format("Remove a book with id %d from %s to read list", bookId, username));
     }
 
     private void checkIfCollectionIsNull(Collection<Book> collection) {
@@ -469,18 +665,18 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-	@Override
-	public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks, Integer amount, Integer offset) throws DataBaseSQLException {
-		String sql_query = env.getProperty("book.getMinusSelected");
-		
-		String selectedBookIds = selectedBooks.stream()
-				.map(book -> book.getId().toString())
-				//.reduce("", (acc, id) -> acc + id.toString() + ",");
-				.collect(Collectors.joining(","));
-		if(selectedBookIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-		sql_query = sql_query.substring(0, sql_query.indexOf('?')) + selectedBookIds + sql_query.substring(sql_query.indexOf('?')+1);
+    @Override
+    public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks, Integer amount, Integer offset) throws DataBaseSQLException {
+        String sql_query = env.getProperty("book.getMinusSelected");
+
+        String selectedBookIds = selectedBooks.stream()
+                .map(book -> book.getId().toString())
+                //.reduce("", (acc, id) -> acc + id.toString() + ",");
+                .collect(Collectors.joining(","));
+        if (selectedBookIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        sql_query = sql_query.substring(0, sql_query.indexOf('?')) + selectedBookIds + sql_query.substring(sql_query.indexOf('?') + 1);
         List<Book> books = template.query(sql_query, bookMapper, amount, offset);
 
         checkIfCollectionIsNull(books);
@@ -492,5 +688,5 @@ public class BookDaoImpl implements BookDao {
             log.debug(String.format("Found %d book(s) that are not in selected", books.size()));
             return books;
         }
-	}
+    }
 }

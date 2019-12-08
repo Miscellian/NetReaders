@@ -54,6 +54,14 @@ public interface BookService {
 
     boolean checkIfBookInFavourites(UserBookLibrary userBookLibrary);
 
+    void addBookToUserToReadList(UserBookLibrary userBookLibrary);
+
+    void removeBookFromUserToReadList(UserBookLibrary userBookLibrary);
+
+    boolean checkIfBookInUserToReadList(UserBookLibrary userBookLibrary);
+
     Collection<Book> getFavouritesByUsername(String username, Integer amount, Integer offset);
+
+    Collection<Book> getToReadListByUsername(String username, Integer amount, Integer offset);
 
 }

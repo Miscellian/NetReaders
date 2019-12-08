@@ -49,8 +49,8 @@
                     </a>
                     <br/>
                     <span>
-                <a class="profile-book-title"
-                   [routerLink]="['/books', favourite.id]"><b>
+                <a [routerLink]="['/books', favourite.id]"
+                   class="profile-book-title"><b>
                     {{favourite.title}}
                 </b></a>
             </span><br/>
@@ -62,9 +62,46 @@
             </div>
         </div>
         <ng-template #FavouritesElseBlock>
-        <span class="empty-text">
-            Your favourites is empty, add books to favourites to see them here
-        </span>
+            <span class="empty-text">
+                Your favourites is empty, add books to favourites to see them here
+            </span>
+        </ng-template>
+        <hr>
+        <div *ngIf="toReadList.length > 0; else toReadElseBlock">
+            <div class="row">
+                <div class="col-md-3">
+                    <span class="library-title">To read list</span>
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-3">
+                    <a class="btn view-all-btn" routerLink="/books/byuserToRead/{{user.username}}/1">View all</a>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngFor="let book of toReadList; let i = index" class="col-md-3">
+                    <a [routerLink]="['/books', book.id]">
+                        <img alt="book-image"
+                             class="rounded profile-booklist-preview-photo"
+                             src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+                    </a>
+                    <br/>
+                    <span>
+                <a [routerLink]="['/books', book.id]"
+                   class="profile-book-title"><b>
+                    {{book.title}}
+                </b></a>
+            </span><br/>
+                    <div *ngFor="let author of book.authors">
+                        <span class="profile-book-author">{{author.name}}</span>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #toReadElseBlock>
+            <span class="empty-text">
+                Your to read list is empty, mark book as "to read" to see them here
+            </span>
         </ng-template>
     </div>
     <ng-template #LibraryElseBlock>

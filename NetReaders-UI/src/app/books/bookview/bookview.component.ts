@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Book, UserBookLibrary, Review, Authority} from '../../model';
+import {Book, Review, UserBookLibrary} from '../../model';
 import {BookService} from '../book.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import { ReviewService } from '../../reviews/review.service';
+import {ReviewService} from '../../reviews/review.service';
 
 @Component({
     selector: 'app-bookview',
@@ -15,6 +15,7 @@ export class BookviewComponent implements OnInit {
     userBook: UserBookLibrary;
     inUserLibrary: boolean;
     inFavourites: boolean;
+    inToReadList: boolean;
     username: string;
     bookRecomendations: Book[];
     authorities: string[];
@@ -27,7 +28,7 @@ export class BookviewComponent implements OnInit {
                 public router: Router) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
-        if(this.username){
+        if (this.username) {
             this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
         } else {
             this.authorities = [];
@@ -40,7 +41,7 @@ export class BookviewComponent implements OnInit {
                 this.id = +this.activatedRoute.snapshot.paramMap.get('id');
                 this.bookService.getById(this.id).subscribe(response => {
                     this.book = response;
-		            this.loadBookReviews();
+                    this.loadBookReviews();
                     this.LoadUserBook();
                 }, error => this.router.navigate(['/error']));
             });
@@ -50,6 +51,7 @@ export class BookviewComponent implements OnInit {
         if (this.username === undefined || this.authorities.indexOf('USER') < 0) {
             this.inUserLibrary = false;
             this.inFavourites = false;
+            this.inToReadList = false;
         } else {
             this.userBook.username = this.username;
             this.userBook.bookId = this.book.id;
@@ -61,7 +63,11 @@ export class BookviewComponent implements OnInit {
                 response => this.inFavourites = (<boolean>response),
                 error => this.router.navigate(['error'])
             );
-    	}
+            this.bookService.checkInToReadList(this.userBook).subscribe(
+                response => this.inToReadList = (<boolean>response),
+                error => this.router.navigate(['error'])
+            );
+        }
     }
 
     loadBookReviews() {
@@ -110,6 +116,24 @@ export class BookviewComponent implements OnInit {
 
     removeFromFavourites() {
         this.bookService.removeFromFavourites(this.userBook).subscribe(
+            response => window.location.reload(),
+            error => this.router.navigate(['/error'])
+        );
+    }
+
+    addToToReadList() {
+        if (this.username === null) {
+            this.router.navigate(['login']);
+        } else {
+            this.bookService.addToToReadList(this.userBook).subscribe(
+                response => window.location.reload(),
+                error => this.router.navigate(['/error'])
+            );
+        }
+    }
+
+    removeFromToReadList() {
+        this.bookService.removeFromToReadList(this.userBook).subscribe(
             response => window.location.reload(),
             error => this.router.navigate(['/error'])
         );

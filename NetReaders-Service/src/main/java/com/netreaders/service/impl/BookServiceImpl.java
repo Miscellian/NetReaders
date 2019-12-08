@@ -8,16 +8,12 @@ import com.netreaders.models.Book;
 import com.netreaders.models.Genre;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
-
-import org.assertj.core.internal.Lists;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -156,8 +152,41 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void addBookToUserToReadList(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (bookDao.checkIfBookInUserLibrary(username, bookId)
+                && !bookDao.checkIfBookInUserToReadList(username, bookId)) {
+            bookDao.addBookToUserToReadList(username, bookId);
+        }
+    }
+
+    @Override
+    public void removeBookFromUserToReadList(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        if (bookDao.checkIfBookInUserLibrary(username, bookId)
+                && bookDao.checkIfBookInUserToReadList(username, bookId)) {
+            bookDao.removeBookFromUserToReadList(username, bookId);
+        }
+    }
+
+    @Override
+    public boolean checkIfBookInUserToReadList(UserBookLibrary userBookLibrary) {
+        String username = userBookLibrary.getUsername();
+        Integer bookId = userBookLibrary.getBookId();
+        return bookDao.checkIfBookInUserToReadList(username, bookId);
+    }
+
+    @Override
     public Collection<Book> getFavouritesByUsername(String username, Integer amount, Integer offset) {
         Collection<Book> books = bookDao.findByFavouritesUsername(username.toLowerCase(), amount, offset);
+        return createDtoCollection(books);
+    }
+
+    @Override
+    public Collection<Book> getToReadListByUsername(String username, Integer amount, Integer offset) {
+        Collection<Book> books = bookDao.findToReadListByUsername(username.toLowerCase(), amount, offset);
         return createDtoCollection(books);
     }
 

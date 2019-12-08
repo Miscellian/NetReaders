@@ -45,6 +45,12 @@ export class BookService {
         const offset = (Number(page) - 1) * 8;
         return this.httpClient.get<Book[]>(`/books/byusernameFavourites?username=${username}&amount=8&offset=${offset}`);
     }
+
+    getToReadListByUser(username: string, page: string): Observable<Book[]> {
+        const offset = (Number(page) - 1) * 8;
+        return this.httpClient.get<Book[]>(`/books/byusernameToReadList?username=${username}&amount=8&offset=${offset}`);
+    }
+
     getByUserPreferences(username: string): Observable<Book[]> {
         return this.httpClient.get<Book[]>(`/books/preferences?username=${username}`);
     }
@@ -95,5 +101,21 @@ export class BookService {
 
     getFavouritesCountByUser(username: string): Observable<number> {
         return this.httpClient.get<number>(`/books/countFavouritesByUsername?username=${username}`);
+    }
+
+    addToToReadList(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/addToToReadList`, userBook, {observe: 'response'});
+    }
+
+    checkInToReadList(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/checkInToReadList`, userBook);
+    }
+
+    removeFromToReadList(userBook: UserBookLibrary) {
+        return this.httpClient.post(`/books/removeFromToReadList`, userBook, {observe: 'response'});
+    }
+
+    getToReadListCountByUser(username: string): Observable<number> {
+        return this.httpClient.get<number>(`/books/countToReadListByUsername?username=${username}`);
     }
 }
