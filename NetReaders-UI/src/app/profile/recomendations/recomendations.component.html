@@ -1,0 +1,38 @@
+<div class="container">
+    <div *ngIf="bookRecomendations.length > 0; else RecomendationsElseBlock">
+        <div class="row">
+            <div class="col-md-3">
+                <span class="library-title">Recomendations</span>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <div class="row">
+            <div *ngFor="let book of bookRecomendations" class="col-md-3">
+                <a [routerLink]="['/books', book.id]">
+                    <img alt="book-image"
+                         class="rounded profile-booklist-preview-photo"
+                         src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+                </a>
+                <br/>
+                <span>
+                <a [routerLink]="['/books', book.id]"
+                   class="profile-book-title"><b>
+                    {{book.title}}
+                </b></a>
+            </span><br/>
+                <div *ngFor="let author of book.authors">
+                    <span class="profile-book-author">{{author.name}}</span>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <ng-template #RecomendationsElseBlock>
+        <span class="empty-text">
+            Your library is empty, add books to see them here
+        </span>
+    </ng-template>
+</div>

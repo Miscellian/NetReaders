@@ -27,8 +27,7 @@ import {ApiInterceptor} from './_helpers/api.interceptor';
 import {ReviewsModule} from './reviews/reviews.module';
 import {UserService} from "./profile/user.service";
 import {AnnouncementModule} from "./announcements/announcement.module";
-import { CalendarComponent } from './announcements/calendar/calendar.component';
-import { AnnouncementDetailComponent } from './announcements/announcement-detail/announcement-detail.component';
+import {RecomendationsComponent} from './profile/recomendations/recomendations.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +43,8 @@ import { AnnouncementDetailComponent } from './announcements/announcement-detail
         ConfirmUserComponent,
         EditProfileComponent,
         AdminslistComponent,
-        ModeratorslistComponent
+        ModeratorslistComponent,
+        RecomendationsComponent
     ],
     imports: [
         ReactiveFormsModule,

@@ -5,7 +5,7 @@
                 <span id="moderators-list-title">Moderators list:</span>
                 <li *ngFor="let user of users">
                     <span id="moderators-list-item">
-                        <a href="/users/{{user.username}}">@{{user.username}},</a>
+                        <a routerLink="/users/{{user.username}}">@{{user.username}},</a>
                         {{user.firstName}} {{user.lastName}}, {{user.email}}
                     </span>
                 </li>

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "./user.service";
-import {Authority, User, Book} from "../model";
-import { BookService } from '../books/book.service';
+import {Authority, User} from "../model";
+import {BookService} from '../books/book.service';
 
 @Component({
     selector: 'app-profile',
@@ -14,7 +14,6 @@ export class ProfileComponent implements OnInit {
     user: User;
     arg: string;
     storageUsername: string;
-    bookRecomendations: Book[];
 
     constructor(private activatedRoute: ActivatedRoute,
                 private userService: UserService,
@@ -30,22 +29,12 @@ export class ProfileComponent implements OnInit {
                 this.userService.getByUsername(this.arg).subscribe(
                     response => {
                         this.user = response;
-                        if (this.hasAuthority('USER')) {
-                            this.loadSuggestions();
-                        }
                     },
                     error => this.router.navigate(['/error'])
                 );
                 
             }
         );
-    }
-
-    loadSuggestions() {
-        this.bookService.getByUserPreferences(this.user.username).subscribe(
-            books => {
-                this.bookRecomendations = books;
-            },err => this.router.navigate(['/error']));
     }
 
     hasAuthority(authority: string): boolean {

@@ -1,6 +1,6 @@
 <!--suppress ALL -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <a href="/home">
+<nav class="navbar navbar-expand-xl bg-dark navbar-dark">
+    <a routerLink="/home">
         <img src="https://cdn0.iconfinder.com/data/icons/flat-round-system/512/debian-512.png" width="30" height="30"
              alt="" id="logo">
     </a>
@@ -17,7 +17,7 @@
                     Announcements</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/books/range/1">Books</a>
+                <a class="nav-link" routerLink="/books/range/1">Books</a>
             </li>
             <li class="nav-item dropdown-genres">
                 <div ngbDropdown class="d-inline-block genres">
@@ -25,7 +25,7 @@
                     <div ngbDropdownMenu aria-labelledby="dropdown-genres">
                         <div *ngFor="let genre of genres">
                             <a ngbDropdownItem id="dropdown-genre-item"
-                               href="/books/bygenre/{{genre.id}}/1">{{genre.name}}</a>
+                               routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}}</a>
                         </div>
                     </div>
                 </div>
