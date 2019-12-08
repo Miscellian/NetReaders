@@ -7,7 +7,7 @@
 <h1>Recommended books based on your preferences</h1>
     <div class="row">
             <div *ngFor="let book of bookRecomendations" class="col-md-3">
-                <a href="books/{{book.id}}">
+                <a routerLink="books/{{book.id}}">
                     <img alt="book-image"
                          class="rounded profile-booklist-preview-photo"
                          src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
@@ -15,7 +15,7 @@
                 <br/>
                 <span>
                 <a class="profile-book-title"
-                   href="books/{{book.id}}"><b>
+                   routerLink="books/{{book.id}}"><b>
                     {{book.title}}
                 </b></a>
                 </span><br/>
