@@ -20,7 +20,11 @@ export class BooklistItemComponent implements OnInit {
                 private bookService: BookService) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
-        this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(a => a.authority);
+        if(this.username){
+            this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+        } else {
+            this.authorities = [];
+        }
     }
 
     ngOnInit() {

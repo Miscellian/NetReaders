@@ -27,7 +27,11 @@ export class BookviewComponent implements OnInit {
                 public router: Router) {
         this.userBook = new UserBookLibrary();
         this.username = localStorage.getItem("UserName");
-        this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+        if(this.username){
+            this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+        } else {
+            this.authorities = [];
+        }
     }
 
     ngOnInit() {
@@ -43,7 +47,7 @@ export class BookviewComponent implements OnInit {
     }
 
     LoadUserBook() {
-        if (this.username === null || this.authorities.indexOf('USER') < 0) {
+        if (this.username === undefined || this.authorities.indexOf('USER') < 0) {
             this.inUserLibrary = false;
             this.inFavourites = false;
         } else {
