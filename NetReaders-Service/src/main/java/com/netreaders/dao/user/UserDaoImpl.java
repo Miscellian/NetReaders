@@ -182,11 +182,10 @@ public class UserDaoImpl implements UserDao {
         List<User> admins = template.query(sql_query, userMapper);
         if (admins.isEmpty()) {
             log.debug(String.format("Didn't find admins"));
-            throw new NoSuchModelException(String.format("Didn't find admins"));
         } else {
             log.error(String.format("Found %d admins", admins.size()));
-            return admins;
         }
+        return admins;
     }
 
     @Override

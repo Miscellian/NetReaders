@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUser(String username) {
-        userDao.deleteByUsername(username);
+        userDao.deleteByUsername(username.toLowerCase());
     }
 
     @Transactional

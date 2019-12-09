@@ -1,22 +1,29 @@
-<div class="container row" id="admins-list-page">
-    <div class="col-md-12">
-        <ul>
-            <span id="admin-list-title">Admins list:</span>
-            <div *ngFor="let user of users" class="row">
-                <div class="col-md-10">
-                    <li>
+<div class="container" id="admins-list-page">
+    <div *ngIf="admins.length > 0; else EmptyAdminsList">
+        <div class="col-md-12">
+            <ul>
+                <span class="admin-list-title">Admins list:</span>
+                <div *ngFor="let admin of admins" class="row">
+                    <div class="col-md-10">
+                        <li>
                     <span id="admin-list-item">
-                        <a routerLink="/users/{{user.username}}">@{{user.username}},</a>
-                        {{user.firstName}} {{user.lastName}}, {{user.email}}
+                        <a routerLink="/users/{{admin.username}}">@{{admin.username}},</a>
+                        {{admin.firstName}} {{admin.lastName}}, {{admin.email}}
                     </span>
-                    </li>
-                </div>
-                <div class="col-md-2">
-                    <div (click)="removeAdmin(user)" class="btn btn-info"
-                         role="button">Remove
+                        </li>
+                    </div>
+                    <div class="col-md-2">
+                        <div (click)="removeAdmin(admin)" class="btn btn-info"
+                             role="button">Remove
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ul>
+            </ul>
+        </div>
     </div>
+    <ng-template #EmptyAdminsList>
+        <span class="admin-list-title">
+            The list of admins is empty, add them to see here
+        </span>
+    </ng-template>
 </div>

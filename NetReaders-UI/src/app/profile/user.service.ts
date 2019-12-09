@@ -49,7 +49,7 @@ export class UserService {
         return this.httpClient.get<Boolean>(`/users/checkIfUsernameExists?username=${username}`);
     }
 
-    removeAdmin(user: User) {
-        return this.httpClient.post(`/users/removeAdmin`, user, {observe: 'response'});
+    removeAdmin(admin: User) {
+        return this.httpClient.post(`/users/removeAdmin`, admin, {observe: 'response'});
     }
 }
