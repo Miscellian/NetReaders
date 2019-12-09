@@ -66,4 +66,8 @@ export class UserService {
         user.userPassword = addAdminForm.controls.password.value;
         return this.httpClient.post(`/users/createAdmin`, user, {observe: 'response'});
     }
+
+    removeModerator(moderator: User) {
+        return this.httpClient.post(`/users/removeModerator`, moderator, {observe: 'response'});
+    }
 }

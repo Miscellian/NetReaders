@@ -29,6 +29,7 @@ import {UserService} from "./profile/user.service";
 import {AnnouncementModule} from "./announcements/announcement.module";
 import {RecomendationsComponent} from './profile/recomendations/recomendations.component';
 import {AddAdminComponent} from './profile/addadmin/addadmin.component';
+import {AddModeratorComponent} from './profile/add-moderator/add-moderator.component';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import {AddAdminComponent} from './profile/addadmin/addadmin.component';
         AdminslistComponent,
         ModeratorslistComponent,
         RecomendationsComponent,
-        AddAdminComponent
+        AddAdminComponent,
+        AddModeratorComponent
     ],
     imports: [
         ReactiveFormsModule,

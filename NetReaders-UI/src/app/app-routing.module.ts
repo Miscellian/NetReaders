@@ -15,6 +15,7 @@ import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
 import {AnnouncementDetailComponent} from "./announcements/announcement-detail/announcement-detail.component";
 import {CalendarComponent} from "./announcements/calendar/calendar.component";
 import {AddAdminComponent} from "./profile/addadmin/addadmin.component";
+import {AddModeratorComponent} from "./profile/add-moderator/add-moderator.component";
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
         path: 'users',
         children: [
             {path: 'addAdmin', component: AddAdminComponent},
+            {path: 'addModerator', component: AddModeratorComponent},
             {path: ':username', component: ProfileComponent},
             {path: 'editProfile/:username', component: EditProfileComponent}
         ]

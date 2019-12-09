@@ -9,17 +9,27 @@ import {Router} from "@angular/router";
     styleUrls: ['./moderatorslist.component.css']
 })
 export class ModeratorslistComponent implements OnInit {
-    users: User[];
+    moderators: User[];
 
     constructor(private userService: UserService,
                 private router: Router) {
     }
 
     ngOnInit() {
+        this.getModeratorsList();
+    }
+
+    getModeratorsList() {
         this.userService.getModeratorsList().subscribe(
-            response => this.users = response,
+            response => this.moderators = response,
             error => this.router.navigate(['error'])
         );
     }
 
+    removeModerator(moderator: User) {
+        this.userService.removeModerator(moderator).subscribe(
+            response => this.getModeratorsList(),
+            error => this.router.navigate(['/error'])
+        );
+    }
 }
