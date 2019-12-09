@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
             this.router.navigate(['/books/range/1']);
             return;
         }
-        this.router.navigate([`/books/byname/${bookname}/1`]);
+        this.router.navigate([`/books/byname/${bookname}`]);
     }
 
     profileOfLogin() {
