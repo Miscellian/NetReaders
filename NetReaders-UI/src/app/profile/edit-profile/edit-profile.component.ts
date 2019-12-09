@@ -35,6 +35,9 @@ export class EditProfileComponent implements OnInit {
                 this.userService.getByUsername(this.arg).subscribe(
                     response => {
                         this.user = response;
+                        if (localStorage.getItem("UserName") !== this.user.username) {
+                            this.router.navigate(['/home']);
+                        }
                         this.setDefaultValues();
                     },
                     error => this.router.navigate(['/error'])
@@ -67,22 +70,32 @@ export class EditProfileComponent implements OnInit {
 
         this.userService.checkIfUsernameExists(this.getFormValue.username.value).subscribe(
             response => {
-                if (response === true) {
+                if ((this.getFormValue.username.value !== this.user.username) && (response === true)) {
                     alert("This username already exists, please try another one");
                     return;
                 } else {
-                    this.loading = true;
-                    // @ts-ignore
-                    this.userService.editUser(this.editUserForm, this.user.id)
-                        .subscribe(response => {
-                            if (this.getFormValue.username.value === this.user.username) {
-                                this.router.navigateByUrl('/users/' + this.user.username);
+                    this.userService.checkIfEmailExists(this.getFormValue.email.value).subscribe(
+                        response => {
+                            if ((this.getFormValue.email.value !== this.user.email) && (response === true)) {
+                                alert("This email already exists, please try another one");
+                                return;
                             } else {
-                                this.authentificationService.logout();
-                                this.router.navigate(['login']);
+                                this.loading = true;
+                                // @ts-ignore
+                                this.userService.editUser(this.editUserForm, this.user.id)
+                                    .subscribe(response => {
+                                            if (this.getFormValue.username.value === this.user.username) {
+                                                this.router.navigateByUrl('/users/' + this.user.username);
+                                            } else {
+                                                this.authentificationService.logout();
+                                                this.router.navigate(['login']);
+                                            }
+                                        },
+                                        error => this.router.navigate(['/error'])
+                                    );
                             }
-
-                        }, error => this.router.navigate(['/error']));
+                        },
+                        error => this.router.navigate(['/error']))
                 }
             },
             error => this.router.navigate(['/error']));
@@ -97,5 +110,3 @@ export class EditProfileComponent implements OnInit {
         });
     }
 }
-
-

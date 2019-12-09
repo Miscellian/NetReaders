@@ -159,8 +159,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-	public boolean userExists(String username) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("user.findByUsername");
+    public boolean userExists(String username) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("user.findByUsername");
 
         List<User> users = template.query(sql_query, userMapper, username);
         if (users.isEmpty()) {
@@ -173,7 +173,7 @@ public class UserDaoImpl implements UserDao {
             log.error(String.format("Found more than one user by username '%s'", username));
             throw new DataBaseSQLException(String.format("Found more than one user by username '%s'", username));
         }
-	}
+    }
 
     @Override
     public Collection<User> getAdminsList() {
@@ -195,10 +195,27 @@ public class UserDaoImpl implements UserDao {
         List<User> moderators = template.query(sql_query, userMapper);
         if (moderators.isEmpty()) {
             log.debug(String.format("Didn't find moderators"));
-            throw new NoSuchModelException(String.format("Didn't find moderators"));
         } else {
             log.error(String.format("Found %d moderators", moderators.size()));
-            return moderators;
+        }
+
+        return moderators;
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        final String sql_query = env.getProperty("user.findByEmail");
+
+        List<User> users = template.query(sql_query, userMapper, email);
+        if (users.isEmpty()) {
+            log.debug(String.format("Didn't find any user by email '%s'", email));
+            return false;
+        } else if (users.size() == 1) {
+            log.debug(String.format("Found a user by email '%s'", email));
+            return true;
+        } else {
+            log.error(String.format("Found more than one user by email '%s'", email));
+            throw new DataBaseSQLException(String.format("Found more than one user by email '%s'", email));
         }
     }
 

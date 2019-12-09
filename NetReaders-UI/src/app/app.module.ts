@@ -28,6 +28,7 @@ import {ReviewsModule} from './reviews/reviews.module';
 import {UserService} from "./profile/user.service";
 import {AnnouncementModule} from "./announcements/announcement.module";
 import {RecomendationsComponent} from './profile/recomendations/recomendations.component';
+import {AddAdminComponent} from './profile/addadmin/addadmin.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,8 @@ import {RecomendationsComponent} from './profile/recomendations/recomendations.c
         EditProfileComponent,
         AdminslistComponent,
         ModeratorslistComponent,
-        RecomendationsComponent
+        RecomendationsComponent,
+        AddAdminComponent
     ],
     imports: [
         ReactiveFormsModule,

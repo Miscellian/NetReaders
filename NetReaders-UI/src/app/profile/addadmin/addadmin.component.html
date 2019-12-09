@@ -1,0 +1,44 @@
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body">
+                <h3 class="text-center mb-4 formText">Edit profile</h3>
+                <form (ngSubmit)="onSubmit()" [formGroup]="addAdminForm">
+                    <div class="form-group">
+                        <label class="formText" for="username">Username</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.username.errors }"
+                               class="form-control" formControlName="username" id="username" type="text"/>
+                        <div *ngIf="submitted && getFormValue.username.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.username.errors.required">Username is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="formText" for="email">Email</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.email.errors }" class="form-control"
+                               formControlName="email" id="email" type="email"/>
+                        <div *ngIf="submitted && getFormValue.email.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.email.errors.required">Username is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="formText" for="password">Password</label>
+                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.password.errors }"
+                               class="form-control" formControlName="password" id="password" type="password"/>
+                        <div *ngIf="submitted && getFormValue.password.errors" class="invalid-feedback">
+                            <div *ngIf="getFormValue.password.errors.required">Password is required</div>
+                            <div *ngIf="getFormValue.password.errors.minlength">Password must be at least 6 characters
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="btn btn-primary formBtn">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Submit
+                        </button>
+                        <a [routerLink]="['/users', user.username]" class="btn formBtn" id="cancelButton">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

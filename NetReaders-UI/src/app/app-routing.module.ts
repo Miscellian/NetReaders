@@ -14,12 +14,12 @@ import {ProfileComponent} from './profile/profile.component';
 import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
 import {AnnouncementDetailComponent} from "./announcements/announcement-detail/announcement-detail.component";
 import {CalendarComponent} from "./announcements/calendar/calendar.component";
+import {AddAdminComponent} from "./profile/addadmin/addadmin.component";
 
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomepageComponent},
-    {path: 'users/:username', component: ProfileComponent, pathMatch: 'full'},
     {path: 'users/editProfile/:username', component: EditProfileComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'login', component: LoginComponent},
@@ -35,6 +35,14 @@ const routes: Routes = [
             {path: 'byuser/:id', component: BooklistComponent, data: {filter: 'user'}},
             {path: 'byuserFavourites/:id', component: BooklistComponent, data: {filter: 'favourite'}},
             {path: 'byusernameToReadList/:id', component: BooklistComponent, data: {filter: 'toReadList'}}
+        ]
+    },
+    {
+        path: 'users',
+        children: [
+            {path: 'addAdmin', component: AddAdminComponent},
+            {path: ':username', component: ProfileComponent},
+            {path: 'editProfile/:username', component: EditProfileComponent}
         ]
     },
     {

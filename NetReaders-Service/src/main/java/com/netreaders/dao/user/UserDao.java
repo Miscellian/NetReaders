@@ -21,4 +21,6 @@ public interface UserDao extends GenericDao<User, Integer> {
     Collection<User> getAdminsList();
 
     Collection<User> getModeratorsList();
+
+    boolean emailExists(String email);
 }

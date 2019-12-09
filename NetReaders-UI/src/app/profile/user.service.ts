@@ -49,7 +49,21 @@ export class UserService {
         return this.httpClient.get<Boolean>(`/users/checkIfUsernameExists?username=${username}`);
     }
 
+    checkIfEmailExists(email: string): Observable<Boolean> {
+        return this.httpClient.get<Boolean>(`/users/checkIfEmailExists?email=${email}`);
+    }
+
     removeAdmin(admin: User) {
         return this.httpClient.post(`/users/removeAdmin`, admin, {observe: 'response'});
+    }
+
+    createAdmin(addAdminForm: FormGroup) {
+        let user: User = new User();
+        user.username = addAdminForm.controls.username.value;
+        user.firstName = null;
+        user.lastName = null;
+        user.email = addAdminForm.controls.email.value;
+        user.userPassword = addAdminForm.controls.password.value;
+        return this.httpClient.post(`/users/createAdmin`, user, {observe: 'response'});
     }
 }

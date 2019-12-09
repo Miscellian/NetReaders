@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
     }
 
     // convenience getter for easy access to form fields
-    get f() {
+    get getFormControls() {
         return this.registerForm.controls;
     }
 
@@ -45,8 +45,7 @@ export class SignupComponent implements OnInit {
             lastName: ['', Validators.required, Validators.minLength(2)],
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, this.passwordValidator]],
-            confirm_password: ['', [Validators.required, this.checkPasswords]
-            ]
+            confirm_password: ['', [Validators.required, this.checkPasswords]]
         });
     }
 

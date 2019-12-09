@@ -32,4 +32,6 @@ public interface UserService extends UserDetailsService {
     boolean checkIfUsernameExists(String username);
 
     void removeUser(String username);
+
+    boolean checkIfEmailExists(String email);
 }

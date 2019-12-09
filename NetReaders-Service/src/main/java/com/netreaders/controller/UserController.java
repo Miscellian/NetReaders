@@ -38,8 +38,6 @@ public class UserController {
 
     @PostMapping("/editUser")
     public ResponseEntity<?> editUser(@RequestBody EditUserForm editUserForm) {
-        log.debug(editUserForm);
-        log.debug(String.format("%s %s %s %s %s", editUserForm.getUsername(), editUserForm.getFirstname(), editUserForm.getLastname(), editUserForm.getEmail(), editUserForm.getUserId()));
         userService.editUser(editUserForm);
         return ResponseEntity.ok().build();
     }
@@ -85,16 +83,16 @@ public class UserController {
         userService.removeUser(user.getUsername());
     }
 
-    @PostMapping("/createModerator")
-    public boolean createModerator(@RequestBody SignUpForm signUpForm,
-                                   @RequestBody String[] roles) {
-        if (userService.userExists(signUpForm.getUsername())) {
-            return false;
-        }
-        userService.registerPriviledgedUser(signUpForm, roles);
-
-        return true;
-    }
+//    @PostMapping("/createModerator")
+//    public boolean createModerator(@RequestBody SignUpForm signUpForm,
+//                                   @RequestBody String[] roles) {
+//        if (userService.userExists(signUpForm.getUsername())) {
+//            return false;
+//        }
+//        userService.registerPriviledgedUser(signUpForm, roles);
+//
+//        return true;
+//    }
 
     @GetMapping("/getAdminsList")
     public Collection<User> getAdminsList() {
@@ -114,5 +112,10 @@ public class UserController {
     @GetMapping("/checkIfUsernameExists")
     public boolean checkIfUsernameExists(@RequestParam(name = "username") String username) {
         return userService.checkIfUsernameExists(username);
+    }
+
+    @GetMapping("/checkIfEmailExists")
+    public boolean checkIfEmailExists(@RequestParam(name = "email") String email) {
+        return userService.checkIfEmailExists(email);
     }
 }
