@@ -53,8 +53,8 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("User doesn't exists");
         }
-        if(!userService.checkCredentials(loginForm)) {
-        	return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        if (!userService.checkCredentials(loginForm)) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
         JwtResponse response = userService.login(loginForm);
         return ResponseEntity.ok(response);
@@ -72,12 +72,17 @@ public class UserController {
 
     @PostMapping("/createAdmin")
     public boolean createAdmin(@RequestBody SignUpForm signUpForm) {
-    	if (userService.userExists(signUpForm.getUsername())) {
+        if (userService.userExists(signUpForm.getUsername())) {
             return false;
         }
         userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
 
         return true;
+    }
+
+    @PostMapping("/removeAdmin")
+    public void removeAdmin(@RequestBody User user) {
+        userService.removeUser(user.getUsername());
     }
 
     @PostMapping("/createModerator")
@@ -103,7 +108,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     public User getByUsername(@PathVariable String username) {
-            return userService.findByUsername(username);
+        return userService.findByUsername(username);
     }
 
     @GetMapping("/checkIfUsernameExists")

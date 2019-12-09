@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
         return userDao.userExists(username.toLowerCase());
     }
 
+    @Override
+    public void removeUser(String username) {
+        userDao.deleteByUsername(username);
+    }
+
     @Transactional
     @Override
     public User registerPriviledgedUser(SignUpForm signUpForm, String[] roles) {

@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/users/createAdmin").hasAuthority("SUPER_ADMIN")
+                .antMatchers("api/users/removeAdmin").hasAuthority("SUPER_ADMIN")
                 .antMatchers("/api/users/createModerator").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
                 .antMatchers("/userpage").hasAuthority("USER")
                 .antMatchers("/api/reviews/unpublished**").hasAuthority("REVIEW_MODERATOR")

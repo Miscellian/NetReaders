@@ -48,4 +48,8 @@ export class UserService {
     checkIfUsernameExists(username: string): Observable<Boolean> {
         return this.httpClient.get<Boolean>(`/users/checkIfUsernameExists?username=${username}`);
     }
+
+    removeAdmin(user: User) {
+        return this.httpClient.post(`/users/removeAdmin`, user, {observe: 'response'});
+    }
 }

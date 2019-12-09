@@ -16,13 +16,20 @@ export class AdminslistComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getAdminsList();
+    }
+
+    getAdminsList() {
         this.userService.getModeratorsList().subscribe(
             response => this.users = response,
             error => this.router.navigate(['error'])
         );
     }
 
-    removeAdmin() {
-
+    removeAdmin(user: User) {
+        this.userService.removeAdmin(user).subscribe(
+            response => this.getAdminsList(),
+            error => this.router.navigate(['/error'])
+        );
     }
 }

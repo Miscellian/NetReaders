@@ -30,4 +30,6 @@ public interface UserService extends UserDetailsService {
     void editUser(EditUserForm editUserForm);
 
     boolean checkIfUsernameExists(String username);
+
+    void removeUser(String username);
 }
