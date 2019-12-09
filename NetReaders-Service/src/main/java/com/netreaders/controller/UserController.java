@@ -106,4 +106,8 @@ public class UserController {
             return userService.findByUsername(username);
     }
 
+    @GetMapping("/checkIfUsernameExists")
+    public boolean checkIfUsernameExists(@RequestParam(name = "username") String username) {
+        return userService.checkIfUsernameExists(username);
+    }
 }

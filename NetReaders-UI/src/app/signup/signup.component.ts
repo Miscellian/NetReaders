@@ -76,7 +76,6 @@ export class SignupComponent implements OnInit {
 
         const isLengthValid = value ? value.length > 7 : false;
 
-
         const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
 
         if (!passwordValid) {

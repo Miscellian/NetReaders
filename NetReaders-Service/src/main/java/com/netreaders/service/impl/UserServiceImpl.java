@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
         userDao.updateByEditForm(user);
     }
 
+    @Override
+    public boolean checkIfUsernameExists(String username) {
+        return userDao.userExists(username.toLowerCase());
+    }
+
     @Transactional
     @Override
     public User registerPriviledgedUser(SignUpForm signUpForm, String[] roles) {
@@ -63,9 +68,9 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
-    
+
     private User CreateUser(SignUpForm signUpForm) {
-    	User user = new User();
+        User user = new User();
         user.setFirstName(signUpForm.getFirstName());
         user.setLastName(signUpForm.getLastName());
         user.setUsername(signUpForm.getUsername());
@@ -88,26 +93,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+        return userDao.findByUsername(username.toLowerCase());
     }
 
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
         Collection<Role> roles = roleDao.findByUserId(user.getId());
         return UserPrinciple.build(user, roles);
-	}
+    }
 
-	@Override
-	public boolean userExists(String username) {
-		return userDao.userExists(username);
-	}
+    @Override
+    public boolean userExists(String username) {
+        return userDao.userExists(username);
+    }
 
-	@Override
-	public JwtResponse login(LoginForm loginForm) {
+    @Override
+    public JwtResponse login(LoginForm loginForm) {
         UserDetails userDetails = jwtTokenFilter.setContextAuthentication(loginForm.getUsername());
         String jwt = jwtProvider.generateJwtToken(SecurityContextHolder.getContext().getAuthentication());
         return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-	}
+    }
 
     @Override
     public Collection<User> getAdminsList() {
@@ -120,9 +125,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-	public boolean checkCredentials(LoginForm loginForm) {
-		User user = userDao.findByUsername(loginForm.getUsername());
-		return passwordEncoder.matches(loginForm.getPassword(), user.getUserPassword());
-	}
+    public boolean checkCredentials(LoginForm loginForm) {
+        User user = userDao.findByUsername(loginForm.getUsername());
+        return passwordEncoder.matches(loginForm.getPassword(), user.getUserPassword());
+    }
 
 }

@@ -65,18 +65,27 @@ export class EditProfileComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
-        // @ts-ignore
-        this.userService.editUser(this.editUserForm, this.user.id)
-            .subscribe(response => {
-                if (this.getFormValue.username.value === this.user.username) {
-                    this.router.navigateByUrl('/users/' + this.user.username);
+        this.userService.checkIfUsernameExists(this.getFormValue.username.value).subscribe(
+            response => {
+                if (response === true) {
+                    alert("This username already exists, please try another one");
+                    return;
                 } else {
-                    this.authentificationService.logout();
-                    this.router.navigate(['login']);
-                }
+                    this.loading = true;
+                    // @ts-ignore
+                    this.userService.editUser(this.editUserForm, this.user.id)
+                        .subscribe(response => {
+                            if (this.getFormValue.username.value === this.user.username) {
+                                this.router.navigateByUrl('/users/' + this.user.username);
+                            } else {
+                                this.authentificationService.logout();
+                                this.router.navigate(['login']);
+                            }
 
-            }, error => this.router.navigate(['/error']));
+                        }, error => this.router.navigate(['/error']));
+                }
+            },
+            error => this.router.navigate(['/error']));
     }
 
     private setDefaultValues() {

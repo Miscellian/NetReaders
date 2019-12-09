@@ -28,4 +28,6 @@ public interface UserService extends UserDetailsService {
     Collection<User> getModeratorsList();
 
     void editUser(EditUserForm editUserForm);
+
+    boolean checkIfUsernameExists(String username);
 }

@@ -44,4 +44,8 @@ export class UserService {
 
         return this.httpClient.post(`/users/registration`, user, {observe: 'response'});
     }
+
+    checkIfUsernameExists(username: string): Observable<Boolean> {
+        return this.httpClient.get<Boolean>(`/users/checkIfUsernameExists?username=${username}`);
+    }
 }
