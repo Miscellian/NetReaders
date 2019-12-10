@@ -3,8 +3,9 @@ package com.netreaders.service;
 import com.netreaders.models.RegistrationToken;
 import com.netreaders.models.User;
 
-public interface RegistrationTokenService {
+import java.util.Collection;
 
+public interface RegistrationTokenService {
     RegistrationToken createToken(User user);
 
     RegistrationToken getByToken(String token);
@@ -18,4 +19,6 @@ public interface RegistrationTokenService {
     boolean tokenExistsByUser(String username);
 
     void removeToken(String token);
+
+    Collection<RegistrationToken> getAllTokens();
 }

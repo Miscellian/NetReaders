@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
@@ -70,4 +71,9 @@ public class RegistrationTokenServiceImpl implements RegistrationTokenService {
 		User user = userDao.findByUsername(username);
 		return tokenDao.tokenExistsByUser(user.getId());
 	}
+
+    @Override
+    public Collection<RegistrationToken> getAllTokens() {
+        return tokenDao.getAll();
+    }
 }
