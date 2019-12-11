@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
     templateUrl: './userpage.component.html',
     styleUrls: ['./userpage.component.css']
 })
+
 export class UserpageComponent implements OnInit {
     @Input() public user: User;
     arg: string;
