@@ -51,8 +51,8 @@ const routes: Routes = [
         path: 'announcements',
         children: [
             {path: ':id', component: AnnouncementDetailComponent},
-            {path: 'byauthor/:id/:year/:month', component: CalendarComponent, data: {filter: 'author'}},
-            {path: 'bygenre/:id/:year/:month', component: CalendarComponent, data: {filter: 'genre'}},
+            {path: 'byauthor/:id/:year/:month', component: CalendarComponent, data: {filter: 'byauthor'}},
+            {path: 'bygenre/:id/:year/:month', component: CalendarComponent, data: {filter: 'bygenre'}},
             {path: 'all/:year/:month', component: CalendarComponent, data: {filter: 'all'}},
         ]
     },

@@ -24,7 +24,6 @@ export class AnnouncementDetailComponent implements OnInit {
         this.id = +this.activatedRoute.snapshot.paramMap.get('id');
         this.announcementService.getById(this.id).subscribe(response => {
             this.announcement = response;
-            console.log(this.announcement);
         }, error => this.router.navigate(['/error']));
     }
 
