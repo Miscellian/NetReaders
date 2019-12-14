@@ -83,16 +83,21 @@ public class UserController {
         userService.removeUser(user.getUsername());
     }
 
-//    @PostMapping("/createModerator")
-//    public boolean createModerator(@RequestBody SignUpForm signUpForm,
-//                                   @RequestBody String[] roles) {
-//        if (userService.userExists(signUpForm.getUsername())) {
-//            return false;
-//        }
-//        userService.registerPriviledgedUser(signUpForm, roles);
-//
-//        return true;
-//    }
+    @PostMapping("/createModerator")
+    public boolean createModerator(@RequestBody SignUpForm signUpForm,
+                                   @RequestBody String[] roles) {
+        if (userService.userExists(signUpForm.getUsername())) {
+            return false;
+        }
+        userService.registerPriviledgedUser(signUpForm, new String[]{"GENERAL_MODERATOR"});
+
+        return true;
+    }
+
+    @PostMapping("/removeModerator")
+    public void removeModerator(@RequestBody User user) {
+        userService.removeUser(user.getUsername());
+    }
 
     @GetMapping("/getAdminsList")
     public Collection<User> getAdminsList() {

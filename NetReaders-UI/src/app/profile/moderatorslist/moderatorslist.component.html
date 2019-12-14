@@ -12,7 +12,7 @@
             <div class="col-md-12">
                 <ul>
                     <div *ngFor="let moderator of moderators" class="row">
-                        <div class="col-md-10">
+                        <div class="col-lg-10">
                             <li>
                     <span id="moderator-list-item">
                         <a routerLink="/users/{{moderator.username}}">@{{moderator.username}},</a>
@@ -26,7 +26,7 @@
                     </span>
                             </li>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-lg-2">
                             <div (click)="removeModerator(moderator)" class="btn btn-info"
                                  role="button">Remove
                             </div>

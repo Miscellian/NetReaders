@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {EditUser, User} from "../model";
-import {FormGroup} from "@angular/forms";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {EditUser, User} from '../model';
+import {FormGroup} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +25,7 @@ export class UserService {
     }
 
     editUser(editUserForm: FormGroup, userId: number) {
-        let editUser: EditUser = new EditUser();
+        const editUser: EditUser = new EditUser();
         editUser.email = editUserForm.controls.email.value;
         editUser.username = editUserForm.controls.username.value;
         editUser.firstname = editUserForm.controls.firstname.value;
@@ -35,22 +35,22 @@ export class UserService {
     }
 
     register(registerForm: FormGroup) {
-        let user: User = new User();
-        user.username = registerForm.value['user_name'];
-        user.firstName = registerForm.value['firstName'];
-        user.lastName = registerForm.value['lastName'];
-        user.email = registerForm.value['email'];
-        user.userPassword = registerForm.value['password'];
+        const user: User = new User();
+        user.username = registerForm.value.user_name;
+        user.firstName = registerForm.value.firstName;
+        user.lastName = registerForm.value.lastName;
+        user.email = registerForm.value.email;
+        user.userPassword = registerForm.value.password;
 
         return this.httpClient.post(`/users/registration`, user, {observe: 'response'});
     }
 
-    checkIfUsernameExists(username: string): Observable<Boolean> {
-        return this.httpClient.get<Boolean>(`/users/checkIfUsernameExists?username=${username}`);
+    checkIfUsernameExists(username: string): Observable<boolean> {
+        return this.httpClient.get<boolean>(`/users/checkIfUsernameExists?username=${username}`);
     }
 
-    checkIfEmailExists(email: string): Observable<Boolean> {
-        return this.httpClient.get<Boolean>(`/users/checkIfEmailExists?email=${email}`);
+    checkIfEmailExists(email: string): Observable<boolean> {
+        return this.httpClient.get<boolean>(`/users/checkIfEmailExists?email=${email}`);
     }
 
     removeAdmin(admin: User) {
@@ -58,7 +58,7 @@ export class UserService {
     }
 
     createAdmin(addAdminForm: FormGroup) {
-        let user: User = new User();
+        const user: User = new User();
         user.username = addAdminForm.controls.username.value;
         user.firstName = null;
         user.lastName = null;
