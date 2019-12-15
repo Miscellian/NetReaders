@@ -75,3 +75,8 @@ export class UserBookLibrary {
     username: string;
     bookId: number;
 }
+
+export class CreateModeratorForm {
+    user: User;
+    roles: string[];
+};

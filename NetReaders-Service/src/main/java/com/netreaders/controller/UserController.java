@@ -1,9 +1,7 @@
 package com.netreaders.controller;
 
-import com.netreaders.dto.EditUserForm;
-import com.netreaders.dto.JwtResponse;
-import com.netreaders.dto.LoginForm;
-import com.netreaders.dto.SignUpForm;
+import com.netreaders.dto.*;
+import com.netreaders.models.Role;
 import com.netreaders.models.User;
 import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
@@ -84,12 +82,18 @@ public class UserController {
     }
 
     @PostMapping("/createModerator")
-    public boolean createModerator(@RequestBody SignUpForm signUpForm,
-                                   @RequestBody String[] roles) {
-        if (userService.userExists(signUpForm.getUsername())) {
+    public boolean createModerator(@RequestBody CreateModeratorForm moderatorForm) {
+        log.error(moderatorForm);
+        if (userService.userExists(moderatorForm.getUser().getUsername())) {
             return false;
         }
-        userService.registerPriviledgedUser(signUpForm, new String[]{"GENERAL_MODERATOR"});
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setEmail(moderatorForm.getUser().getEmail());
+        signUpForm.setFirstName(moderatorForm.getUser().getFirstName());
+        signUpForm.setLastName(moderatorForm.getUser().getLastName());
+        signUpForm.setUsername(moderatorForm.getUser().getUsername());
+        signUpForm.setUserPassword(moderatorForm.getUser().getUserPassword());
+        userService.registerPriviledgedUser(signUpForm, moderatorForm.getRoles());
 
         return true;
     }
@@ -122,5 +126,10 @@ public class UserController {
     @GetMapping("/checkIfEmailExists")
     public boolean checkIfEmailExists(@RequestParam(name = "email") String email) {
         return userService.checkIfEmailExists(email);
+    }
+
+    @GetMapping("/getRolesForModerator")
+    public Collection<Role> getRolesForModerator(@RequestParam(name = "moderatorId") Integer moderatorId) {
+        return userService.getRolesForModerator(moderatorId);
     }
 }

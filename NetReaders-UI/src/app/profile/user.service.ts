@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {EditUser, User} from '../model';
+import {CreateModeratorForm, EditUser, User} from '../model';
 import {FormGroup} from '@angular/forms';
 
 @Injectable({
@@ -69,5 +69,22 @@ export class UserService {
 
     removeModerator(moderator: User) {
         return this.httpClient.post(`/users/removeModerator`, moderator, {observe: 'response'});
+    }
+
+    createModerator(addModeratorForm: FormGroup, roles: string[]) {
+        const user: User = new User();
+        const moderatorForm: CreateModeratorForm = new CreateModeratorForm();
+        user.username = addModeratorForm.controls.username.value;
+        user.firstName = null;
+        user.lastName = null;
+        user.email = addModeratorForm.controls.email.value;
+        user.userPassword = addModeratorForm.controls.password.value;
+        moderatorForm.user = user;
+        moderatorForm.roles = roles;
+        return this.httpClient.post(`/users/createModerator`, moderatorForm, {observe: 'response'});
+    }
+
+    getRolesForModerator(moderatorId: number) {
+        return this.httpClient.get(`/users/getRolesForModerator?moderatorId=${moderatorId}`);
     }
 }

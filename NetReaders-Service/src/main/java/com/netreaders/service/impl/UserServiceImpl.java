@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
         return userDao.emailExists(email);
     }
 
+    @Override
+    public Collection<Role> getRolesForModerator(Integer moderatorId) {
+        return roleDao.findByUserId(moderatorId);
+    }
+
     @Transactional
     @Override
     public User registerPriviledgedUser(SignUpForm signUpForm, String[] roles) {

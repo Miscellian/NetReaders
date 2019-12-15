@@ -3,11 +3,11 @@
 }
 
 input.ng-valid[required], input.ng-valid.required {
-    border-left: 5px solid #42A948; /* green */
+    border-left: .25rem solid #42A948; /* green */
 }
 
 input.ng-touched.ng-invalid {
-    border-left: 5px solid red;
+    border-left: .25rem solid red;
 }
 
 .error {
@@ -35,4 +35,30 @@ input.ng-touched.ng-invalid {
 
 a#cancelButton {
     float: right;
+}
+
+label.custom-label {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.custom-control-label:before {
+    background-color: white;
+    border: .1rem solid #36393E;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #36393E;
+}
+
+.custom-control-input:active ~ .custom-control-label::before {
+    background-color: green;
+}
+
+.custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 .1rem #fff, 0 0 0 .2rem #36393E
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: white;
 }
