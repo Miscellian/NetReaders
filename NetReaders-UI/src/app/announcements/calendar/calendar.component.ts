@@ -1,7 +1,6 @@
-import {Component, DoCheck, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import {isSameDay, isSameMonth} from 'date-fns';
-import {CalendarEvent, CalendarEventAction, CalendarView} from 'angular-calendar';
-import {DOCUMENT} from '@angular/common';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {addDays, addMonths, addWeeks, isSameDay, isSameMonth, subDays, subMonths, subWeeks} from 'date-fns';
+import {CalendarEvent, CalendarView} from 'angular-calendar';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../announcement.service";
 import {Announcement} from "../../model";
@@ -21,20 +20,37 @@ const colors: any = {
     }
 };
 
+type CalendarPeriod = 'day' | 'week' | 'month';
+
+function addPeriod(period: CalendarPeriod, date: Date, amount: number): Date {
+    return {
+        day: addDays,
+        week: addWeeks,
+        month: addMonths
+    }[period](date, amount);
+}
+
+function subPeriod(period: CalendarPeriod, date: Date, amount: number): Date {
+    return {
+        day: subDays,
+        week: subWeeks,
+        month: subMonths
+    }[period](date, amount);
+}
+
 @Component({
     selector: 'app-announcement-calendar',
-    styleUrls: ['calendar.component.scss'],
+    styleUrls: ['calendar.component.css'],
     templateUrl: 'calendar.component.html',
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class CalendarComponent implements OnInit {
-    //Frontend
-    private readonly customTheme = 'custom_theme';
+
+    //Frontend (angular calendar)
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
-    viewDate: Date = new Date();
+    viewDate: Date;
     events: CalendarEvent[] = [];
-
     activeDayIsOpen: boolean = false;
 
     //Backend
@@ -42,18 +58,17 @@ export class CalendarComponent implements OnInit {
     id: number;
     year: number;
     month: number;
-
-    count: number;
+    filter: string;
 
     // Current date by default
     func: any = () => this.announcementService.getAll(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1);
 
     // or factory if had params
     funcs: any = {
-        genre: () => {
+        bygenre: () => {
             this.func = () => this.announcementService.getByGenre(this.id, this.year, this.month);
         },
-        author: () => {
+        byauthor: () => {
             this.func = () => this.announcementService.getByAuthor(this.id, this.year, this.month);
         },
         all: () => {
@@ -61,8 +76,7 @@ export class CalendarComponent implements OnInit {
         },
     };
 
-    constructor(@Inject(DOCUMENT) private document,
-                private announcementService: AnnouncementService,
+    constructor(private announcementService: AnnouncementService,
                 private activatedRoute: ActivatedRoute,
                 public router: Router) {
     }
@@ -81,13 +95,47 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    closeOpenMonthViewDay(): void {
-        this.activeDayIsOpen = false;
+    increment(): void {
+        this.changedDate(addPeriod(this.view, this.viewDate, 1));
+    }
+
+    decrement(): void {
+        this.changedDate(subPeriod(this.view, this.viewDate, 1));
+    }
+
+    today(): void {
+        this.changedDate(new Date());
+    }
+
+    changedDate(date: Date): void {
+        if (this.filter === "all") {
+            this.router.navigate(["/announcements/", this.filter, date.getFullYear(), date.getMonth() + 1]);
+
+        } else {
+            this.router.navigate(["/announcements/", this.filter, this.id, date.getFullYear(), date.getMonth() + 1]);
+        }
+    }
+
+    newRequest(): void {
+        this.activatedRoute.params.subscribe(
+            params => {
+                this.id = params['id'];
+                this.year = params['year'];
+                this.month = params['month'];
+                this.filter = this.activatedRoute.snapshot.data.filter;
+                this.funcs[this.filter]();
+                this.func().subscribe(response => {
+                    this.announcements = response;
+                    this.fetchEvents();
+                }, () => this.router.navigate(['/error']));
+            }
+        );
     }
 
     fetchEvents(): void {
+        let temp = [];
         for (let i = 0; i < this.announcements.length; i++) {
-            this.events.push(
+            temp.push(
                 {
                     start: new Date(this.announcements[i].announcement_date),
                     title: this.announcements[i].description,
@@ -96,24 +144,23 @@ export class CalendarComponent implements OnInit {
                 }
             )
         }
+        this.events = temp;
     }
 
     eventClicked(event: CalendarEvent<Announcement>): void {
         this.router.navigate(['/announcements', event.id]);
     }
 
+    setUpCalendar(newDate: Date) {
+
+        this.viewDate = new Date(newDate.getFullYear(), newDate.getMonth())
+
+    }
+
     ngOnInit(): void {
-        this.activatedRoute.params.subscribe(
-            params => {
-                this.id = params['id'];
-                this.year = params['year'];
-                this.month = params['month'];
-                this.funcs[this.activatedRoute.snapshot.data.filter]();
-                this.func().subscribe(response => {
-                    this.announcements = response;
-                    this.fetchEvents();
-                }, () => this.router.navigate(['/error']));
-            }
-        );
+
+        this.newRequest();
+
+        this.setUpCalendar(new Date());
     }
 }

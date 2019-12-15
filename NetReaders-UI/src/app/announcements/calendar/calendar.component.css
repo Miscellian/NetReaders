@@ -1,0 +1,23 @@
+.announcement-link {
+    text-decoration: none;
+    font-size: 1em;
+    color: black;
+}
+
+.announcement-link:hover {
+    color: darkred;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.announcement-border {
+    padding: 10px;
+    border-left: 5px inset rgba(0, 0, 0, 0.33);
+    border-right: 5px inset rgba(0, 0, 0, 0.33);
+    border-radius: 40px 40px 0 0;
+}
+
+.cal-day-number {
+    opacity: 1 !important;
+    color: #1a1a1a !important;
+}

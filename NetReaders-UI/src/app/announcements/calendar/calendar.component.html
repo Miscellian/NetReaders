@@ -4,49 +4,40 @@
             <div class="btn-group">
                 <div
                         class="btn btn-secondary"
-                        mwlCalendarPreviousView
-                        [view]="view"
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()">
-                        Prev
+                        (click)="decrement()">
+                    < Prev
                 </div>
                 <div
                         class="btn btn-outline-secondary"
-                        mwlCalendarToday
-                        [(viewDate)]="viewDate">
+                        (click)="today()">
                     Today
                 </div>
                 <div
                         class="btn btn-secondary"
-                        mwlCalendarNextView
-                        [view]="view"
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()">
-                    Next
+                        (click)="increment()">
+                    Next >
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 text-center">
+        <div class="col-lg-9 text-center calendar-title">
             <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <p *ngIf="events.length === 0"><em>No events added</em></p>
-                    <ul>
-                        <li *ngFor="let event of events">
-                            <a class="announcement-list" routerLink="/announcements/{{event.id}}">
-                                {{ event.title }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="announcement-border">
+                <p *ngIf="events.length === 0"><em>No events added</em></p>
+                <ul>
+                    <li *ngFor="let event of events">
+                        <a class="announcement-link" routerLink="/announcements/{{event.id}}">
+                            {{ event.title }}
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9 calendar-body">
             <div [ngSwitch]="view">
                 <mwl-calendar-month-view
                         *ngSwitchCase="CalendarView.Month"

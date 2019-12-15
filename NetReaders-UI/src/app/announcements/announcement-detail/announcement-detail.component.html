@@ -1,4 +1,4 @@
-<div class="container main">
+<div class="container">
     <div class="col-lg-12 text-center">
         <h1>{{announcement.description}}</h1>
     </div>
@@ -12,7 +12,7 @@
             <p *ngIf="announcement.books.length === 0"><em>No books added</em></p>
             <ul>
                 <li *ngFor="let book of announcement.books">
-                    <a routerLink="/books/{{book.id}}">
+                    <a class="book-link" routerLink="/books/{{book.id}}">
                         {{ book.title }}
                     </a>
                 </li>

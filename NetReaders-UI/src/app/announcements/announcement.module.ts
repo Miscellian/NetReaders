@@ -7,6 +7,7 @@ import {AnnouncementDetailComponent} from './announcement-detail/announcement-de
 import {CalendarModule, DateAdapter} from "angular-calendar";
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import {FormsModule} from "@angular/forms";
                 useFactory: adapterFactory
             }
         ),
-        NgbDropdownModule
+        NgbDropdownModule,
+        BrowserAnimationsModule
     ],
     exports: [CalendarComponent]
 })
