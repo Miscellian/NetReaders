@@ -91,7 +91,7 @@ CREATE TABLE book_author
     book_author_id SERIAL PRIMARY KEY,
     book_id        INTEGER NOT NULL,
     author_id      INTEGER NOT NULL,
-    CONSTRAINT ba_book_fk FOREIGN KEY (book_id) REFERENCES books (book_id),
+    CONSTRAINT ba_book_fk FOREIGN KEY (book_id) REFERENCES books (book_id) ON DELETE CASCADE,
     CONSTRAINT ba_author_fk FOREIGN KEY (author_id) REFERENCES authors (author_id)
 );
 
@@ -106,7 +106,7 @@ CREATE TABLE book_genre
     book_genre_id SERIAL PRIMARY KEY,
     book_id       INTEGER NOT NULL,
     genre_id      INTEGER NOT NULL,
-    CONSTRAINT ba_book_fk FOREIGN KEY (book_id) REFERENCES books (book_id),
+    CONSTRAINT ba_book_fk FOREIGN KEY (book_id) REFERENCES books (book_id) ON DELETE CASCADE,
     CONSTRAINT ba_genre_fk FOREIGN KEY (genre_id) REFERENCES genres (genre_id)
 );
 

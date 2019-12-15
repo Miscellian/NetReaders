@@ -14,7 +14,10 @@ import {ProfileComponent} from './profile/profile.component';
 import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
 import {AnnouncementDetailComponent} from './announcements/announcement-detail/announcement-detail.component';
 import {CalendarComponent} from './announcements/calendar/calendar.component';
-import { BookAddComponent } from './books/book-add/book-add.component';
+import {BookAddComponent} from './books/book-add/book-add.component';
+import {EditModeratorComponent} from './profile/edit-moderator/edit-moderator.component';
+import {AddAdminComponent} from './profile/addadmin/addadmin.component';
+import {AddModeratorComponent} from './profile/add-moderator/add-moderator.component';
 
 
 const routes: Routes = [
