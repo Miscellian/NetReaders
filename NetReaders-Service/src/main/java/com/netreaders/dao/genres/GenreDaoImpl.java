@@ -189,4 +189,22 @@ public class GenreDaoImpl implements GenreDao {
 	            throw new DataBaseSQLException(String.format("Found more than one genre by name '%s'", name));
 	     }
 	}
+
+	@Override
+	public Genre getByName(String name) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("genre.getByName");
+		 
+		 List<Genre> result = template.query(sql_query,genreMapper,name);
+		 
+		 if (result.isEmpty()) {
+	            log.debug(String.format("Didn't find any genre by name '%s'", name));
+	            return null;
+	     } else if (result.size() == 1) {
+	            log.debug(String.format("Found a genre by name '%s'", name));
+	            return result.get(0);
+	     } else {
+	            log.error(String.format("Found more than one genre by name '%s'", name));
+	            throw new DataBaseSQLException(String.format("Found more than one genre by name '%s'", name));
+	     }
+	}
 }

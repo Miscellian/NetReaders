@@ -51,7 +51,6 @@ export class BookAddComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.genres.value);
     const book: Book = {
       title : this.bookForm.value['title'],
       description: this.bookForm.value['description'],
@@ -66,7 +65,7 @@ export class BookAddComponent implements OnInit {
           return {name: author};
         })} as Book;
     this.bookService.createBook(book).subscribe(
-      () => this.router.navigate(['/books']),
+      () => this.router.navigate(['/books/byrange/1']),
       () => this.router.navigate(['/error'])
     );
   }

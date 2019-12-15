@@ -10,5 +10,7 @@ public interface GenreDao extends GenericDao<Genre, Integer> {
 
     Collection<Genre> getByBookId(Integer id) throws DataBaseSQLException;
     
+    Genre getByName(String name) throws DataBaseSQLException;
+    
     boolean existsByName(String name) throws DataBaseSQLException;
 }

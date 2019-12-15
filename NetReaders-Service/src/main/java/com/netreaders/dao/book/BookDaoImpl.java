@@ -78,6 +78,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book create(Book book) {
+    	book.setId(null);
 
         final String sql_query = env.getProperty("book.create");
 
@@ -138,6 +139,7 @@ public class BookDaoImpl implements BookDao {
                 book.getRelease_date(),
                 book.getBook_language(),
                 book.getPhoto(),
+                book.isPublished(),
                 id);
         if (recordCount == 0) {
             log.debug(String.format("Didn't update any book by id '%d'", id));
@@ -752,5 +754,33 @@ public class BookDaoImpl implements BookDao {
 
         log.debug(String.format("Found %d unpublished books", count));
         return count;
+	}
+
+
+	@Override
+	public void addGenre(Integer bookId, Integer genreId) throws DataBaseSQLException {
+		String sql_query = env.getProperty("book.addGenre");
+		
+		int result = template.update(sql_query, bookId, genreId);
+		
+		if(result==0) {
+			log.error(String.format("Couldn't insert genre '%d' to book '%d'",genreId, bookId));
+            throw new DataBaseSQLException(String.format("Couldn't insert genre '%d' to book '%d'", genreId, bookId));
+		}
+		log.debug(String.format("Added genre '%d' to book '%d' ",genreId, bookId));
+	}
+
+
+	@Override
+	public void addAuthor(Integer bookId, Integer authorId) throws DataBaseSQLException {
+		String sql_query = env.getProperty("book.addAuthors");
+		
+		int result = template.update(sql_query, bookId, authorId);
+		
+		if(result==0) {
+			log.error(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
+            throw new DataBaseSQLException(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
+		}
+		log.debug(String.format("Added author '%d' to book '%d' ", authorId, bookId));
 	}
 }

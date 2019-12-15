@@ -37,7 +37,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author create(Author author) {
-
+    	author.setId(null);
+    	
         final String sql_query = env.getProperty("author.create");
 
         KeyHolder holder = new GeneratedKeyHolder();
@@ -185,6 +186,24 @@ public class AuthorDaoImpl implements AuthorDao {
 	     } else if (result.size() == 1) {
 	            log.debug(String.format("Found an author by name '%s'", name));
 	            return true;
+	     } else {
+	            log.error(String.format("Found more than one author by name '%s'", name));
+	            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
+	     }
+	}
+
+	@Override
+	public Author getByName(String name) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("author.getByName");
+		 
+		 List<Author> result = template.query(sql_query,authorMapper,name);
+		 
+		 if (result.isEmpty()) {
+	            log.debug(String.format("Didn't find any authors by name '%s'", name));
+	            return null;
+	     } else if (result.size() == 1) {
+	            log.debug(String.format("Found an author by name '%s'", name));
+	            return result.get(0);
 	     } else {
 	            log.error(String.format("Found more than one author by name '%s'", name));
 	            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));

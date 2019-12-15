@@ -261,6 +261,9 @@ public class BookServiceImpl implements BookService {
 	public void publishBook(Integer bookId) {
 		Book book = bookDao.getById(bookId);
 		book.setPublished(true);
+		if(book.getPhoto()==0) {
+			book.setPhoto(null);
+		}
 		bookDao.update(book);
 	}
 
@@ -269,25 +272,21 @@ public class BookServiceImpl implements BookService {
 	public void addBook(Book book) {
 		if(bookDao.checkBookExistsByTitle(book.getTitle()))
 			return;
-		
-		book.getGenres().stream()
-			.forEach(this::handleGenres);
-		book.getAuthors().stream()
-			.forEach(this::handleAuthors);
-		
 		book.setPublished(false);
-		bookDao.create(book);
+		Integer newId = bookDao.create(book).getId();
+		book.getGenres().stream()
+			.forEach(genre -> handleGenres(genre,newId));
+		book.getAuthors().stream()
+			.forEach(author -> handleAuthors(author,newId));
 	}
 	
-	private void handleGenres(Genre genre) {
-		if(!genreDao.existsByName(genre.getName())) {
-			genreDao.create(genre);
-		}
+	private void handleGenres(Genre genre, Integer bookId) {
+		genre = genreDao.existsByName(genre.getName()) ? genreDao.getByName(genre.getName()) : genreDao.create(genre);
+		bookDao.addGenre(bookId, genre.getId());
 	}
-	private void handleAuthors(Author author) {
-		if(!authorDao.existsByName(author.getName())) {
-			authorDao.create(author);
-		}
+	private void handleAuthors(Author author, Integer bookId) {
+		author = authorDao.existsByName(author.getName()) ? authorDao.getByName(author.getName()) : authorDao.create(author);
+		bookDao.addAuthor(bookId, author.getId());
 	}
 
 	@Override

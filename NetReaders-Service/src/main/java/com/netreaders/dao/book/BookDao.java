@@ -69,4 +69,8 @@ public interface BookDao extends GenericDao<Book, Integer> {
     Collection<Book> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException;
     
     Integer getUnpublishedCount() throws DataBaseSQLException;
+    
+    void addGenre(Integer bookId, Integer genreId) throws DataBaseSQLException;
+    
+    void addAuthor(Integer bookId, Integer authorId) throws DataBaseSQLException;
 }

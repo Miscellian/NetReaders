@@ -154,7 +154,7 @@ export class BookviewComponent implements OnInit {
 
     onPublish() {
         this.bookService.publishBook(this.book.id).subscribe(
-            () => this.router.navigate([`/books/${this.book.id}`]),
+            () => this.router.navigate([`/books/unpublished/1`]),
             error => this.router.navigate(['/error'])
         );
     }
