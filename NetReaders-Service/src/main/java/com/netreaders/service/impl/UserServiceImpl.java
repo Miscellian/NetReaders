@@ -56,6 +56,31 @@ public class UserServiceImpl implements UserService {
         return userDao.userExists(username.toLowerCase());
     }
 
+    @Override
+    public void removeUser(String username) {
+        userDao.deleteByUsername(username.toLowerCase());
+    }
+
+    @Override
+    public boolean checkIfEmailExists(String email) {
+        return userDao.emailExists(email);
+    }
+
+    @Override
+    public Collection<Role> getRolesForModerator(String moderatorUsername) {
+        return roleDao.findByUsername(moderatorUsername);
+    }
+
+    @Override
+    public void updateModeratorRoles(String username, String[] roles) {
+        User user = userDao.findByUsername(username);
+        userDao.clearRolesForUser(username);
+        for (String roleName : roles) {
+            Role role = roleDao.findByRoleName(roleName);
+            roleDao.addUserToRole(role, user);
+        }
+    }
+
     @Transactional
     @Override
     public User registerPriviledgedUser(SignUpForm signUpForm, String[] roles) {

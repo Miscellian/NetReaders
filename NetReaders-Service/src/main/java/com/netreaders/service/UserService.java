@@ -4,6 +4,7 @@ import com.netreaders.dto.EditUserForm;
 import com.netreaders.dto.JwtResponse;
 import com.netreaders.dto.LoginForm;
 import com.netreaders.dto.SignUpForm;
+import com.netreaders.models.Role;
 import com.netreaders.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -30,4 +31,12 @@ public interface UserService extends UserDetailsService {
     void editUser(EditUserForm editUserForm);
 
     boolean checkIfUsernameExists(String username);
+
+    void removeUser(String username);
+
+    boolean checkIfEmailExists(String email);
+
+    Collection<Role> getRolesForModerator(String moderatorUsername);
+
+    void updateModeratorRoles(String username, String[] roles);
 }

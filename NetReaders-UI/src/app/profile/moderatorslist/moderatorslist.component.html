@@ -1,15 +1,33 @@
 <div class="container" id="moderators-list-page">
-    <div class="row">
-        <div class="col-md-12">
-            <ul>
-                <span id="moderators-list-title">Moderators list:</span>
-                <li *ngFor="let user of users">
-                    <span id="moderators-list-item">
-                        <a routerLink="/users/{{user.username}}">@{{user.username}},</a>
-                        {{user.firstName}} {{user.lastName}}, {{user.email}}
-                    </span>
-                </li>
-            </ul>
+    <div *ngIf="moderators.length > 0; else EmptyModeratorsList">
+        <div class="row">
+            <div class="col-md-8">
+                <span class="moderator-list-title">Moderators list:</span>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-info" role="button"
+                   routerLink="/users/addModerator">Add moderator
+                </a>
+            </div>
         </div>
+        <ul>
+            <div *ngFor="let moderator of moderators">
+                <app-moderators-list-item [moderator]="moderator"></app-moderators-list-item>
+            </div>
+        </ul>
     </div>
+    <ng-template #EmptyModeratorsList>
+        <div class="row">
+            <div class="col-md-8">
+            <span class="moderator-list-title">
+            The list of moderators is empty, add them to see here</span>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-info" role="button"
+                   routerLink="/users/addModerator/">
+                    Add moderator
+                </a>
+            </div>
+        </div>
+    </ng-template>
 </div>

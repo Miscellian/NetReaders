@@ -1,3 +1,9 @@
 div#app-main {
-    /*background-color: #dddddd;*/
+    background-color: #dddddd;
+    min-height: 100vh;
+}
+
+body {
+    background: url('https://previews.123rf.com/images/afanasia/afanasia1709/afanasia170900013/86025286-cute-cartoon-penguins-seamless-pattern-vector-winter-holiday-background-.jpg');
+    background-repeat: repeat;
 }

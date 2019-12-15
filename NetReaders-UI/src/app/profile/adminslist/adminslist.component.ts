@@ -9,20 +9,27 @@ import {Router} from "@angular/router";
     styleUrls: ['./adminslist.component.css']
 })
 export class AdminslistComponent implements OnInit {
-    users: User[];
+    admins: User[];
 
     constructor(private userService: UserService,
                 private router: Router) {
     }
 
     ngOnInit() {
-        this.userService.getModeratorsList().subscribe(
-            response => this.users = response,
+        this.getAdminsList();
+    }
+
+    getAdminsList() {
+        this.userService.getAdminsList().subscribe(
+            response => this.admins = response,
             error => this.router.navigate(['error'])
         );
     }
 
-    removeAdmin() {
-
+    removeAdmin(admin: User) {
+        this.userService.removeAdmin(admin).subscribe(
+            response => this.getAdminsList(),
+            error => this.router.navigate(['/error'])
+        );
     }
 }

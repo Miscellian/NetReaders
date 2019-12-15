@@ -1,13 +1,10 @@
-span.admin-list-title {
-    font-size: 2rem;
-}
-
-span#admin-list-item {
+span#moderator-list-item {
     font-size: 1.5rem;
 }
 
 .btn {
     display: block;
+    color: white !important;
     margin-bottom: 5%;
     background-color: #343a40;
     border-color: #28a745;

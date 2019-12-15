@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from './authentication.service';
+import {UserService} from "../profile/user.service";
 
 @Component({
     selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
+        private userService: UserService
     ) {
         // redirect to home if already logged in
         if (localStorage.getItem('TokenValue')) {
@@ -29,7 +31,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
-            password: ['', Validators.required]
+            password: ['', this.userService.passwordValidator]
         });
 
         // get return url from route parameters or default to '/'

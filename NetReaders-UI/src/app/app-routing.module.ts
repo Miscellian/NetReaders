@@ -20,8 +20,8 @@ import { BookAddComponent } from './books/book-add/book-add.component';
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomepageComponent},
-    {path: 'users/:username', component: ProfileComponent, pathMatch: 'full'},
     {path: 'users/editProfile/:username', component: EditProfileComponent},
+    {path: 'users/editModerator/:username', component: EditModeratorComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'login', component: LoginComponent},
     {path: 'confirmRegistration', component: ConfirmUserComponent},
@@ -38,6 +38,15 @@ const routes: Routes = [
             {path: 'unpublished/:page', component: BooklistComponent, data: {filter: 'unpublished'}},
             {path: 'add', component: BookAddComponent},
             {path: ':id', component: BookviewComponent}
+        ]
+    },
+    {
+        path: 'users',
+        children: [
+            {path: 'addAdmin', component: AddAdminComponent},
+            {path: 'addModerator', component: AddModeratorComponent},
+            {path: ':username', component: ProfileComponent},
+            {path: 'editProfile/:username', component: EditProfileComponent}
         ]
     },
     {

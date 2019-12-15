@@ -56,7 +56,7 @@ CREATE TABLE user_role
     user_role_id SERIAL PRIMARY KEY,
     user_id      INTEGER NOT NULL,
     role_id      INTEGER NOT NULL,
-    CONSTRAINT ur_user_fk FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT ur_user_fk FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
     CONSTRAINT ur_role_fk FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
 

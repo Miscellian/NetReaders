@@ -1,9 +1,7 @@
 package com.netreaders.controller;
 
-import com.netreaders.dto.EditUserForm;
-import com.netreaders.dto.JwtResponse;
-import com.netreaders.dto.LoginForm;
-import com.netreaders.dto.SignUpForm;
+import com.netreaders.dto.*;
+import com.netreaders.models.Role;
 import com.netreaders.models.User;
 import com.netreaders.service.EmailService;
 import com.netreaders.service.RegistrationTokenService;
@@ -38,8 +36,6 @@ public class UserController {
 
     @PostMapping("/editUser")
     public ResponseEntity<?> editUser(@RequestBody EditUserForm editUserForm) {
-        log.debug(editUserForm);
-        log.debug(String.format("%s %s %s %s %s", editUserForm.getUsername(), editUserForm.getFirstname(), editUserForm.getLastname(), editUserForm.getEmail(), editUserForm.getUserId()));
         userService.editUser(editUserForm);
         return ResponseEntity.ok().build();
     }
@@ -53,8 +49,8 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("User doesn't exists");
         }
-        if(!userService.checkCredentials(loginForm)) {
-        	return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        if (!userService.checkCredentials(loginForm)) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
         JwtResponse response = userService.login(loginForm);
         return ResponseEntity.ok(response);
@@ -72,7 +68,7 @@ public class UserController {
 
     @PostMapping("/createAdmin")
     public boolean createAdmin(@RequestBody SignUpForm signUpForm) {
-    	if (userService.userExists(signUpForm.getUsername())) {
+        if (userService.userExists(signUpForm.getUsername())) {
             return false;
         }
         userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
@@ -80,15 +76,35 @@ public class UserController {
         return true;
     }
 
+    @PostMapping("/removeAdmin")
+    public void removeAdmin(@RequestBody User user) {
+        userService.removeUser(user.getUsername());
+    }
+
     @PostMapping("/createModerator")
-    public boolean createModerator(@RequestBody SignUpForm signUpForm,
-                                   @RequestBody String[] roles) {
-        if (userService.userExists(signUpForm.getUsername())) {
+    public boolean createModerator(@RequestBody ModeratorForm moderatorForm) {
+        if (userService.userExists(moderatorForm.getUser().getUsername())) {
             return false;
         }
-        userService.registerPriviledgedUser(signUpForm, roles);
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setEmail(moderatorForm.getUser().getEmail());
+        signUpForm.setFirstName(moderatorForm.getUser().getFirstName());
+        signUpForm.setLastName(moderatorForm.getUser().getLastName());
+        signUpForm.setUsername(moderatorForm.getUser().getUsername());
+        signUpForm.setUserPassword(moderatorForm.getUser().getUserPassword());
+        userService.registerPriviledgedUser(signUpForm, moderatorForm.getRoles());
 
         return true;
+    }
+
+    @PostMapping("/updateModeratorRoles")
+    public void updateModeratorRoles(@RequestBody ModeratorForm moderatorForm) {
+        userService.updateModeratorRoles(moderatorForm.getUser().getUsername(), moderatorForm.getRoles());
+    }
+
+    @PostMapping("/removeModerator")
+    public void removeModerator(@RequestBody User user) {
+        userService.removeUser(user.getUsername());
     }
 
     @GetMapping("/getAdminsList")
@@ -103,11 +119,21 @@ public class UserController {
 
     @GetMapping("/{username}")
     public User getByUsername(@PathVariable String username) {
-            return userService.findByUsername(username);
+        return userService.findByUsername(username);
     }
 
     @GetMapping("/checkIfUsernameExists")
     public boolean checkIfUsernameExists(@RequestParam(name = "username") String username) {
         return userService.checkIfUsernameExists(username);
+    }
+
+    @GetMapping("/checkIfEmailExists")
+    public boolean checkIfEmailExists(@RequestParam(name = "email") String email) {
+        return userService.checkIfEmailExists(email);
+    }
+
+    @GetMapping("/getRolesForModerator")
+    public Collection<Role> getRolesForModerator(@RequestParam(name = "moderatorUsername") String moderatorUsername) {
+        return userService.getRolesForModerator(moderatorUsername);
     }
 }

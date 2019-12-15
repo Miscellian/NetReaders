@@ -76,3 +76,13 @@ export class UserBookLibrary {
     username: string;
     bookId: number;
 }
+
+export class ModeratorForm {
+    user: User;
+    roles: string[];
+}
+
+export class Role {
+    roleId: number;
+    roleName: string;
+}

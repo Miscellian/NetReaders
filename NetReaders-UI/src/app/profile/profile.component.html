@@ -1,17 +1,19 @@
 <app-userpage [user]="user"></app-userpage>
 <hr>
-<div *ngIf="hasAuthority('USER')">
-    <app-userbooklist [user]="user"></app-userbooklist>
-    <hr>
-    <app-recomendations [user]="user"></app-recomendations>
-    <hr>
-</div>
 <div *ngIf="storageUsername === user.username">
-    <div *ngIf="hasAuthority('SUPER_ADMIN')">
-        <app-adminslist></app-adminslist>
-    </div>
-    <div *ngIf="hasAuthority('ADMIN')">
+    <div *ngIf="hasAuthority('USER')">
+        <app-userbooklist [user]="user"></app-userbooklist>
         <hr>
+        <app-recomendations [user]="user"></app-recomendations>
+    </div>
+    <div *ngIf="hasAuthority('SUPER_ADMIN')">
+		<app-adminslist></app-adminslist>
+		<hr>
+		<app-moderatorslist></app-moderatorslist>
+		<hr>
+	</div>
+    <div *ngIf="hasAuthority('ADMIN')">
         <app-moderatorslist></app-moderatorslist>
+        <hr>
     </div>
 </div>

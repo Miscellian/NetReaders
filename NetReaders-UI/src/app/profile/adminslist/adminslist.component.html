@@ -1,22 +1,53 @@
-<div class="container row" id="admins-list-page">
-    <div class="col-md-12">
-        <ul>
-            <span id="admin-list-title">Admins list:</span>
-            <div *ngFor="let user of users" class="row">
-                <div class="col-md-10">
-                    <li>
-                    <span id="admin-list-item">
-                        <a routerLink="/users/{{user.username}}">@{{user.username}},</a>
-                        {{user.firstName}} {{user.lastName}}, {{user.email}}
-                    </span>
-                    </li>
-                </div>
-                <div class="col-md-2">
-                    <div (click)="removeAdmin()" class="btn btn-info"
-                         role="button">Remove
-                    </div>
-                </div>
+<div class="container" id="admins-list-page">
+    <div *ngIf="admins.length > 0; else EmptyAdminsList">
+        <div class="row">
+            <div class="col-md-8">
+                <span class="admin-list-title">Admins list:</span>
             </div>
-        </ul>
+            <div class="col-md-4">
+                <a class="btn btn-info" role="button"
+                   routerLink="/users/addAdmin">Add admin
+                </a>
+            </div>
+            <div class="col-md-12">
+                <ul>
+                    <div *ngFor="let admin of admins" class="row">
+                        <div class="col-md-10">
+                            <li>
+                    <span id="admin-list-item">
+                        <a routerLink="/users/{{admin.username}}">@{{admin.username}},</a>
+                        <ng-template *ngIf="admin.firstName !== null">
+                            {{admin.firstName}}
+                        </ng-template>
+                        <ng-template *ngIf="admin.lastName !== null">
+                            {{admin.lastName}},
+                        </ng-template>
+                        {{admin.email}}
+                    </span>
+                            </li>
+                        </div>
+                        <div class="col-md-2">
+                            <div (click)="removeAdmin(admin)" class="btn btn-info"
+                                 role="button">Remove
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
     </div>
+    <ng-template #EmptyAdminsList>
+        <div class="row">
+            <div class="col-md-8">
+            <span class="admin-list-title">
+            The list of admins is empty, add them to see here</span>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-info" role="button"
+                   routerLink="/users/addAdmin/">
+                    Add admin
+                </a>
+            </div>
+        </div>
+    </ng-template>
 </div>

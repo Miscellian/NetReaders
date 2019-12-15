@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../login/authentication.service';
 import {Router} from '@angular/router';
-import {UserService} from "../profile/user.service";
+import {UserService} from '../profile/user.service';
 
 @Component({
     selector: 'app-signup',
@@ -27,15 +27,15 @@ export class SignupComponent implements OnInit {
     }
 
     // convenience getter for easy access to form fields
-    get f() {
+    get getFormControls() {
         return this.registerForm.controls;
     }
 
     checkPasswords(group: FormGroup) {
-        let password = group.value['password'];
-        let confirm_password = group.value['confirm_password'];
+        const password = group.value.password;
+        const confirm_password = group.value.confirm_password;
 
-        return password === confirm_password ? null : {notSame: true}
+        return password === confirm_password ? null : {notSame: true};
     }
 
     ngOnInit() {
@@ -44,9 +44,8 @@ export class SignupComponent implements OnInit {
             firstName: ['', Validators.required, Validators.minLength(2)],
             lastName: ['', Validators.required, Validators.minLength(2)],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, this.passwordValidator]],
-            confirm_password: ['', [Validators.required, this.checkPasswords]
-            ]
+            password: ['', [Validators.required, this.userService.passwordValidator]],
+            confirm_password: ['', [Validators.required, this.checkPasswords]]
         });
     }
 
@@ -63,24 +62,5 @@ export class SignupComponent implements OnInit {
             .subscribe(response => {
                 this.router.navigate['/login'];
             }, error => this.router.navigate(['/error']));
-    }
-
-    private passwordValidator(control: FormControl): ValidationErrors {
-        const value = control.value;
-
-        const hasNumber = /[0-9]/.test(value);
-
-        const hasCapitalLetter = /[A-Z]/.test(value);
-
-        const hasLowercaseLetter = /[a-z]/.test(value);
-
-        const isLengthValid = value ? value.length > 7 : false;
-
-        const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
-
-        if (!passwordValid) {
-            return {invalidPassword: 'Password is invalid'};
-        }
-        return null;
     }
 }
