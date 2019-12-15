@@ -9,32 +9,12 @@
                    routerLink="/users/addModerator">Add moderator
                 </a>
             </div>
-            <div class="col-md-12">
-                <ul>
-                    <div *ngFor="let moderator of moderators" class="row">
-                        <div class="col-lg-10">
-                            <li>
-                    <span id="moderator-list-item">
-                        <a routerLink="/users/{{moderator.username}}">@{{moderator.username}},</a>
-                        <ng-template *ngIf="moderator.firstName !== null">
-                            {{moderator.firstName}}
-                        </ng-template>
-                        <ng-template *ngIf="moderator.lastName !== null">
-                            {{moderator.lastName}},
-                        </ng-template>
-                        {{moderator.email}}
-                    </span>
-                            </li>
-                        </div>
-                        <div class="col-lg-2">
-                            <div (click)="removeModerator(moderator)" class="btn btn-info"
-                                 role="button">Remove
-                            </div>
-                        </div>
-                    </div>
-                </ul>
-            </div>
         </div>
+        <ul>
+            <div *ngFor="let moderator of moderators">
+                <app-moderators-list-item [moderator]="moderator"></app-moderators-list-item>
+            </div>
+        </ul>
     </div>
     <ng-template #EmptyModeratorsList>
         <div class="row">

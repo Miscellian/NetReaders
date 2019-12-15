@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-lg-10">
+        <li>
+        <span id="moderator-list-item">
+            <a routerLink="/users/{{moderator.username}}">@{{moderator.username}},</a>
+            <ng-template *ngIf="moderator.firstName !== null">
+                {{moderator.firstName}}
+            </ng-template>
+            <ng-template *ngIf="moderator.lastName !== null">
+                {{moderator.lastName}},
+            </ng-template>
+            {{moderator.email}}
+        </span>
+        </li>
+    </div>
+    <div class="col-lg-2">
+        <div (click)="removeModerator(moderator)" class="btn btn-info"
+             role="button">Remove
+        </div>
+    </div>
+</div>

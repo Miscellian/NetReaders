@@ -30,6 +30,7 @@ import {AnnouncementModule} from "./announcements/announcement.module";
 import {RecomendationsComponent} from './profile/recomendations/recomendations.component';
 import {AddAdminComponent} from './profile/addadmin/addadmin.component';
 import {AddModeratorComponent} from './profile/add-moderator/add-moderator.component';
+import {ModeratorsListItemComponent} from './profile/moderators-list-item/moderators-list-item.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import {AddModeratorComponent} from './profile/add-moderator/add-moderator.compo
         ModeratorslistComponent,
         RecomendationsComponent,
         AddAdminComponent,
-        AddModeratorComponent
+        AddModeratorComponent,
+        ModeratorsListItemComponent
     ],
     imports: [
         ReactiveFormsModule,

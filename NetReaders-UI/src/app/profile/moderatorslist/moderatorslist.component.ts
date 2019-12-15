@@ -25,11 +25,4 @@ export class ModeratorslistComponent implements OnInit {
             error => this.router.navigate(['error'])
         );
     }
-
-    removeModerator(moderator: User) {
-        this.userService.removeModerator(moderator).subscribe(
-            response => this.getModeratorsList(),
-            error => this.router.navigate(['/error'])
-        );
-    }
 }
