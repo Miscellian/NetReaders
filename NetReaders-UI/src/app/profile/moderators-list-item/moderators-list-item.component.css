@@ -4,6 +4,7 @@ span#moderator-list-item {
 
 .btn {
     display: block;
+    color: white !important;
     margin-bottom: 5%;
     background-color: #343a40;
     border-color: #28a745;

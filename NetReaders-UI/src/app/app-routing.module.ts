@@ -8,20 +8,21 @@ import {LoginComponent} from './login/login.component';
 import {ConfirmUserComponent} from './confirmUser/confirmUser.component';
 import {ReviewviewComponent} from './reviews/reviewview/reviewview.component';
 import {CreateReviewComponent} from './reviews/create-review/create-review.component';
-import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
+import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
-import {AnnouncementDetailComponent} from "./announcements/announcement-detail/announcement-detail.component";
-import {CalendarComponent} from "./announcements/calendar/calendar.component";
-import {AddAdminComponent} from "./profile/addadmin/addadmin.component";
-import {AddModeratorComponent} from "./profile/add-moderator/add-moderator.component";
-
+import {AnnouncementDetailComponent} from './announcements/announcement-detail/announcement-detail.component';
+import {CalendarComponent} from './announcements/calendar/calendar.component';
+import {AddAdminComponent} from './profile/addadmin/addadmin.component';
+import {AddModeratorComponent} from './profile/add-moderator/add-moderator.component';
+import {EditModeratorComponent} from './profile/edit-moderator/edit-moderator.component';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomepageComponent},
     {path: 'users/editProfile/:username', component: EditProfileComponent},
+    {path: 'users/editModerator/:username', component: EditModeratorComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'login', component: LoginComponent},
     {path: 'confirmRegistration', component: ConfirmUserComponent},

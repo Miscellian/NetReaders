@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-8">
         <li>
         <span id="moderator-list-item">
             <a routerLink="/users/{{moderator.username}}">@{{moderator.username}},</a>
@@ -12,6 +12,12 @@
             {{moderator.email}}
         </span>
         </li>
+    </div>
+    <div class="col-lg-2">
+        <a class="btn btn-info"
+           role="button"
+           routerLink="/users/editModerator/{{moderator.username}}">Edit
+        </a>
     </div>
     <div class="col-lg-2">
         <div (click)="removeModerator(moderator)" class="btn btn-info"
