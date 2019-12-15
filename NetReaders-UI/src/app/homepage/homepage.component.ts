@@ -9,7 +9,7 @@ export class HomepageComponent implements OnInit {
     storageUsername: string;
 
     constructor() {
-        this.storageUsername = localStorage.getItem("UserName");
+        this.storageUsername = localStorage.getItem('UserName');
     }
 
     ngOnInit() {

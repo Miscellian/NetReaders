@@ -4,6 +4,8 @@ import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Author;
+import com.netreaders.models.Genre;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -170,4 +172,22 @@ public class AuthorDaoImpl implements AuthorDao {
             return holder.getKey().intValue();
         }
     }
+
+	@Override
+	public boolean existsByName(String name) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("author.getByName");
+		 
+		 List<Author> result = template.query(sql_query,authorMapper,name);
+		 
+		 if (result.isEmpty()) {
+	            log.debug(String.format("Didn't find any authors by name '%s'", name));
+	            return false;
+	     } else if (result.size() == 1) {
+	            log.debug(String.format("Found an author by name '%s'", name));
+	            return true;
+	     } else {
+	            log.error(String.format("Found more than one author by name '%s'", name));
+	            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
+	     }
+	}
 }

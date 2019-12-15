@@ -8,12 +8,13 @@ import {LoginComponent} from './login/login.component';
 import {ConfirmUserComponent} from './confirmUser/confirmUser.component';
 import {ReviewviewComponent} from './reviews/reviewview/reviewview.component';
 import {CreateReviewComponent} from './reviews/create-review/create-review.component';
-import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
+import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReviewlistComponent} from './reviews/reviewlist/reviewlist.component';
-import {AnnouncementDetailComponent} from "./announcements/announcement-detail/announcement-detail.component";
-import {CalendarComponent} from "./announcements/calendar/calendar.component";
+import {AnnouncementDetailComponent} from './announcements/announcement-detail/announcement-detail.component';
+import {CalendarComponent} from './announcements/calendar/calendar.component';
+import { BookAddComponent } from './books/book-add/book-add.component';
 
 
 const routes: Routes = [
@@ -27,14 +28,16 @@ const routes: Routes = [
     {
         path: 'books',
         children: [
-            {path: ':id', component: BookviewComponent},
             {path: 'byauthor/:id', component: BooklistComponent, data: {filter: 'author'}},
             {path: 'bygenre/:id', component: BooklistComponent, data: {filter: 'genre'}},
             {path: 'byname/:id', component: BooklistComponent, data: {filter: 'name'}},
             {path: 'range/:page', component: BooklistComponent, data: {filter: 'range'}},
             {path: 'byuser/:id', component: BooklistComponent, data: {filter: 'user'}},
             {path: 'byuserFavourites/:id', component: BooklistComponent, data: {filter: 'favourite'}},
-            {path: 'byusernameToReadList/:id', component: BooklistComponent, data: {filter: 'toReadList'}}
+            {path: 'byusernameToReadList/:id', component: BooklistComponent, data: {filter: 'toReadList'}},
+            {path: 'unpublished/:page', component: BooklistComponent, data: {filter: 'unpublished'}},
+            {path: 'add', component: BookAddComponent},
+            {path: ':id', component: BookviewComponent}
         ]
     },
     {

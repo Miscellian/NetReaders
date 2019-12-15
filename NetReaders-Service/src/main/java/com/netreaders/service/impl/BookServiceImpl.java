@@ -4,11 +4,13 @@ import com.netreaders.dao.author.AuthorDao;
 import com.netreaders.dao.book.BookDao;
 import com.netreaders.dao.genres.GenreDao;
 import com.netreaders.dto.UserBookLibrary;
+import com.netreaders.models.Author;
 import com.netreaders.models.Book;
 import com.netreaders.models.Genre;
 import com.netreaders.service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -233,11 +235,7 @@ public class BookServiceImpl implements BookService {
 		Book book = bookDao.getByReviewId(id);
         return modelToDto(book);
 	}
-
-
 	
-
-    
 	public Collection<Book> getByUserPreferences(String username){
 		Collection<Book> preparedBooks = bookDao.findByUsername(username, getCountByUsername(username), 0)
 				.stream()
@@ -257,5 +255,48 @@ public class BookServiceImpl implements BookService {
 				.stream()
 				.map(this::modelToDto)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void publishBook(Integer bookId) {
+		Book book = bookDao.getById(bookId);
+		book.setPublished(true);
+		bookDao.update(book);
+	}
+
+	@Override
+	@Transactional
+	public void addBook(Book book) {
+		if(bookDao.checkBookExistsByTitle(book.getTitle()))
+			return;
+		
+		book.getGenres().stream()
+			.forEach(this::handleGenres);
+		book.getAuthors().stream()
+			.forEach(this::handleAuthors);
+		
+		book.setPublished(false);
+		bookDao.create(book);
+	}
+	
+	private void handleGenres(Genre genre) {
+		if(!genreDao.existsByName(genre.getName())) {
+			genreDao.create(genre);
+		}
+	}
+	private void handleAuthors(Author author) {
+		if(!authorDao.existsByName(author.getName())) {
+			authorDao.create(author);
+		}
+	}
+
+	@Override
+	public Collection<Book> getUnpublished(Integer amount, Integer offset) {
+		return bookDao.getUnpublished(amount, offset);
+	}
+
+	@Override
+	public Integer getUnpublishedCount() {
+		return bookDao.getUnpublishedCount();
 	}
 }

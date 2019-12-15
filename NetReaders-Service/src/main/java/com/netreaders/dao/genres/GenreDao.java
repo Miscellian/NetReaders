@@ -9,4 +9,6 @@ import java.util.Collection;
 public interface GenreDao extends GenericDao<Genre, Integer> {
 
     Collection<Genre> getByBookId(Integer id) throws DataBaseSQLException;
+    
+    boolean existsByName(String name) throws DataBaseSQLException;
 }

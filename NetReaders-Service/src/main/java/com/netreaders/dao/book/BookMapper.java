@@ -22,6 +22,7 @@ public class BookMapper implements RowMapper<Book> {
         book.setDescription(rs.getString("description"));
         book.setRelease_date(rs.getDate("release_date"));
         book.setBook_language(rs.getString("book_language"));
+        book.setPublished(rs.getBoolean("published"));
 
         return book;
     }

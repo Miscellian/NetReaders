@@ -192,4 +192,30 @@ public class BookController {
             @RequestBody UserBookLibrary userBookLibrary) {
         return bookService.checkIfBookInUserToReadList(userBookLibrary);
     }
+    
+    @PostMapping(value = "add")
+    public void addBook(@RequestBody Book book) {
+    	bookService.addBook(book);
+    }
+    
+    @PostMapping(value = "publish")
+    public void publishBook(@RequestBody Integer bookId) {
+    	bookService.publishBook(bookId);
+    }
+    
+    @GetMapping(value = "unpublished")
+    public Collection<Book> getUnpublished(
+            @RequestParam(name = "amount", defaultValue = "0") Integer amount,
+            @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
+
+        return bookService.getUnpublished(amount, offset);
+    }
+    
+    @GetMapping(value = "unpublishedCount")
+    public Integer getUnpublishedCount() {
+        return bookService.getUnpublishedCount();
+    }
+    
+    
+    
 }

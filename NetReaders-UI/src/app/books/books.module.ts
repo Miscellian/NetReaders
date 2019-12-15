@@ -6,19 +6,23 @@ import { BooklistItemComponent } from './booklist-item/booklist-item.component';
 import { RouterModule } from '@angular/router';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewsModule } from '../reviews/reviews.module';
+import { BookAddComponent } from './book-add/book-add.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     BookviewComponent,
     BooklistComponent,
-    BooklistItemComponent
+    BooklistItemComponent,
+    BookAddComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     ReviewsModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    ReactiveFormsModule
   ],
   exports: [
     BooklistItemComponent

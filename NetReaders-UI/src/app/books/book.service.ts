@@ -12,6 +12,14 @@ export class BookService {
     constructor(private httpClient: HttpClient) {
     }
 
+    createBook(book: Book) {
+        return this.httpClient.post('/books/add', book);
+    }
+
+    publishBook(id: number) {
+        return this.httpClient.post('/books/publish', id);
+    }
+
     getById(id: number): Observable<Book> {
         return this.httpClient.get<Book>(`/books/${id}`);
     }
@@ -117,5 +125,14 @@ export class BookService {
 
     getToReadListCountByUser(username: string): Observable<number> {
         return this.httpClient.get<number>(`/books/countToReadListByUsername?username=${username}`);
+    }
+
+    getUnpublished(page: string): Observable<Book[]> {
+        const offset = (Number(page) - 1) * 8;
+        return this.httpClient.get<Book[]>(`/books/unpublished?&amount=8&offset=${offset}`);
+    }
+
+    getUnpublishedCount(): Observable<number> {
+        return this.httpClient.get<number>('/books/unpublishedCount');
     }
 }

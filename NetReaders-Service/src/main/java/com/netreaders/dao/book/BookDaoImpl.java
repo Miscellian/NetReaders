@@ -4,6 +4,8 @@ import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Book;
+import com.netreaders.models.Genre;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -662,13 +664,15 @@ public class BookDaoImpl implements BookDao {
         factory.addParameter(new SqlParameter(Types.VARCHAR));
         factory.addParameter(new SqlParameter(Types.DATE));
         factory.addParameter(new SqlParameter(Types.VARCHAR));
+        factory.addParameter(new SqlParameter(Types.BOOLEAN));
 
         return factory.newPreparedStatementCreator(Arrays.asList(
                 book.getTitle(),
                 book.getPhoto(),
                 book.getDescription(),
                 book.getRelease_date(),
-                book.getBook_language()));
+                book.getBook_language(),
+                book.isPublished()));
     }
 
     private Integer retrieveId(KeyHolder holder) {
@@ -686,7 +690,6 @@ public class BookDaoImpl implements BookDao {
 
         String selectedBookIds = selectedBooks.stream()
                 .map(book -> book.getId().toString())
-                //.reduce("", (acc, id) -> acc + id.toString() + ",");
                 .collect(Collectors.joining(","));
         if (selectedBookIds.isEmpty()) {
             return Collections.emptyList();
@@ -704,4 +707,50 @@ public class BookDaoImpl implements BookDao {
             return books;
         }
     }
+
+
+	@Override
+	public boolean checkBookExistsByTitle(String title) {
+		 final String sql_query = env.getProperty("book.getByTitle");
+		 
+		 List<Book> result = template.query(sql_query,bookMapper,title);
+		 
+		 if (result.isEmpty()) {
+	            log.debug(String.format("Didn't find any books by title '%s'", title));
+	            return false;
+	     } else if (result.size() == 1) {
+	            log.debug(String.format("Found a book by title '%s'", title));
+	            return true;
+	     } else {
+	            log.error(String.format("Found more than one book by title '%s'", title));
+	            throw new DataBaseSQLException(String.format("Found more than one book by title '%s'", title));
+	     }
+	}
+
+
+	@Override
+	public Collection<Book> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException {
+		final String sql_query = env.getProperty("book.getUnpublished");
+
+        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any unpublished books "));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d unpublished book(s) by amount '%d' and offset '%d'", books.size(), amount, offset));
+            return books;
+        }
+	}
+
+
+	@Override
+	public Integer getUnpublishedCount() throws DataBaseSQLException {
+		String sql_query = env.getProperty("book.getUnpublishedCount");
+
+        Integer count = template.queryForObject(sql_query, Integer.class);
+
+        log.debug(String.format("Found %d unpublished books", count));
+        return count;
+	}
 }

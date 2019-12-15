@@ -35,6 +35,9 @@ export class BooklistComponent implements OnInit {
         },
         toReadList: () => {
             this.func = () => this.bookService.getToReadListByUser(this.arg, this.page.toString());
+        },
+        unpublished: () => {
+            this.func = () => this.bookService.getUnpublished(this.page.toString());
         }
     };
     arg: string;
@@ -61,6 +64,9 @@ export class BooklistComponent implements OnInit {
         },
         toReadList: () => {
             this.func = () => this.bookService.getToReadListCountByUser(this.arg);
+        },
+        unpublished: () => {
+            this.func = () => this.bookService.getUnpublishedCount();
         }
     };
 

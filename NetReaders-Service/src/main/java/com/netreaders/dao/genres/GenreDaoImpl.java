@@ -35,7 +35,6 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public Genre create(Genre genre) {
-
         final String sql_query = env.getProperty("genre.create");
 
         KeyHolder holder = new GeneratedKeyHolder();
@@ -172,4 +171,22 @@ public class GenreDaoImpl implements GenreDao {
             return holder.getKey().intValue();
         }
     }
+
+	@Override
+	public boolean existsByName(String name) throws DataBaseSQLException {
+		 final String sql_query = env.getProperty("genre.getByName");
+		 
+		 List<Genre> result = template.query(sql_query,genreMapper,name);
+		 
+		 if (result.isEmpty()) {
+	            log.debug(String.format("Didn't find any genre by name '%s'", name));
+	            return false;
+	     } else if (result.size() == 1) {
+	            log.debug(String.format("Found a genre by name '%s'", name));
+	            return true;
+	     } else {
+	            log.error(String.format("Found more than one genre by name '%s'", name));
+	            throw new DataBaseSQLException(String.format("Found more than one genre by name '%s'", name));
+	     }
+	}
 }

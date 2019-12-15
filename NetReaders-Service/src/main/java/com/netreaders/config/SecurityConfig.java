@@ -54,6 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/books/addToFavorites").hasAuthority("USER")
                 .antMatchers("/api/books/removeFromFavorites").hasAuthority("USER")
                 .antMatchers("/api/books/checkInFavorites").hasAuthority("USER")
+                .antMatchers("/api/books/publish").hasAuthority("OVERVIEW_MODERATOR")
+                .antMatchers("/api/books/add").hasAuthority("USER")
+                .antMatchers("/api/books/unpublished**").hasAuthority("OVERVIEW_MODERATOR")
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -80,8 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService); //set the custom user details service
-        auth.setPasswordEncoder(passwordEncoder); //set the password encoder - bcrypt
+        auth.setUserDetailsService(userService);
+        auth.setPasswordEncoder(passwordEncoder);
         auth.setHideUserNotFoundExceptions(false);
         return auth;
     }

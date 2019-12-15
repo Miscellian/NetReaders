@@ -27,9 +27,9 @@ export class BookviewComponent implements OnInit {
                 private reviewService: ReviewService,
                 public router: Router) {
         this.userBook = new UserBookLibrary();
-        this.username = localStorage.getItem("UserName");
+        this.username = localStorage.getItem('UserName');
         if (this.username) {
-            this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+            this.authorities = JSON.parse(localStorage.getItem('Authorities')).map(val => val.authority);
         } else {
             this.authorities = [];
         }
@@ -148,6 +148,13 @@ export class BookviewComponent implements OnInit {
     removeFromToReadList() {
         this.bookService.removeFromToReadList(this.userBook).subscribe(
             response => this.checkInToReadList(),
+            error => this.router.navigate(['/error'])
+        );
+    }
+
+    onPublish() {
+        this.bookService.publishBook(this.book.id).subscribe(
+            () => this.router.navigate([`/books/${this.book.id}`]),
             error => this.router.navigate(['/error'])
         );
     }

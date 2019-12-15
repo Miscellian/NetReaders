@@ -19,6 +19,7 @@ public class Book {
     private String description;
     private Date release_date;
     private String book_language;
+    private boolean published;
 
     // foreign connections
     private Collection<Genre> genres;

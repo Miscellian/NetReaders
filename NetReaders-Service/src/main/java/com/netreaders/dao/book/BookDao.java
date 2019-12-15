@@ -63,4 +63,10 @@ public interface BookDao extends GenericDao<Book, Integer> {
     void addBookToUserToReadList(String username, Integer bookId);
 
     void removeBookFromUserToReadList(String username, Integer bookId);
+    
+    boolean checkBookExistsByTitle(String title);
+    
+    Collection<Book> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException;
+    
+    Integer getUnpublishedCount() throws DataBaseSQLException;
 }

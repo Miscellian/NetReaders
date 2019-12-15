@@ -19,6 +19,11 @@
                 <p class="header">{{book.release_date|date}}</p>
             </div>
             <div class="col-md-5" id="side-buttons-container">
+                <div *ngIf="authorities.indexOf('OVERVIEW_MODERATOR')>-1">
+                    <div *ngIf="!book.published">
+                        <button (click)="onPublish()">Publish Book</button>
+                    </div>
+                </div>
                 <div *ngIf="inUserLibrary; else notInUserLibrary">
                     <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
                         Remove from library

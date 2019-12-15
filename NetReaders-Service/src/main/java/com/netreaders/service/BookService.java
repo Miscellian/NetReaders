@@ -65,4 +65,12 @@ public interface BookService {
     Collection<Book> getFavouritesByUsername(String username, Integer amount, Integer offset);
 
     Collection<Book> getToReadListByUsername(String username, Integer amount, Integer offset);
+    
+    Collection<Book> getUnpublished(Integer amount, Integer offset);
+    
+    void publishBook(Integer bookId);
+    
+    void addBook(Book book);
+    
+    Integer getUnpublishedCount();
 }

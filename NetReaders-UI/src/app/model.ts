@@ -22,6 +22,7 @@ export class Book {
     book_language: string;
     genres: Genre[];
     authors: Author[];
+    published: boolean;
 }
 
 export class Genre {
