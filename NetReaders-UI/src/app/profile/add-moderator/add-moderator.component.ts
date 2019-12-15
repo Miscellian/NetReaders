@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Authority, User} from '../../model';
+import {User} from '../../model';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../user.service';
@@ -37,23 +37,13 @@ export class AddModeratorComponent implements OnInit {
     constructor(private router: Router,
                 private formBuilder: FormBuilder,
                 private userService: UserService) {
-        if (!this.hasAuthority('ADMIN')) {
+        if (!this.userService.hasAuthority('ADMIN')) {
             this.router.navigate(['/home']);
         }
     }
 
     get getFormValue() {
         return this.addModeratorForm.controls;
-    }
-
-    hasAuthority(authority: string): boolean {
-        const authorities: Authority[] = JSON.parse(localStorage.getItem('Authorities'));
-        if (!authorities) {
-            return false;
-        }
-        return authorities
-            .map(val => val.authority)
-            .includes(authority);
     }
 
     passwordValidator(control: FormControl): ValidationErrors {
@@ -132,10 +122,9 @@ export class AddModeratorComponent implements OnInit {
                                         this.selectedRoles.push(this.moderatorRoles[i].value);
                                     }
                                 });
-                                alert(this.selectedRoles);
                                 this.userService.createModerator(this.addModeratorForm, this.selectedRoles)
                                     .subscribe(
-                                        response => this.router.navigate(['/users', this.user.username]),
+                                        () => this.router.navigate(['/users', this.user.username]),
                                         error => this.router.navigate(['/error']));
                             }
                         },

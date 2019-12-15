@@ -44,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("api/users/removeAdmin").hasAuthority("SUPER_ADMIN")
                 .antMatchers("/api/users/createModerator").hasAuthority("ADMIN")
                 .antMatchers("api/users/removeModerator").hasAuthority("ADMIN")
+                .antMatchers("api/users/getRolesForModerator").hasAuthority("ADMIN")
+                .antMatchers("api/users/updateModerator").hasAuthority("ADMIN")
                 .antMatchers("/userpage").hasAuthority("USER")
                 .antMatchers("/api/reviews/unpublished**").hasAuthority("REVIEW_MODERATOR")
                 .antMatchers("/api/reviews/publish").hasAuthority("REVIEW_MODERATOR")

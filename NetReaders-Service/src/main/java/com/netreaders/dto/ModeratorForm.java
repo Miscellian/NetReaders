@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateModeratorForm {
+public class ModeratorForm {
     private User user;
     private String[] roles;
 }

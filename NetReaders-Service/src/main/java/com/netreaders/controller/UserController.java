@@ -82,8 +82,7 @@ public class UserController {
     }
 
     @PostMapping("/createModerator")
-    public boolean createModerator(@RequestBody CreateModeratorForm moderatorForm) {
-        log.error(moderatorForm);
+    public boolean createModerator(@RequestBody ModeratorForm moderatorForm) {
         if (userService.userExists(moderatorForm.getUser().getUsername())) {
             return false;
         }
@@ -96,6 +95,11 @@ public class UserController {
         userService.registerPriviledgedUser(signUpForm, moderatorForm.getRoles());
 
         return true;
+    }
+
+    @PostMapping("/updateModeratorRoles")
+    public void updateModeratorRoles(@RequestBody ModeratorForm moderatorForm) {
+        userService.updateModeratorRoles(moderatorForm.getUser().getUsername(), moderatorForm.getRoles());
     }
 
     @PostMapping("/removeModerator")
@@ -129,7 +133,7 @@ public class UserController {
     }
 
     @GetMapping("/getRolesForModerator")
-    public Collection<Role> getRolesForModerator(@RequestParam(name = "moderatorId") Integer moderatorId) {
-        return userService.getRolesForModerator(moderatorId);
+    public Collection<Role> getRolesForModerator(@RequestParam(name = "moderatorUsername") String moderatorUsername) {
+        return userService.getRolesForModerator(moderatorUsername);
     }
 }

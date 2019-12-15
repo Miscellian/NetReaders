@@ -76,7 +76,12 @@ export class UserBookLibrary {
     bookId: number;
 }
 
-export class CreateModeratorForm {
+export class ModeratorForm {
     user: User;
     roles: string[];
-};
+}
+
+export class Role {
+    roleId: number;
+    roleName: string;
+}

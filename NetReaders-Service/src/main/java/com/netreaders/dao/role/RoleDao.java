@@ -14,4 +14,6 @@ public interface RoleDao extends GenericDao<Role, Integer> {
     Collection<Role> findByUserId(Integer id) throws DataBaseSQLException;
 
     Boolean addUserToRole(Role role, User user) throws DataBaseSQLException;
+
+    Collection<Role> findByUsername(String moderatorUsername);
 }

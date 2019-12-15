@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-lg-8">
-        <li>
+	<div class="col-lg-8">
+		<li>
         <span id="moderator-list-item">
             <a routerLink="/users/{{moderator.username}}">@{{moderator.username}},</a>
             <ng-template *ngIf="moderator.firstName !== null">
@@ -9,19 +9,26 @@
             <ng-template *ngIf="moderator.lastName !== null">
                 {{moderator.lastName}},
             </ng-template>
-            {{moderator.email}}
+			{{moderator.email}}
+			<div id="roles">
+				<ul>
+                <div *ngFor="let role of moderatorRoles">
+                    <li>{{splitRole(role.roleName)}}
+                </div>
+				</ul>
+            </div>
         </span>
-        </li>
-    </div>
-    <div class="col-lg-2">
-        <a class="btn btn-info"
-           role="button"
-           routerLink="/users/editModerator/{{moderator.username}}">Edit
-        </a>
-    </div>
-    <div class="col-lg-2">
-        <div (click)="removeModerator(moderator)" class="btn btn-info"
-             role="button">Remove
-        </div>
-    </div>
+		</li>
+	</div>
+	<div class="col-lg-2">
+		<a class="btn btn-info"
+		   role="button"
+		   routerLink="/users/editModerator/{{moderator.username}}">Edit
+		</a>
+	</div>
+	<div class="col-lg-2">
+		<div (click)="removeModerator(moderator)" class="btn btn-info"
+			 role="button">Remove
+		</div>
+	</div>
 </div>

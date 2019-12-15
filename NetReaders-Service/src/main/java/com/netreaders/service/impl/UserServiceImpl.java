@@ -67,8 +67,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<Role> getRolesForModerator(Integer moderatorId) {
-        return roleDao.findByUserId(moderatorId);
+    public Collection<Role> getRolesForModerator(String moderatorUsername) {
+        return roleDao.findByUsername(moderatorUsername);
+    }
+
+    @Override
+    public void updateModeratorRoles(String username, String[] roles) {
+        User user = userDao.findByUsername(username);
+        userDao.clearRolesForUser(username);
+        for (String roleName : roles) {
+            Role role = roleDao.findByRoleName(roleName);
+            roleDao.addUserToRole(role, user);
+        }
     }
 
     @Transactional

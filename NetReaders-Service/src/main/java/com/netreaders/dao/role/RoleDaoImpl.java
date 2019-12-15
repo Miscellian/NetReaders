@@ -103,4 +103,17 @@ public class RoleDaoImpl implements RoleDao {
         int rows = template.update(sql_query, user.getId(), role.getId());
         return rows > 0;
     }
+
+    @Override
+    public Collection<Role> findByUsername(String moderatorUsername) {
+        String sql_query = env.getProperty("role.findByUsername");
+        List<Role> roles = template.query(sql_query, roleMapper, moderatorUsername);
+        if (roles.isEmpty()) {
+            log.debug(String.format("Dont find any role by username '%s'", moderatorUsername));
+            return null;
+        } else {
+            log.debug(String.format("Found roles by username '%s'", moderatorUsername));
+            return roles;
+        }
+    }
 }

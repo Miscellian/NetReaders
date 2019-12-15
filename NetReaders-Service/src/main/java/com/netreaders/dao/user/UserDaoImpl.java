@@ -220,6 +220,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void clearRolesForUser(String username) {
+        final String sql_query = env.getProperty("user.clearRolesByUsername");
+
+        Integer count = template.update(sql_query, username);
+        log.debug(String.format("Deleted %d roles for %s", count, username));
+    }
+
+    @Override
     public Collection<User> findByFirstName(String firstName) {
 
         final String sql_query = env.getProperty("user.findByFirstName");

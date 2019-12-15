@@ -36,5 +36,7 @@ public interface UserService extends UserDetailsService {
 
     boolean checkIfEmailExists(String email);
 
-    Collection<Role> getRolesForModerator(Integer moderatorId);
+    Collection<Role> getRolesForModerator(String moderatorUsername);
+
+    void updateModeratorRoles(String username, String[] roles);
 }

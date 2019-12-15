@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {CreateModeratorForm, EditUser, User} from '../model';
+import {Authority, EditUser, ModeratorForm, Role, User} from '../model';
 import {FormGroup} from '@angular/forms';
 
 @Injectable({
@@ -73,7 +73,7 @@ export class UserService {
 
     createModerator(addModeratorForm: FormGroup, roles: string[]) {
         const user: User = new User();
-        const moderatorForm: CreateModeratorForm = new CreateModeratorForm();
+        const moderatorForm: ModeratorForm = new ModeratorForm();
         user.username = addModeratorForm.controls.username.value;
         user.firstName = null;
         user.lastName = null;
@@ -84,7 +84,26 @@ export class UserService {
         return this.httpClient.post(`/users/createModerator`, moderatorForm, {observe: 'response'});
     }
 
-    getRolesForModerator(moderatorId: number) {
-        return this.httpClient.get(`/users/getRolesForModerator?moderatorId=${moderatorId}`);
+    getRolesForModerator(moderatorUsername: string): Observable<Role[]> {
+        return this.httpClient.get<Role[]>(`/users/getRolesForModerator?moderatorUsername=${moderatorUsername}`);
+    }
+
+    hasAuthority(authority: string): boolean {
+        const authorities: Authority[] = JSON.parse(localStorage.getItem('Authorities'));
+        if (!authorities) {
+            return false;
+        }
+        return authorities
+            .map(val => val.authority)
+            .includes(authority);
+    }
+
+    updateModeratorRoles(roles: string[], username: string) {
+        const user: User = new User();
+        const moderatorForm: ModeratorForm = new ModeratorForm();
+        user.username = username;
+        moderatorForm.user = user;
+        moderatorForm.roles = roles;
+        return this.httpClient.post(`/users/updateModeratorRoles`, moderatorForm, {observe: 'response'});
     }
 }

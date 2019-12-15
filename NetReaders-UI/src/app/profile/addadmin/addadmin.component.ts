@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {Authority, User} from "../../model";
-import {Router} from "@angular/router";
-import {UserService} from "../user.service";
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {User} from '../../model';
+import {Router} from '@angular/router';
+import {UserService} from '../user.service';
 
 @Component({
     selector: 'app-addadmin',
@@ -19,21 +19,13 @@ export class AddAdminComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private userService: UserService) {
 
-        if (!this.hasAuthority("SUPER_ADMIN")) {
+        if (!this.userService.hasAuthority('SUPER_ADMIN')) {
             this.router.navigate(['/home']);
         }
     }
 
     get getFormValue() {
         return this.addAdminForm.controls;
-    }
-
-    hasAuthority(authority: string): boolean {
-        const authorities: Authority[] = JSON.parse(localStorage.getItem('Authorities'));
-        if (!authorities) return false;
-        return authorities
-            .map(val => val.authority)
-            .includes(authority);
     }
 
     passwordValidator(control: FormControl): ValidationErrors {
@@ -56,7 +48,7 @@ export class AddAdminComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userService.getByUsername(localStorage.getItem("UserName")).subscribe(
+        this.userService.getByUsername(localStorage.getItem('UserName')).subscribe(
             response => this.user = response,
             error => this.router.navigate(['error'])
         );
@@ -71,7 +63,7 @@ export class AddAdminComponent implements OnInit {
         this.submitted = true;
 
         if (!this.addAdminForm.touched) {
-            alert("Fill all fields");
+            alert('Fill all fields');
             return;
         }
 
@@ -82,26 +74,26 @@ export class AddAdminComponent implements OnInit {
         this.userService.checkIfUsernameExists(this.getFormValue.username.value).subscribe(
             response => {
                 if (response === true) {
-                    alert("This username already exists, please try another one");
+                    alert('This username already exists, please try another one');
                     return;
                 } else {
                     this.userService.checkIfEmailExists(this.getFormValue.email.value).subscribe(
                         response => {
                             if (response === true) {
-                                alert("This email already exists, please try another one");
+                                alert('This email already exists, please try another one');
                                 return;
                             } else {
                                 this.loading = true;
                                 this.userService.createAdmin(this.addAdminForm)
                                     .subscribe(
-                                        response => this.router.navigate(['/users', this.user.username]),
-                                        error => this.router.navigate(['/error']));
+                                        () => this.router.navigate(['/users', this.user.username]),
+                                        () => this.router.navigate(['/error']));
                             }
                         },
-                        error => this.router.navigate(['/error'])
+                        () => this.router.navigate(['/error'])
                     );
                 }
             },
-            error => this.router.navigate(['/error']));
+            () => this.router.navigate(['/error']));
     }
 }
