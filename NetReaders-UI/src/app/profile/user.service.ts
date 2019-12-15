@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Authority, EditUser, ModeratorForm, Role, User} from '../model';
-import {FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -105,5 +105,24 @@ export class UserService {
         moderatorForm.user = user;
         moderatorForm.roles = roles;
         return this.httpClient.post(`/users/updateModeratorRoles`, moderatorForm, {observe: 'response'});
+    }
+
+    passwordValidator(control: FormControl): ValidationErrors {
+        const value = control.value;
+
+        const hasNumber = /[0-9]/.test(value);
+
+        const hasCapitalLetter = /[A-Z]/.test(value);
+
+        const hasLowercaseLetter = /[a-z]/.test(value);
+
+        const isLengthValid = value ? value.length > 7 : false;
+
+        const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
+
+        if (!passwordValid) {
+            return {invalidPassword: 'Password is invalid'};
+        }
+        return null;
     }
 }

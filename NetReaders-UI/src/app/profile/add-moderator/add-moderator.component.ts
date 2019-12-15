@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../../model';
-import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../user.service';
 
@@ -37,32 +37,14 @@ export class AddModeratorComponent implements OnInit {
     constructor(private router: Router,
                 private formBuilder: FormBuilder,
                 private userService: UserService) {
-        if (!this.userService.hasAuthority('ADMIN')) {
+        if (!this.userService.hasAuthority('ADMIN') &&
+            !this.userService.hasAuthority('SUPER_ADMIN')) {
             this.router.navigate(['/home']);
         }
     }
 
     get getFormValue() {
         return this.addModeratorForm.controls;
-    }
-
-    passwordValidator(control: FormControl): ValidationErrors {
-        const value = control.value;
-
-        const hasNumber = /[0-9]/.test(value);
-
-        const hasCapitalLetter = /[A-Z]/.test(value);
-
-        const hasLowercaseLetter = /[a-z]/.test(value);
-
-        const isLengthValid = value ? value.length > 7 : false;
-
-        const passwordValid = hasNumber && hasCapitalLetter && hasLowercaseLetter && isLengthValid;
-
-        if (!passwordValid) {
-            return {invalidPassword: 'Password is invalid'};
-        }
-        return null;
     }
 
     ngOnInit() {
@@ -73,7 +55,7 @@ export class AddModeratorComponent implements OnInit {
         this.addModeratorForm = this.formBuilder.group({
             username: ['', [Validators.required, Validators.minLength(3)]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, this.passwordValidator]],
+            password: ['', [Validators.required, this.userService.passwordValidator]],
             roles: this.createRoles(this.moderatorRoles)
         });
     }
@@ -91,7 +73,7 @@ export class AddModeratorComponent implements OnInit {
         if (this.getFormValue.roles.value[0] === false &&
             this.getFormValue.roles.value[1] === false &&
             this.getFormValue.roles.value[2] === false) {
-            alert('Select at least one checkbox for moderator roles');
+            alert('Select at least one role for moderator');
             return;
         }
 
