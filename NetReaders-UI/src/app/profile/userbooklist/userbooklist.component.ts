@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Book, User} from "../../model";
-import {BookService} from "../../books/book.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Book, User} from '../../model';
+import {BookService} from '../../books/book.service';
 
 @Component({
     selector: 'app-userbooklist',
@@ -23,16 +23,16 @@ export class UserbooklistComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(
             params => {
-                this.arg = params['username'];
-                this.bookService.getByUser(this.arg, "1").subscribe(
+                this.arg = params.username;
+                this.bookService.getByUser(this.arg, '1').subscribe(
                     response => this.books = response,
-                    error => this.router.navigate(['/error']));
-                this.bookService.getFavouritesByUser(this.arg, "1").subscribe(
+                    () => this.router.navigate(['/error']));
+                this.bookService.getFavouritesByUser(this.arg, '1').subscribe(
                     response => this.favourites = response,
-                    error => this.router.navigate(['/error']));
-                this.bookService.getToReadListByUser(this.arg, "1").subscribe(
+                    () => this.router.navigate(['/error']));
+                this.bookService.getToReadListByUser(this.arg, '1').subscribe(
                     response => this.toReadList = response,
-                    error => this.router.navigate(['/error']));
+                    () => this.router.navigate(['/error']));
             }
         );
     }

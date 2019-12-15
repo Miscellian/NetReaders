@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Book, UserBookLibrary} from '../../model';
-import {Router} from "@angular/router";
-import {BookService} from "../book.service";
+import {Router} from '@angular/router';
+import {BookService} from '../book.service';
+import {BooklistComponent} from '../booklist/booklist.component';
 
 @Component({
     selector: 'app-booklist-item',
@@ -17,11 +18,12 @@ export class BooklistItemComponent implements OnInit {
     authorities: string[];
 
     constructor(public router: Router,
-                private bookService: BookService) {
+                private bookService: BookService,
+                private booklistComponent: BooklistComponent) {
         this.userBook = new UserBookLibrary();
-        this.username = localStorage.getItem("UserName");
-        if(this.username){
-            this.authorities = JSON.parse(localStorage.getItem("Authorities")).map(val => val.authority);
+        this.username = localStorage.getItem('UserName');
+        if (this.username) {
+            this.authorities = JSON.parse(localStorage.getItem('Authorities')).map(val => val.authority);
         } else {
             this.authorities = [];
         }
@@ -43,8 +45,8 @@ export class BooklistItemComponent implements OnInit {
 
     checkInLibrary() {
         this.bookService.checkInLibrary(this.userBook).subscribe(
-            response => this.inUserLibrary = (<boolean>response),
-            error => this.router.navigate(['/error'])
+            response => this.inUserLibrary = (response as boolean),
+            () => this.router.navigate(['/error'])
         );
     }
 
@@ -53,16 +55,23 @@ export class BooklistItemComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToLibrary(this.userBook).subscribe(
-                response => this.checkInLibrary(),
-                error => this.router.navigate(['/error'])
+                () => this.checkInLibrary(),
+                () => this.router.navigate(['/error'])
             );
         }
     }
 
     removeFromLibrary() {
         this.bookService.removeFromLibrary(this.userBook).subscribe(
-            response => this.checkInLibrary(),
-            error => this.router.navigate(['/error'])
+            () => this.checkInLibrary(),
+            () => this.router.navigate(['/error'])
+        );
+    }
+
+    onPublish() {
+        this.bookService.publishBook(this.book.id).subscribe(
+            () => this.booklistComponent.loadBooks(),
+            () => this.router.navigate(['/error'])
         );
     }
 }

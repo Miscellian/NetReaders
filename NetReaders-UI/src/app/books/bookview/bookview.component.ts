@@ -37,13 +37,13 @@ export class BookviewComponent implements OnInit {
 
     ngOnInit() {
         this.activatedRoute.params.subscribe(
-            params => {
+            () => {
                 this.id = +this.activatedRoute.snapshot.paramMap.get('id');
                 this.bookService.getById(this.id).subscribe(response => {
                     this.book = response;
                     this.loadBookReviews();
                     this.LoadUserBook();
-                }, error => this.router.navigate(['/error']));
+                }, () => this.router.navigate(['/error']));
             });
     }
 
@@ -63,22 +63,22 @@ export class BookviewComponent implements OnInit {
 
     checkInLibrary() {
         this.bookService.checkInLibrary(this.userBook).subscribe(
-            response => this.inUserLibrary = (<boolean>response),
-            error => this.router.navigate(['/error'])
+            response => this.inUserLibrary = (response as boolean),
+            () => this.router.navigate(['/error'])
         );
     }
 
     checkInFavourites() {
         this.bookService.checkInFavourites(this.userBook).subscribe(
-            response => this.inFavourites = (<boolean>response),
-            error => this.router.navigate(['error'])
+            response => this.inFavourites = (response as boolean),
+            () => this.router.navigate(['error'])
         );
     }
 
     checkInToReadList() {
         this.bookService.checkInToReadList(this.userBook).subscribe(
-            response => this.inToReadList = (<boolean>response),
-            error => this.router.navigate(['error'])
+            response => this.inToReadList = (response as boolean),
+            () => this.router.navigate(['error'])
         );
     }
 
@@ -103,16 +103,16 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToLibrary(this.userBook).subscribe(
-                response => this.checkInLibrary(),
-                error => this.router.navigate(['/error'])
+                () => this.checkInLibrary(),
+                () => this.router.navigate(['/error'])
             );
         }
     }
 
     removeFromLibrary() {
         this.bookService.removeFromLibrary(this.userBook).subscribe(
-            response => this.checkInLibrary(),
-            error => this.router.navigate(['/error'])
+            () => this.checkInLibrary(),
+            () => this.router.navigate(['/error'])
         );
     }
 
@@ -121,16 +121,16 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToFavourites(this.userBook).subscribe(
-                response => this.checkInFavourites(),
-                error => this.router.navigate(['/error'])
+                () => this.checkInFavourites(),
+                () => this.router.navigate(['/error'])
             );
         }
     }
 
     removeFromFavourites() {
         this.bookService.removeFromFavourites(this.userBook).subscribe(
-            response => this.checkInFavourites(),
-            error => this.router.navigate(['/error'])
+            () => this.checkInFavourites(),
+            () => this.router.navigate(['/error'])
         );
     }
 
@@ -139,23 +139,23 @@ export class BookviewComponent implements OnInit {
             this.router.navigate(['login']);
         } else {
             this.bookService.addToToReadList(this.userBook).subscribe(
-                response => this.checkInToReadList(),
-                error => this.router.navigate(['/error'])
+                () => this.checkInToReadList(),
+                () => this.router.navigate(['/error'])
             );
         }
     }
 
     removeFromToReadList() {
         this.bookService.removeFromToReadList(this.userBook).subscribe(
-            response => this.checkInToReadList(),
-            error => this.router.navigate(['/error'])
+            () => this.checkInToReadList(),
+            () => this.router.navigate(['/error'])
         );
     }
 
     onPublish() {
         this.bookService.publishBook(this.book.id).subscribe(
-            () => this.router.navigate([`/books/unpublished/1`]),
-            error => this.router.navigate(['/error'])
+            () => this.router.navigate([`/books/unpublished`]),
+            () => this.router.navigate(['/error'])
         );
     }
 }

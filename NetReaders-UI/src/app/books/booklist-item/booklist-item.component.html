@@ -1,37 +1,44 @@
 <div class="container" id="main">
-  <div class="row">
-    <div class="col-md-3">
-      <a routerLink="/books/{{book.id}}"> 
-      <img alt="book image" class="rounded" id="book-title-image"
-        src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
-      </a>
-    </div>
+	<div class="row">
+		<div class="col-md-3">
+			<a routerLink="/books/{{book.id}}">
+				<img alt="book image" class="rounded" id="book-title-image"
+					 src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+			</a>
+		</div>
 
-    <div class="col-md-6" id="book-data-container">
+		<div class="col-md-6" id="book-data-container">
 
-      <a routerLink="/books/{{book.id}}" id="book-title">{{book.title}}</a><br />
+			<a id="book-title" routerLink="/books/{{book.id}}">{{book.title}}</a><br/>
 
-      <div class="header" *ngFor="let author of book.authors">
-        <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
-      </div><br />
+			<div *ngFor="let author of book.authors" class="header">
+				<a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
+			</div>
+			<br/>
 
-      <div class="header" *ngFor="let genre of book.genres">
-          <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
-      </div><br />
-      <p class="header">{{book.release_date|date}}</p>
-    </div>
+			<div *ngFor="let genre of book.genres" class="header">
+				<a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
+			</div>
+			<br/>
+			<p class="header">{{book.release_date|date}}</p>
+		</div>
 
-    <div class="col-md-3">
-        <div *ngIf="authorities.indexOf('USER') > -1 && inUserLibrary; else notInUserLibrary">
-            <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
-                Remove from library
-            </div>
-        </div>
-        <ng-template #notInUserLibrary>
-            <div (click)="addToLibrary()" class="btn btn-info" role="button">
-                Add to library
-            </div>
-        </ng-template>
-    </div>
-  </div>
+		<div class="col-md-3">
+			<div *ngIf="authorities.indexOf('OVERVIEW_MODERATOR')>-1 && !book.published; else NotOverviewModerator">
+				<div (click)="onPublish()" class="btn btn-info" role="button">Publish Book</div>
+			</div>
+			<ng-template #NotOverviewModerator>
+				<div *ngIf="authorities.indexOf('USER') > -1 && inUserLibrary; else notInUserLibrary">
+					<div (click)="removeFromLibrary()" class="btn btn-info" role="button">
+						Remove from library
+					</div>
+				</div>
+				<ng-template #notInUserLibrary>
+					<div (click)="addToLibrary()" class="btn btn-info" role="button">
+						Add to library
+					</div>
+				</ng-template>
+			</ng-template>
+		</div>
+	</div>
 </div>

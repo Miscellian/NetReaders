@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Book, User} from "../../model";
-import {Router} from "@angular/router";
-import {BookService} from "../../books/book.service";
+import {Book, User} from '../../model';
+import {Router} from '@angular/router';
+import {BookService} from '../../books/book.service';
 
 @Component({
     selector: 'app-recomendations',
@@ -20,7 +20,6 @@ export class RecomendationsComponent implements OnInit {
         this.bookService.getByUserPreferences(this.user.username).subscribe(
             books => {
                 this.bookRecomendations = books;
-            }, err => this.router.navigate(['/error']));
+            }, () => this.router.navigate(['/error']));
     }
-
 }

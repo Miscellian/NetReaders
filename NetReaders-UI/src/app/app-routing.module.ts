@@ -38,7 +38,7 @@ const routes: Routes = [
             {path: 'byuser/:id', component: BooklistComponent, data: {filter: 'user'}},
             {path: 'byuserFavourites/:id', component: BooklistComponent, data: {filter: 'favourite'}},
             {path: 'byusernameToReadList/:id', component: BooklistComponent, data: {filter: 'toReadList'}},
-            {path: 'unpublished/:page', component: BooklistComponent, data: {filter: 'unpublished'}},
+            {path: 'unpublished', component: BooklistComponent, data: {filter: 'unpublished'}},
             {path: 'add', component: BookAddComponent},
             {path: ':id', component: BookviewComponent}
         ]

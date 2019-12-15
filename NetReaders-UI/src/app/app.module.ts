@@ -25,13 +25,14 @@ import {AdminslistComponent} from './profile/adminslist/adminslist.component';
 import {ModeratorslistComponent} from './profile/moderatorslist/moderatorslist.component';
 import {ApiInterceptor} from './_helpers/api.interceptor';
 import {ReviewsModule} from './reviews/reviews.module';
-import {UserService} from "./profile/user.service";
-import {AnnouncementModule} from "./announcements/announcement.module";
+import {UserService} from './profile/user.service';
+import {AnnouncementModule} from './announcements/announcement.module';
 import {RecomendationsComponent} from './profile/recomendations/recomendations.component';
 import {AddAdminComponent} from './profile/addadmin/addadmin.component';
 import {AddModeratorComponent} from './profile/add-moderator/add-moderator.component';
 import {ModeratorsListItemComponent} from './profile/moderators-list-item/moderators-list-item.component';
 import {EditModeratorComponent} from './profile/edit-moderator/edit-moderator.component';
+import {UnpublishedBooksComponent} from './profile/unpublished-books/unpublished-books.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import {EditModeratorComponent} from './profile/edit-moderator/edit-moderator.co
         AddAdminComponent,
         AddModeratorComponent,
         ModeratorsListItemComponent,
-        EditModeratorComponent
+        EditModeratorComponent,
+        UnpublishedBooksComponent
     ],
     imports: [
         ReactiveFormsModule,

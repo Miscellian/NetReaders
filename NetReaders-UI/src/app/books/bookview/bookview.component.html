@@ -1,86 +1,86 @@
 <div class="container" id="main">
-    <div class="row">
-        <div class="col-md-3" id="photo-container">
-            <img alt="book image" class="rounded" id="book-title-image"
-                 src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
-        </div>
-        <div class="row col-md-9">
-            <div class="col-md-7" id="book-data-container">
-                <h1 id="book-title">{{book.title}}</h1>
-                <div *ngFor="let author of book.authors" class="header">
-                    <a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
-                </div>
-                <br/>
+	<div class="row">
+		<div class="col-md-3" id="photo-container">
+			<img alt="book image" class="rounded" id="book-title-image"
+				 src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+		</div>
+		<div class="row col-md-9">
+			<div class="col-md-7" id="book-data-container">
+				<h1 id="book-title">{{book.title}}</h1>
+				<div *ngFor="let author of book.authors" class="header">
+					<a class="author-genre-link" routerLink="/books/byauthor/{{author.id}}">{{author.name}} </a>
+				</div>
+				<br/>
 
-                <div *ngFor="let genre of book.genres" class="header">
-                    <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
-                </div>
-                <br/>
-                <p class="header">{{book.release_date|date}}</p>
-            </div>
-            <div class="col-md-5" id="side-buttons-container">
-                <div *ngIf="authorities.indexOf('OVERVIEW_MODERATOR')>-1">
-                    <div *ngIf="!book.published">
-                        <button (click)="onPublish()">Publish Book</button>
-                    </div>
-                </div>
-                <div *ngIf="inUserLibrary; else notInUserLibrary">
-                    <div (click)="removeFromLibrary()" class="btn btn-info" role="button">
-                        Remove from library
-                    </div>
-                    <div *ngIf="inFavourites; else notInFavourites">
-                        <div (click)="removeFromFavourites()" class="btn btn-info" role="button">
-                            Remove from favourites
-                        </div>
-                    </div>
-                    <ng-template #notInFavourites>
-                        <div (click)="addToFavourites()" class="btn btn-info" role="button">
-                            Add to favorites
-                        </div>
-                    </ng-template>
-                    <div *ngIf="inToReadList; else notInToReadList">
-                        <div (click)="removeFromToReadList()" class="btn btn-info" role="button">
-                            Remove from read list
-                        </div>
-                    </div>
-                    <ng-template #notInToReadList>
-                        <div (click)="addToToReadList()" class="btn btn-info" role="button">
-                            Add to read list
-                        </div>
-                    </ng-template>
-                </div>
-                <ng-template #notInUserLibrary>
-                    <div (click)="addToLibrary()" class="btn btn-info" role="button">
-                        Add to library
-                    </div>
-                </ng-template>
-                <a class="btn btn-info" href="#" id="download-button" role="button">Download</a>
-            </div>
-            <div class="col-md-12" id="description-container">
-                <h2>
-                    Description
-                </h2>
-                <hr>
-                <p>
-                    {{book.description}}
-                </p>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div *ngIf="publishedReviews !== undefined && publishedReviews.length; else noReviews" class="reviews">
-        <div *ngFor="let review of publishedReviews" class="review-previews-div">
-            <app-review-preview [review]="review"></app-review-preview>
-        </div>
-        <a routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
-    </div>
-    <ng-template #noReviews>
-        <h2>There are currently no reviews for this book</h2>
-    </ng-template>
-    <div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
-        <h2>Unpublished reviews:</h2>
-        <div *ngFor="let review of unpublishedReviews" class="review-previews-div">
-            <app-review-preview [review]="review"></app-review-preview>
-        </div>
-    </div>
+				<div *ngFor="let genre of book.genres" class="header">
+					<a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}">{{genre.name}} </a>
+				</div>
+				<br/>
+				<p class="header">{{book.release_date|date}}</p>
+			</div>
+			<div class="col-md-5" id="side-buttons-container">
+				<div *ngIf="authorities.indexOf('OVERVIEW_MODERATOR')>-1 && !book.published; else NotOverviewModerator">
+					<div (click)="onPublish()" class="btn btn-info" role="button">Publish Book</div>
+				</div>
+				<ng-template #NotOverviewModerator>
+					<div *ngIf="inUserLibrary; else notInUserLibrary">
+						<div (click)="removeFromLibrary()" class="btn btn-info" role="button">
+							Remove from library
+						</div>
+						<div *ngIf="inFavourites; else notInFavourites">
+							<div (click)="removeFromFavourites()" class="btn btn-info" role="button">
+								Remove from favourites
+							</div>
+						</div>
+						<ng-template #notInFavourites>
+							<div (click)="addToFavourites()" class="btn btn-info" role="button">
+								Add to favorites
+							</div>
+						</ng-template>
+						<div *ngIf="inToReadList; else notInToReadList">
+							<div (click)="removeFromToReadList()" class="btn btn-info" role="button">
+								Remove from read list
+							</div>
+						</div>
+						<ng-template #notInToReadList>
+							<div (click)="addToToReadList()" class="btn btn-info" role="button">
+								Add to read list
+							</div>
+						</ng-template>
+					</div>
+					<ng-template #notInUserLibrary>
+						<div (click)="addToLibrary()" class="btn btn-info" role="button">
+							Add to library
+						</div>
+					</ng-template>
+					<a class="btn btn-info" href="#" id="download-button" role="button">Download</a>
+				</ng-template>
+			</div>
+			<div class="col-md-12" id="description-container">
+				<h2>
+					Description
+				</h2>
+				<hr>
+				<p>
+					{{book.description}}
+				</p>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div *ngIf="publishedReviews !== undefined && publishedReviews.length; else noReviews" class="reviews">
+		<div *ngFor="let review of publishedReviews" class="review-previews-div">
+			<app-review-preview [review]="review"></app-review-preview>
+		</div>
+		<a routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
+	</div>
+	<ng-template #noReviews>
+		<h2>There are currently no reviews for this book</h2>
+	</ng-template>
+	<div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
+		<h2>Unpublished reviews:</h2>
+		<div *ngFor="let review of unpublishedReviews" class="review-previews-div">
+			<app-review-preview [review]="review"></app-review-preview>
+		</div>
+	</div>
 </div>

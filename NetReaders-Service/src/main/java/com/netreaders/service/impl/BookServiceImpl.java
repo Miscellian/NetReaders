@@ -246,7 +246,7 @@ public class BookServiceImpl implements BookService {
 				.flatMap(book -> book.getGenres().stream())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		List<Book> pickedBooks = userGenres.entrySet().stream()
-				.sorted((entry1, entry2) -> {return (int) (entry1.getValue() - entry2.getValue());})
+                .sorted((entry1, entry2) -> (int) (entry1.getValue() - entry2.getValue()))
 				.limit(3)
 				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 5, 0).stream())
 				.collect(Collectors.toList());
@@ -270,15 +270,15 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public void addBook(Book book) {
-		if(bookDao.checkBookExistsByTitle(book.getTitle()))
-			return;
-		book.setPublished(false);
-		Integer newId = bookDao.create(book).getId();
-		book.getGenres().stream()
-			.forEach(genre -> handleGenres(genre,newId));
-		book.getAuthors().stream()
-			.forEach(author -> handleAuthors(author,newId));
-	}
+        if (bookDao.checkBookExistsByTitle(book.getTitle()))
+            return;
+        book.setPublished(false);
+        Integer newId = bookDao.create(book).getId();
+        book.getGenres()
+                .forEach(genre -> handleGenres(genre, newId));
+        book.getAuthors()
+                .forEach(author -> handleAuthors(author, newId));
+    }
 	
 	private void handleGenres(Genre genre, Integer bookId) {
 		genre = genreDao.existsByName(genre.getName()) ? genreDao.getByName(genre.getName()) : genreDao.create(genre);
@@ -291,8 +291,9 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Collection<Book> getUnpublished(Integer amount, Integer offset) {
-		return bookDao.getUnpublished(amount, offset);
-	}
+        Collection<Book> books = bookDao.getUnpublished(amount, offset);
+        return createDtoCollection(books);
+    }
 
 	@Override
 	public Integer getUnpublishedCount() {
