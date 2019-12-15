@@ -76,6 +76,7 @@ CREATE TABLE books
     description   TEXT,
     release_date  DATE,
     book_language CHAR(2),
+    published	  boolean,
     CONSTRAINT book_photo_fk FOREIGN KEY (photo) REFERENCES photos (photo_id)
 );
 
