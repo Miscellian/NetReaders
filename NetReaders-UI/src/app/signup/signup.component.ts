@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private router: Router,
+        public router: Router,
         private authenticationService: AuthenticationService,
         private userService: UserService,
     ) {
@@ -59,8 +59,9 @@ export class SignupComponent implements OnInit {
 
         this.loading = true;
         this.userService.register(this.registerForm)
-            .subscribe(response => {
-                this.router.navigate['/login'];
-            }, error => this.router.navigate(['/error']));
+            .subscribe(
+                () => this.router.navigate(['/login']),
+                error => this.router.navigate(['/error'])
+            );
     }
 }
