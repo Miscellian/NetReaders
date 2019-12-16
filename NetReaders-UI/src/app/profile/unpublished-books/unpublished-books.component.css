@@ -1,0 +1,37 @@
+img.profile-booklist-preview-photo {
+    width: 100%;
+}
+
+span.library-title {
+    font-size: 2em;
+}
+
+a.view-all-btn {
+    font-size: 2em;
+    text-decoration: none;
+    float: right;
+    color: white;
+    display: block;
+    margin-bottom: 5%;
+    background-color: #343a40;
+    border-color: #28a745;
+}
+
+a.view-all-btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+a.profile-book-title {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: black;
+}
+
+span.profile-book-author {
+    font-size: 1.2em;
+}
+
+span.empty-text {
+    font-size: 2em;
+}

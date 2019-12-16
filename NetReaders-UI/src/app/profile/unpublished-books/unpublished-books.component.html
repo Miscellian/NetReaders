@@ -1,0 +1,38 @@
+<div class="container">
+	<div *ngIf="books.length > 0; else UnpublishedElseBlock">
+		<div class="row">
+			<div class="col-md-4">
+				<span class="library-title">Unpublished books</span>
+			</div>
+			<div class="col-md-5"></div>
+			<div class="col-md-3">
+				<a class="btn view-all-btn" routerLink="/books/unpublished">View all</a>
+			</div>
+		</div>
+		<div class="row">
+			<div *ngFor="let book of books; let i = index" class="col-md-3">
+				<a [routerLink]="['/books', book.id]">
+					<img alt="book-image"
+						 class="rounded profile-booklist-preview-photo"
+						 src="https://image.flaticon.com/icons/png/512/130/130304.png"/>
+				</a>
+				<br/>
+				<span>
+                <a [routerLink]="['/books', book.id]"
+				   class="profile-book-title"><b>
+                    {{book.title}}
+                </b></a>
+            </span><br/>
+				<div *ngFor="let author of book.authors">
+					<span class="profile-book-author">{{author.name}}</span>
+					<br/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<ng-template #UnpublishedElseBlock>
+        <span class="empty-text">
+            There is no unpublished books
+        </span>
+	</ng-template>
+</div>
