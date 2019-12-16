@@ -18,8 +18,6 @@ public interface BookDao extends GenericDao<Book, Integer> {
 
     Collection<Book> findAll(Integer amount, Integer offset) throws DataBaseSQLException;
     
-    Collection<Book> findBooksMinusSelected(Collection<Book> books, Integer amount, Integer offset) throws DataBaseSQLException;
-
     Integer getCount() throws DataBaseSQLException;
 
     Integer getCountByAuthor(Integer authorId) throws DataBaseSQLException;

@@ -248,13 +248,10 @@ public class BookServiceImpl implements BookService {
 		List<Book> pickedBooks = userGenres.entrySet().stream()
                 .sorted((entry1, entry2) -> (int) (entry1.getValue() - entry2.getValue()))
 				.limit(3)
-				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 5, 0).stream())
+				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 2, 0).stream())
 				.collect(Collectors.toList());
 		
-		return bookDao.findBooksMinusSelected(pickedBooks,6,0)
-				.stream()
-				.map(this::modelToDto)
-				.collect(Collectors.toList());
+		return pickedBooks;
 	}
 
 	@Override

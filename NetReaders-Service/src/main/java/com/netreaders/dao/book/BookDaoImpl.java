@@ -686,30 +686,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    @Override
-    public Collection<Book> findBooksMinusSelected(Collection<Book> selectedBooks, Integer amount, Integer offset) throws DataBaseSQLException {
-        String sql_query = env.getProperty("book.getMinusSelected");
-
-        String selectedBookIds = selectedBooks.stream()
-                .map(book -> book.getId().toString())
-                .collect(Collectors.joining(","));
-        if (selectedBookIds.isEmpty()) {
-            return Collections.emptyList();
-        }
-        sql_query = sql_query.substring(0, sql_query.indexOf('?')) + selectedBookIds + sql_query.substring(sql_query.indexOf('?') + 1);
-        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
-
-        checkIfCollectionIsNull(books);
-
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any new books, selectedBooks count: '%d'", selectedBooks.size()));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d book(s) that are not in selected", books.size()));
-            return books;
-        }
-    }
-
 
 	@Override
 	public boolean checkBookExistsByTitle(String title) {
