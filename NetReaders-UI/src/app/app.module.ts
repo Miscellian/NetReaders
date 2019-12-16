@@ -33,6 +33,7 @@ import {AddModeratorComponent} from './profile/add-moderator/add-moderator.compo
 import {ModeratorsListItemComponent} from './profile/moderators-list-item/moderators-list-item.component';
 import {EditModeratorComponent} from './profile/edit-moderator/edit-moderator.component';
 import {UnpublishedBooksComponent} from './profile/unpublished-books/unpublished-books.component';
+import { UnpublishedReviewsComponent } from './profile/unpublished-reviews/unpublished-reviews.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import {UnpublishedBooksComponent} from './profile/unpublished-books/unpublished
         AddModeratorComponent,
         ModeratorsListItemComponent,
         EditModeratorComponent,
-        UnpublishedBooksComponent
+        UnpublishedBooksComponent,
+        UnpublishedReviewsComponent
     ],
     imports: [
         ReactiveFormsModule,

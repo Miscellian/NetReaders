@@ -25,10 +25,12 @@
     </div>
 </div>
 
-<h1>{{review.description}}</h1>
+
 <h2>Rating : {{review.rating}}</h2>
+<hr>
+<h1>{{review.description}}</h1>
 <div *ngIf="isReviewModerator() && !review.published">
-    <button (click)="onPublish()">
+    <div class="btn btn-info" (click)="onPublish()">
         Publish review
-    </button>
+    </div>
 </div>

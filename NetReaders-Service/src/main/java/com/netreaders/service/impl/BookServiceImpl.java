@@ -299,4 +299,9 @@ public class BookServiceImpl implements BookService {
 	public Integer getUnpublishedCount() {
 		return bookDao.getUnpublishedCount();
 	}
+
+	@Override
+	public boolean checkBookExists(String title) {
+		return bookDao.checkBookExistsByTitle(title);
+	}
 }

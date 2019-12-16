@@ -41,7 +41,7 @@ export class ReviewService {
   }
 
   createReview(reviewForm: FormGroup, book: Book) {
-    const review: Review = { id: 0, rating: reviewForm.value['rating'],
+    const review: Review = { id: 0, rating: parseInt(reviewForm.value['rating']),
                           description: reviewForm.value['description'],
                           published: false, book: book};
     return this.httpClient.post(`/reviews/add`, review, {observe: 'response'});

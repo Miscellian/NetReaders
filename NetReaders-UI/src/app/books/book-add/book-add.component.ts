@@ -66,10 +66,17 @@ export class BookAddComponent implements OnInit {
             return {name: author};
           })
     } as Book;
-    this.bookService.createBook(book).subscribe(
-        () => this.router.navigate(['/books/range/1']),
-        () => this.router.navigate(['/error'])
-    );
+    this.bookService.checkBookExists(book.title).subscribe(
+      response => {
+        if (response) {
+          alert('A book with such title already exists');
+        } else {
+          this.bookService.createBook(book).subscribe(
+            () => this.router.navigate(['/books/range/1']),
+            () => this.router.navigate(['/error'])
+          );
+        }
+      }, () => this.router.navigate(['/error']));
   }
 
 }

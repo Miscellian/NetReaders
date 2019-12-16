@@ -135,4 +135,8 @@ export class BookService {
     getUnpublishedCount(): Observable<number> {
         return this.httpClient.get<number>('/books/unpublishedCount');
     }
+
+    checkBookExists(title: string): Observable<boolean> {
+        return this.httpClient.post<boolean>('/books/checkExists', title);
+    }
 }

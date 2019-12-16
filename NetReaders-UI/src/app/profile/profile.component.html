@@ -20,4 +20,8 @@
 		<app-unpublished-books></app-unpublished-books>
 		<hr>
 	</div>
+	<div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
+			<app-unpublished-reviews></app-unpublished-reviews>
+			<hr>
+		</div>
 </div>

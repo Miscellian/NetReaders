@@ -152,6 +152,10 @@ export class BookviewComponent implements OnInit {
         );
     }
 
+    addReview() {
+        this.router.navigate([`/reviews/add/${this.book.id}`]);
+    }
+
     onPublish() {
         this.bookService.publishBook(this.book.id).subscribe(
             () => this.router.navigate([`/books/unpublished`]),

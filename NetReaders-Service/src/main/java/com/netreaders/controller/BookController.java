@@ -216,6 +216,9 @@ public class BookController {
         return bookService.getUnpublishedCount();
     }
     
-    
+    @PostMapping(value = "checkExists")
+    public boolean checkBookExists(@RequestBody String title) {
+    	return bookService.checkBookExists(title);
+    }
     
 }

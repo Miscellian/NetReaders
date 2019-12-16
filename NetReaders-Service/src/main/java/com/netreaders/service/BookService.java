@@ -73,4 +73,6 @@ public interface BookService {
     void addBook(Book book);
     
     Integer getUnpublishedCount();
+    
+    boolean checkBookExists(String title);
 }

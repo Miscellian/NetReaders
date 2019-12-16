@@ -20,23 +20,29 @@
                 <a class="author-genre-link" routerLink="/books/bygenre/{{genre.id}}/1">{{genre.name}} </a>
             </div>
             <br />
-            <p class="header">{{book.book.release_date|date}}</p>
+            <p class="header">{{book.release_date|date}}</p>
         </div>
     </div>
 </div>
 
-<div>
-    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="rating">Rating</label>
-            <input id="rating" type="text" formControlName="rating" class="form-control" />
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body">
+                <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group" style="display: flex">
+                        <label for="rating" class="formText">Rating</label> 
+                        <input id="rating" type="number" min="0" max="100" maxlength="3" formControlName="rating" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="formText">Description</label>
+                        <input id="description" type="text" class="form-control" formControlName="description" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Create review</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input id="description" type="text" formControlName="description" />
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary">Create review</button>
-        </div>
-    </form>
+    </div>
 </div>

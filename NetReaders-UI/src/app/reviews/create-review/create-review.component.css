@@ -53,3 +53,67 @@ img#book-title-image {
       border: none;
     }
   }
+  .card {
+    background-color: #36393E;
+}
+
+input.ng-valid[required], input.ng-valid.required {
+    border-left: .25rem solid #42A948; /* green */
+}
+
+input.ng-touched.ng-invalid {
+    border-left: .25rem solid red;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.formText {
+    color: white;
+}
+
+.formBtn {
+    background-color: transparent;
+    border: .1rem solid white;
+    color: white;
+}
+
+.formBtn:hover {
+    background-color: white;
+    border: .1rem solid #36393E;
+    color: #36393E;
+}
+
+a#cancelButton {
+    float: right;
+}
+
+label.custom-label {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.custom-control-label:before {
+    background-color: white;
+    border: .1rem solid #36393E;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #36393E;
+}
+
+.custom-control-input:active ~ .custom-control-label::before {
+    background-color: green;
+}
+
+.custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 .1rem #fff, 0 0 0 .2rem #36393E
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: white;
+}

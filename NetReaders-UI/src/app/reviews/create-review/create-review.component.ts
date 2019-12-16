@@ -4,6 +4,7 @@ import { Book } from '../../model';
 import { BookService } from '../../books/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../review.service';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-create-review',
@@ -35,9 +36,19 @@ export class CreateReviewComponent implements OnInit {
   }
 
   onSubmit() {
+    const rating = this.reviewForm.value['rating'];
+    if (isNull(rating)) {
+      alert('Invalid rating');
+      return;
+    }
+    if (+rating > 100 || +rating < 0) {
+      alert('Rating should be between 0 and 100');
+      return;
+    }
     this.reviewService.createReview(this.reviewForm, this.book).subscribe(
       response => {
           alert('Success');
+          this.router.navigate([`/books/${this.book.id}`]);
       }, error => this.router.navigate(['/error']));
   }
 

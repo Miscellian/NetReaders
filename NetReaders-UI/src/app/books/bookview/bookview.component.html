@@ -53,7 +53,7 @@
 							Add to library
 						</div>
 					</ng-template>
-					<a class="btn btn-info" href="#" id="download-button" role="button">Download</a>
+					<div class="btn btn-info" (click)="addReview()" role="button">Add review</div>
 				</ng-template>
 			</div>
 			<div class="col-md-12" id="description-container">
@@ -69,18 +69,24 @@
 	</div>
 	<hr>
 	<div *ngIf="publishedReviews !== undefined && publishedReviews.length; else noReviews" class="reviews">
+		<h2>Reviews:</h2>
 		<div *ngFor="let review of publishedReviews" class="review-previews-div">
 			<app-review-preview [review]="review"></app-review-preview>
 		</div>
-		<a routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
+		<a class="btn" routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
 	</div>
 	<ng-template #noReviews>
 		<h2>There are currently no reviews for this book</h2>
 	</ng-template>
-	<div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1">
+	<div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1 &&unpublishedReviews.length; else noUnpublsihedReviews">
+		<hr>
 		<h2>Unpublished reviews:</h2>
 		<div *ngFor="let review of unpublishedReviews" class="review-previews-div">
 			<app-review-preview [review]="review"></app-review-preview>
 		</div>
+		<a class = "btn" routerLink="/reviews/unpublished/{{book.id}}/1">Show All Unpublished Reviews</a>
 	</div>
+	<ng-template #noUnpublsihedReviews>
+			<h2>There are currently no unpublished reviews for this book</h2>
+		</ng-template>
 </div>
