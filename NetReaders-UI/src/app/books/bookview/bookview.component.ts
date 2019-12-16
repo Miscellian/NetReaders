@@ -153,7 +153,11 @@ export class BookviewComponent implements OnInit {
     }
 
     addReview() {
-        this.router.navigate([`/reviews/add/${this.book.id}`]);
+        if (this.username === null) {
+            this.router.navigate(['login']);
+        } else {
+            this.router.navigate([`/reviews/add/${this.book.id}`]);
+        }
     }
 
     onPublish() {
