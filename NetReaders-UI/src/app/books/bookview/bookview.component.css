@@ -46,10 +46,12 @@ a.author-genre-link:hover {
 }
 
 .review-previews-div{
-  border-width: 2px;
-  border-style: solid;
   display: flex;
   flex-direction: row;
+
+  border: .15vw ridge #343a40;
+  border-radius: 10px;
+    margin-bottom: 2rem;
 }
 
 @media screen and (max-width: 600px) {

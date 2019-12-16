@@ -26,25 +26,25 @@
 
           <div formArrayName="genres">
             <h3 class="formText">Genres</h3>
-            <div class="btn btn-info" (click)="addGenre()">Add Genres</div>
+            <div class="btn btn-info formBtn" (click)="addGenre()">Add Genres</div>
             <div *ngFor="let genre of genres.controls; let genreIndex=index;" style="display: flex">
                 <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">
                   Genre:
                 </div>
                 <input type="text" [formControlName]="genreIndex">
-                <div class="btn btn-info" (click)="removeGenre(genreIndex)">Remove Genre</div>
+                <div class="btn btn-info formBtn" (click)="removeGenre(genreIndex)">Remove Genre</div>
             </div>
           </div>
           <br>
           <div formArrayName="authors">
             <h3 class="formText">Authors</h3>
-            <div class="btn btn-info" (click)="addAuthor()">Add Author</div>
+            <div class="btn btn-info formBtn" (click)="addAuthor()">Add Author</div>
             <div *ngFor="let author of authors.controls; let authorIndex=index" style="display: flex">
                 <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">
                     Author:
                   </div>
                 <input type="text" [formControlName]="authorIndex">
-                <div class="btn btn-info" (click)="removeAuthor(authorIndex)">Remove Author</div>
+                <div class="btn btn-info formBtn" (click)="removeAuthor(authorIndex)">Remove Author</div>
             </div>
           </div>
           <br>

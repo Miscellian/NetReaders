@@ -1,8 +1,7 @@
 <div class="container" id="main">
 	<div class="row">
 		<div class="col-md-3" id="photo-container">
-			<img alt="book image" class="rounded" id="book-title-image"
-				 src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
+			<img alt="book image" class="rounded" id="book-title-image" src='http://nzbirdsonline.org.nz/sites/all/files/470105Emperor%20penguin%201.jpg'>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-7" id="book-data-container">
@@ -69,24 +68,37 @@
 	</div>
 	<hr>
 	<div *ngIf="publishedReviews !== undefined && publishedReviews.length; else noReviews" class="reviews">
-		<h2>Reviews:</h2>
+		<div class="row">
+			<div class="col-xl-4">
+				<h2>Reviews:</h2>
+			</div>
+			<div class="col-xl-4"></div>
+			<div class="col-xl-4">
+				<a class="btn btn-info" routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
+			</div>
+		</div>
 		<div *ngFor="let review of publishedReviews" class="review-previews-div">
 			<app-review-preview [review]="review"></app-review-preview>
 		</div>
-		<a class="btn" routerLink="/reviews/published/{{book.id}}/1">Show All Reviews</a>
+
 	</div>
 	<ng-template #noReviews>
 		<h2>There are currently no reviews for this book</h2>
 	</ng-template>
 	<div *ngIf="authorities.indexOf('REVIEW_MODERATOR')>-1 &&unpublishedReviews.length; else noUnpublsihedReviews">
 		<hr>
-		<h2>Unpublished reviews:</h2>
+		
+		<div class="row">
+				<div class="col-xl-4"><h2>Unpublished reviews:</h2></div>
+				<div class="col-xl-3"></div>
+				<div class="col-xl-5"><a class="btn btn-info" routerLink="/reviews/unpublished/{{book.id}}/1">Show All Unpublished Reviews</a></div>
+		</div>
 		<div *ngFor="let review of unpublishedReviews" class="review-previews-div">
 			<app-review-preview [review]="review"></app-review-preview>
 		</div>
-		<a class = "btn" routerLink="/reviews/unpublished/{{book.id}}/1">Show All Unpublished Reviews</a>
+		
 	</div>
 	<ng-template #noUnpublsihedReviews>
-			<h2>There are currently no unpublished reviews for this book</h2>
-		</ng-template>
+		<h2>There are currently no unpublished reviews for this book</h2>
+	</ng-template>
 </div>
