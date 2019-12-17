@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {addDays, addMonths, addWeeks, isSameDay, isSameMonth, subDays, subMonths, subWeeks} from 'date-fns';
 import {CalendarEvent, CalendarView} from 'angular-calendar';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../announcement.service";
 import {Announcement} from "../../model";
+import {Subscription} from "rxjs";
 
 const colors: any = {
     red: {
@@ -44,16 +45,14 @@ function subPeriod(period: CalendarPeriod, date: Date, amount: number): Date {
     templateUrl: 'calendar.component.html',
     encapsulation: ViewEncapsulation.None,
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
-    //Frontend (angular calendar)
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date;
     events: CalendarEvent[] = [];
     activeDayIsOpen: boolean = false;
 
-    //Backend
     announcements: Announcement[];
     id: number;
     year: number;
@@ -76,6 +75,8 @@ export class CalendarComponent implements OnInit {
         },
     };
 
+    private subscription: Subscription = new Subscription();
+
     constructor(private announcementService: AnnouncementService,
                 private activatedRoute: ActivatedRoute,
                 public router: Router) {
@@ -95,15 +96,15 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    increment(): void {
+    onNextDayClicked(): void {
         this.changedDate(addPeriod(this.view, this.viewDate, 1));
     }
 
-    decrement(): void {
+    onPrevDayClicked(): void {
         this.changedDate(subPeriod(this.view, this.viewDate, 1));
     }
 
-    today(): void {
+    onTodayDayClicked(): void {
         this.changedDate(new Date());
     }
 
@@ -117,29 +118,32 @@ export class CalendarComponent implements OnInit {
     }
 
     newRequest(): void {
-        this.activatedRoute.params.subscribe(
+        this.subscription.add(this.activatedRoute.params.subscribe(
             params => {
                 this.id = params['id'];
                 this.year = params['year'];
                 this.month = params['month'];
                 this.filter = this.activatedRoute.snapshot.data.filter;
                 this.funcs[this.filter]();
-                this.func().subscribe(response => {
+
+                this.subscription.add(this.func().subscribe(response => {
                     this.announcements = response;
                     this.fetchEvents();
-                }, () => this.router.navigate(['/error']));
-            }
-        );
+                }, () => this.router.navigate(['/error'])));
+
+            },
+            () => this.router.navigate(['/error'])
+        ));
     }
 
     fetchEvents(): void {
         let temp = [];
-        for (let i = 0; i < this.announcements.length; i++) {
+        for (let announcement of this.announcements) {
             temp.push(
                 {
-                    start: new Date(this.announcements[i].announcement_date),
-                    title: this.announcements[i].description,
-                    id: this.announcements[i].id,
+                    start: new Date(announcement.announcement_date),
+                    title: announcement.description,
+                    id: announcement.id,
                     color: colors.blue
                 }
             )
@@ -162,5 +166,11 @@ export class CalendarComponent implements OnInit {
         this.newRequest();
 
         this.setUpCalendar(new Date());
+    }
+
+    ngOnDestroy(): void {
+
+        this.subscription.unsubscribe();
+
     }
 }
