@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../model";
 import {AuthenticationService} from "../../login/authentication.service";
 import {Router} from "@angular/router";
+import {UserService} from "../user.service";
 
 @Component({
     selector: 'app-userpage',
@@ -15,7 +16,8 @@ export class UserpageComponent implements OnInit {
     storageUsername: String;
 
     constructor(private authentificationService: AuthenticationService,
-                public router: Router) {
+                public router: Router,
+                private userService: UserService) {
         this.storageUsername = localStorage.getItem("UserName");
     }
 

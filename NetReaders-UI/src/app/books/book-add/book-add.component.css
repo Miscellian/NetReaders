@@ -21,6 +21,18 @@ input.ng-touched.ng-invalid {
     color: white;
 }
 
+span.add-book-author-genre {
+    margin-right: 1%;
+}
+
+div.add-book-genre-author-div {
+    margin-top: 2%;
+}
+
+div.add-book-genre-author-btn {
+    margin-left: 1%;
+}
+
 .formBtn {
     background-color: transparent;
     border: .1rem solid white;

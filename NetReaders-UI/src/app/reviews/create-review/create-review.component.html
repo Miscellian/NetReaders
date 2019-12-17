@@ -30,7 +30,7 @@
         <div class="col-md-6 mx-auto">
             <div class="card card-body">
                 <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
-                    <div class="form-group" style="display: flex">
+                    <div class="form-group">
                         <label for="rating" class="formText">Rating</label> 
                         <input id="rating" type="number" min="0" max="100" maxlength="3" formControlName="rating" class="form-control" />
                     </div>
@@ -39,7 +39,7 @@
                         <input id="description" type="text" class="form-control" formControlName="description" />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary">Create review</button>
+                        <button class="btn btn-primary formBtn">Create review</button>
                     </div>
                 </form>
             </div>
