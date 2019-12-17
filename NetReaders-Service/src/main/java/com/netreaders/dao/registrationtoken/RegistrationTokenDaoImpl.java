@@ -34,13 +34,12 @@ public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
     private Environment env;
     private RegistrationTokenMapper tokenMapper;
     private JdbcTemplate template;
+    private final KeyHolder holder;
 
     @Override
     public RegistrationToken create(RegistrationToken token) {
 
         final String sql_query = env.getProperty("registrationToken.create");
-
-        KeyHolder holder = new GeneratedKeyHolder();
 
         try {
             template.update(creator(sql_query, token), holder);
@@ -49,9 +48,6 @@ public class RegistrationTokenDaoImpl implements RegistrationTokenDao {
 
             log.debug(String.format("Created a new token with id '%s'", token.getTokenId()));
             return token;
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Token '%s' is already exist", token.getCreatedDateTime()));
-            throw new DuplicateModelException(String.format("Token '%s' is already exist", token.getCreatedDateTime()));
         } catch (SQLException e) {
             log.error("Token creation fail!");
             throw new DataBaseSQLException("Token creation fail!");

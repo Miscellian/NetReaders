@@ -4,8 +4,6 @@ import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Author;
-import com.netreaders.models.Genre;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -34,14 +31,12 @@ public class AuthorDaoImpl implements AuthorDao {
     private final Environment env;
     private final JdbcTemplate template;
     private final AuthorMapper authorMapper;
+    private final KeyHolder holder;
 
     @Override
     public Author create(Author author) {
-    	author.setId(null);
-    	
-        final String sql_query = env.getProperty("author.create");
 
-        KeyHolder holder = new GeneratedKeyHolder();
+        final String sql_query = env.getProperty("author.create");
 
         try {
             template.update(creator(sql_query, author), holder);
@@ -51,9 +46,6 @@ public class AuthorDaoImpl implements AuthorDao {
             log.debug(String.format("Created a new author with id '%s'", author.getId()));
             return author;
 
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Author '%s' is already exist", author.getName()));
-            throw new DuplicateModelException(String.format("Author '%s' is already exist", author.getName()));
         } catch (SQLException e) {
             log.error("Author creation fail!");
             throw new DataBaseSQLException("Author creation fail!");
@@ -148,6 +140,42 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
+    @Override
+    public boolean existsByName(String name) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("author.getByName");
+
+        List<Author> result = template.query(sql_query, authorMapper, name);
+
+        if (result.isEmpty()) {
+            log.debug(String.format("Didn't find any authors by name '%s'", name));
+            return false;
+        } else if (result.size() == 1) {
+            log.debug(String.format("Found an author by name '%s'", name));
+            return true;
+        } else {
+            log.error(String.format("Found more than one author by name '%s'", name));
+            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
+        }
+    }
+
+    @Override
+    public Author getByName(String name) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("author.getByName");
+
+        List<Author> result = template.query(sql_query, authorMapper, name);
+
+        if (result.isEmpty()) {
+            log.debug(String.format("Didn't find any authors by name '%s'", name));
+            return null;
+        } else if (result.size() == 1) {
+            log.debug(String.format("Found an author by name '%s'", name));
+            return result.get(0);
+        } else {
+            log.error(String.format("Found more than one author by name '%s'", name));
+            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
+        }
+    }
+
     private void checkIfCollectionIsNull(Collection<Author> collection) {
         if (collection == null) {
             // unreachable, but who knows (:
@@ -173,40 +201,4 @@ public class AuthorDaoImpl implements AuthorDao {
             return holder.getKey().intValue();
         }
     }
-
-	@Override
-	public boolean existsByName(String name) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("author.getByName");
-		 
-		 List<Author> result = template.query(sql_query,authorMapper,name);
-		 
-		 if (result.isEmpty()) {
-	            log.debug(String.format("Didn't find any authors by name '%s'", name));
-	            return false;
-	     } else if (result.size() == 1) {
-	            log.debug(String.format("Found an author by name '%s'", name));
-	            return true;
-	     } else {
-	            log.error(String.format("Found more than one author by name '%s'", name));
-	            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
-	     }
-	}
-
-	@Override
-	public Author getByName(String name) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("author.getByName");
-		 
-		 List<Author> result = template.query(sql_query,authorMapper,name);
-		 
-		 if (result.isEmpty()) {
-	            log.debug(String.format("Didn't find any authors by name '%s'", name));
-	            return null;
-	     } else if (result.size() == 1) {
-	            log.debug(String.format("Found an author by name '%s'", name));
-	            return result.get(0);
-	     } else {
-	            log.error(String.format("Found more than one author by name '%s'", name));
-	            throw new DataBaseSQLException(String.format("Found more than one author by name '%s'", name));
-	     }
-	}
 }

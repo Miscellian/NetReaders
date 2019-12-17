@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 /**
  * The global exception handler
@@ -20,26 +21,34 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class WebRestControllerAdvice {
 
-    @ExceptionHandler(DataBaseSQLException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(DataBaseSQLException.class)
     public ResponseMessage handleSQLException(HttpServletRequest request, DataBaseSQLException ex) {
 
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
+    @ResponseBody
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
     public ResponseMessage handleArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
 
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }
 
-    @ExceptionHandler(NoSuchModelException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchModelException.class)
     public ResponseMessage handleNoSuchModelException(HttpServletRequest request, NoSuchModelException ex) {
+
+        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseMessage handleConstraintViolationException(HttpServletRequest request, NoSuchModelException ex) {
 
         return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
     }

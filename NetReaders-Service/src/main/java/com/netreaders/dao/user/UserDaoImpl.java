@@ -32,13 +32,12 @@ public class UserDaoImpl implements UserDao {
     private final Environment env;
     private final JdbcTemplate template;
     private final UserMapper userMapper;
+    private final KeyHolder holder;
 
     @Override
     public User create(final User user) {
 
         final String sql_query = env.getProperty("user.create");
-
-        KeyHolder holder = new GeneratedKeyHolder();
 
         try {
             template.update(creator(sql_query, user), holder);

@@ -1,19 +1,16 @@
 package com.netreaders.dao.announcement;
 
 import com.netreaders.exception.classes.DataBaseSQLException;
-import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Announcement;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -27,20 +24,19 @@ import java.util.List;
 
 @Repository
 @Log4j
-@PropertySource("classpath:query.properties")
 @AllArgsConstructor
+@PropertySource("classpath:query.properties")
 public class AnnouncementDaoImpl implements AnnouncementDao {
 
     private final Environment env;
     private final JdbcTemplate template;
     private final AnnouncementMapper announcementMapper;
+    private final KeyHolder holder;
 
     @Override
     public Announcement create(Announcement announcement) {
 
         final String sql_query = env.getProperty("announcement.create");
-
-        KeyHolder holder = new GeneratedKeyHolder();
 
         try {
             template.update(creator(sql_query, announcement), holder);
@@ -49,9 +45,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
             log.debug(String.format("Created a new announcement with id '%s'", announcement.getId()));
             return announcement;
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Announcement '%s' is already exist", announcement.getId()));
-            throw new DuplicateModelException(String.format("Announcement '%s' is already exist", announcement.getId()));
+            
         } catch (SQLException e) {
             log.error("Announcement creation fail!");
             throw new DataBaseSQLException("Announcement creation fail!");

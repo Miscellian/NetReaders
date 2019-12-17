@@ -32,12 +32,11 @@ public class GenreDaoImpl implements GenreDao {
     private final Environment env;
     private final JdbcTemplate template;
     private final GenreMapper genreMapper;
+    private final KeyHolder holder;
 
     @Override
     public Genre create(Genre genre) {
         final String sql_query = env.getProperty("genre.create");
-
-        KeyHolder holder = new GeneratedKeyHolder();
 
         try {
             template.update(creator(sql_query, genre), holder);
@@ -47,9 +46,6 @@ public class GenreDaoImpl implements GenreDao {
             log.debug(String.format("Create a new genre with id '%s'", genre.getId()));
             return genre;
 
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Genre '%s' is already exist", genre.getName()));
-            throw new DataBaseSQLException(String.format("Genre '%s' is already exist", genre.getName()));
         } catch (SQLException e) {
             log.error("Genre creation fail!");
             throw new DataBaseSQLException("Genre creation fail!");
