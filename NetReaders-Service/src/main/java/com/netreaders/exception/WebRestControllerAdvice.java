@@ -2,6 +2,7 @@ package com.netreaders.exception;
 
 import com.netreaders.exception.classes.DataBaseSQLException;
 import com.netreaders.exception.classes.NoSuchModelException;
+import com.netreaders.exception.classes.NotImplementedYetException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -56,8 +56,8 @@ public class WebRestControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
-    @ExceptionHandler(NotImplementedException.class)
-    public ResponseMessage handle(HttpServletRequest request, NotImplementedException ex) {
+    @ExceptionHandler(NotImplementedYetException.class)
+    public ResponseMessage handle(HttpServletRequest request, NotImplementedYetException ex) {
 
         return new ResponseMessage(request.getRequestURI(), ex.getMessage());
     }

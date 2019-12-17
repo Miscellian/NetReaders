@@ -52,19 +52,19 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void update(Role role) {
         // TODO
-        throw new NotImplementedYetException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override
     public void delete(Role role) {
         // TODO
-        throw new NotImplementedYetException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override
     public Collection<Role> getAll() {
         // TODO
-        throw new NotImplementedYetException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override

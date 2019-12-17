@@ -45,7 +45,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
 
             log.debug(String.format("Created a new announcement with id '%s'", announcement.getId()));
             return announcement;
-            
+
         } catch (SQLException e) {
             log.error("Announcement creation fail!");
             throw new DataBaseSQLException("Announcement creation fail!");
