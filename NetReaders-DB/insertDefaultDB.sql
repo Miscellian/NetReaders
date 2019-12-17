@@ -1127,9 +1127,10 @@ VALUES ((SELECT book_id
 
 /*----------------------------DEFAULT Announcements----------------------------------------*/
 INSERT INTO "announcements"(announcement_date, description, published)
-VALUES (TO_DATE('19/11/2020', 'DD/MM/YYYY'), 'Autumn event', true),
-       (TO_DATE('24/11/2020', 'DD/MM/YYYY'), '2020 New Year book`s event', true),
+VALUES (TO_DATE('19/11/2019', 'DD/MM/YYYY'), 'Autumn event', true),
+       (TO_DATE('24/11/2019', 'DD/MM/YYYY'), '2019 New Year book`s event', true),
        (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Add a new genre of books for children', true),
+       (TO_DATE('20/12/2019', 'DD/MM/YYYY'), 'Add a new genre of book for adults', true),
        (TO_DATE('24/12/2019', 'DD/MM/YYYY'), 'New books will be published', true),
        (TO_DATE('25/12/2019', 'DD/MM/YYYY'), 'Stephen King books will be translated in ukrainian', true),
        (TO_DATE('07/01/2020', 'DD/MM/YYYY'), 'Christmas event', true),
@@ -1154,37 +1155,37 @@ VALUES ((SELECT book_id
          WHERE title = 'Harry Potter and the Deathly Hallows'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'Harry Potter and the Chamber of Secrets'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'The Sun and Her Flowers'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'Milk and Honey'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'A Journal of the Plague Year'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
        ((SELECT book_id
          FROM books
          WHERE title = 'The Call of the Wild'),
         (SELECT announcement_id
          FROM announcements
-         WHERE description = '2020 New Year book`s event')),
+         WHERE description = '2019 New Year book`s event')),
 
        ((SELECT book_id
          FROM books
@@ -1204,6 +1205,25 @@ VALUES ((SELECT book_id
         (SELECT announcement_id
          FROM announcements
          WHERE description = 'Add a new genre of books for children')),
+
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'Harry Potter and the Philosopher`s stone'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of book for adults')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'Odiseea'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of book for adults')),
+       ((SELECT book_id
+         FROM books
+         WHERE title = 'Testament'),
+        (SELECT announcement_id
+         FROM announcements
+         WHERE description = 'Add a new genre of book for adults')),
 
        ((SELECT book_id
          FROM books

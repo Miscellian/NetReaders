@@ -97,11 +97,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     onNextDayClicked(): void {
-        this.changedDate(addPeriod(this.view, this.viewDate, 1));
+        this.changedDate(addPeriod(this.view, this.viewDate, 0));
     }
 
     onPrevDayClicked(): void {
-        this.changedDate(subPeriod(this.view, this.viewDate, 1));
+        this.changedDate(subPeriod(this.view, this.viewDate, 0));
     }
 
     onTodayDayClicked(): void {
@@ -130,7 +130,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
                     this.announcements = response;
                     this.fetchEvents();
                 }, () => this.router.navigate(['/error'])));
-
             },
             () => this.router.navigate(['/error'])
         ));
@@ -148,6 +147,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
                 }
             )
         }
+
         this.events = temp;
     }
 
