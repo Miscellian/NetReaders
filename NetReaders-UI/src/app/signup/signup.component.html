@@ -6,55 +6,58 @@
                   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                       <div class="form-group">
                           <label class="formText" for="user_name">Username</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.user_name.errors }"
+                          <input [ngClass]="{'is-invalid': getFormControls.user_name.touched && getFormControls.user_name.invalid }"
                                  class="form-control" formControlName="user_name" id="user_name" type="text"/>
-                          <div *ngIf="submitted && getFormControls.user_name.errors" class="invalid-feedback">
+                          <div *ngIf="getFormControls.user_name.touched && getFormControls.user_name.invalid" style="color: #dc3545">
                               <div *ngIf="getFormControls.user_name.errors.required">Username is required</div>
+                              <div *ngIf="getFormControls.user_name.errors.minlength">Username must be at least 4 characters long</div>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="formText" for="firstName">First Name</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.firstName.errors }"
+                          <input [ngClass]="{ 'is-invalid': getFormControls.firstName.touched && getFormControls.firstName.invalid }"
                                  class="form-control" formControlName="firstName" id="firstName" type="text"/>
-                          <div *ngIf="submitted && getFormControls.firstName.errors" class="invalid-feedback">
+                          <div *ngIf="getFormControls.firstName.touched && getFormControls.firstName.invalid" style="color: #dc3545">
                               <div *ngIf="getFormControls.firstName.errors.required">First Name is required</div>
+                              <div *ngIf="getFormControls.firstName.errors.minlength">First Name must be at least 2 characters long</div>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="formText" for="lastName">Last Name</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.lastName.errors }"
+                          <input [ngClass]="{ 'is-invalid': getFormControls.lastName.touched && getFormControls.lastName.invalid }"
                                  class="form-control" formControlName="lastName" id="lastName" type="text"/>
-                          <div *ngIf="submitted && getFormControls.lastName.errors" class="invalid-feedback">
+                          <div *ngIf="getFormControls.lastName.touched && getFormControls.lastName.invalid" style="color: #dc3545">
                               <div *ngIf="getFormControls.lastName.errors.required">Last Name is required</div>
+                              <div *ngIf="getFormControls.lastName.errors.minlength">Last Name must be at least 2 characters long</div>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="formText" for="email">Email</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.email.errors }"
+                          <input [ngClass]="{ 'is-invalid': getFormControls.email.touched && getFormControls.email.invalid }"
                                  class="form-control" formControlName="email" id="email" type="email"/>
-                          <div *ngIf="submitted && getFormControls.email.errors" class="invalid-feedback">
-                              <div *ngIf="getFormControls.email.errors.required">Username is required</div>
+                          <div *ngIf="getFormControls.email.touched && getFormControls.email.invalid" style="color: #dc3545">
+                              <div *ngIf="getFormControls.email.errors.required">Email is required</div>
+                              <div *ngIf="getFormControls.email.errors.email">Email is invalid</div>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="formText" for="password">Password</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.password.errors }"
+                          <input [ngClass]="{ 'is-invalid': getFormControls.password.touched && getFormControls.password.invalid }"
                                  class="form-control" formControlName="password" id="password" type="password"/>
-                          <div *ngIf="submitted && getFormControls.password.errors" class="invalid-feedback">
+                          <div *ngIf="getFormControls.password.touched && getFormControls.password.invalid" style="color: #dc3545">
                               <div *ngIf="getFormControls.password.errors.required">Password is required</div>
-                              <div *ngIf="getFormControls.password.errors.minlength">Password must be at least 6
-                                  characters
-                              </div>
+                              <div *ngIf="getFormControls.password.errors.minlength">Password must be at least 6 characters</div>
+                              <div *ngIf="!passwordIsValid()">Password must contain at least one number, capital and lowercase characters</div>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="formText" for="confirm_password">Confirm password</label>
-                          <input [ngClass]="{ 'is-invalid': submitted && getFormControls.confirm_password.errors }"
+                          <input [ngClass]="{ 'is-invalid':getFormControls.confirm_password.touched && registerForm.errors !== null && registerForm.errors.notSame}"
                                  class="form-control" formControlName="confirm_password" id="confirm_password"
                                  type="password"/>
-                          <div *ngIf="submitted && getFormControls.confirm_password.errors" class="invalid-feedback">
-                              <div *ngIf="getFormControls.confirm_password.errors.required">Passwords do not match</div>
-                          </div>
+                          <div *ngIf="registerForm.errors !== null" style="color: #dc3545">
+                              <div *ngIf="registerForm.errors.notSame">Passwords do not match</div>
+                        </div>
                       </div>
                       <div class="form-group">
                           <button [disabled]="loading" class="btn btn-primary formBtn">Register</button>
