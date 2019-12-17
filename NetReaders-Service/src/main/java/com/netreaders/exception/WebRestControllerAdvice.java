@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -26,7 +27,7 @@ public class WebRestControllerAdvice {
     @ExceptionHandler(DataBaseSQLException.class)
     public ResponseMessage handleSQLException(HttpServletRequest request, DataBaseSQLException ex) {
 
-        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+        return new ResponseMessage(request.getRequestURI(), ex.getMessage());
     }
 
     @ResponseBody
@@ -34,7 +35,7 @@ public class WebRestControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseMessage handleArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
 
-        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+        return new ResponseMessage(request.getRequestURI(), ex.getMessage());
     }
 
     @ResponseBody
@@ -42,21 +43,29 @@ public class WebRestControllerAdvice {
     @ExceptionHandler(NoSuchModelException.class)
     public ResponseMessage handleNoSuchModelException(HttpServletRequest request, NoSuchModelException ex) {
 
-        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+        return new ResponseMessage(request.getRequestURI(), ex.getMessage());
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseMessage handleConstraintViolationException(HttpServletRequest request, NoSuchModelException ex) {
+    public ResponseMessage handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException ex) {
 
-        return new ResponseMessage(request.getRequestURI(), ex.getLocalizedMessage());
+        return new ResponseMessage(request.getRequestURI(), ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
+    @ExceptionHandler(NotImplementedException.class)
+    public ResponseMessage handle(HttpServletRequest request, NotImplementedException ex) {
+
+        return new ResponseMessage(request.getRequestURI(), ex.getMessage());
     }
 
     @AllArgsConstructor
     private static class ResponseMessage {
 
-        private String code;
+        private String requestURI;
         private String errorMessage;
     }
 }
