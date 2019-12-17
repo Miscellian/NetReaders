@@ -1,30 +1,25 @@
 package com.netreaders.dao.book;
 
 import com.netreaders.exception.classes.DataBaseSQLException;
-import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.exception.classes.NoSuchModelException;
 import com.netreaders.models.Book;
-import com.netreaders.models.Genre;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @Log4j
@@ -32,57 +27,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BookDaoImpl implements BookDao {
 
-    @Override
-    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
-        final String sql_query = env.getProperty("book.getFavouritesByUsername");
-
-        if (sql_query == null) {
-            log.debug("Sql query is null");
-            throw new DataBaseSQLException("Sql query is null");
-        }
-
-        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any favourites for user '%s'", username));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
-            return books;
-        }
-    }
-
-
-    @Override
-    public Collection<Book> findToReadListByUsername(String username, Integer amount, Integer offset) {
-        final String sql_query = env.getProperty("book.getToReadListByUsername");
-
-        if (sql_query == null) {
-            log.debug("Sql query is null");
-            throw new DataBaseSQLException("Sql query is null");
-        }
-
-        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any to read books for user '%s'", username));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d to read book(s) for user '%s'", books.size(), username));
-            return books;
-        }
-    }
-
     private final Environment env;
     private final JdbcTemplate template;
-
     private final BookMapper bookMapper;
+    private final KeyHolder holder;
 
     @Override
     public Book create(Book book) {
-    	book.setId(null);
 
         final String sql_query = env.getProperty("book.create");
 
-        KeyHolder holder = new GeneratedKeyHolder();
 
         try {
             template.update(creator(sql_query, book), holder);
@@ -91,9 +45,10 @@ public class BookDaoImpl implements BookDao {
 
             log.debug(String.format("Created a new book with id '%s'", book.getId()));
             return book;
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Book '%s' is already exist", book.getTitle()));
-            throw new DuplicateModelException(String.format("Book '%s' is already exist", book.getTitle()));
+
+        } catch (SQLException e) {
+            log.error("Book creation fail!");
+            throw new DataBaseSQLException("Book creation fail!");
         }
     }
 
@@ -192,6 +147,45 @@ public class BookDaoImpl implements BookDao {
             return Collections.emptyList();
         } else {
             log.debug(String.format("Found %d book(s)", books.size()));
+            return books;
+        }
+    }
+
+    @Override
+    public Collection<Book> findByFavouritesUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getFavouritesByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any favourites for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d favourite(s) for user '%s'", books.size(), username));
+            return books;
+        }
+    }
+
+
+    @Override
+    public Collection<Book> findToReadListByUsername(String username, Integer amount, Integer offset) {
+        final String sql_query = env.getProperty("book.getToReadListByUsername");
+
+        if (sql_query == null) {
+            log.debug("Sql query is null");
+            throw new DataBaseSQLException("Sql query is null");
+        }
+
+        List<Book> books = template.query(sql_query, bookMapper, username, amount, offset);
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any to read books for user '%s'", username));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d to read book(s) for user '%s'", books.size(), username));
             return books;
         }
     }
@@ -649,6 +643,79 @@ public class BookDaoImpl implements BookDao {
         log.debug(String.format("Remove a book with id %d from %s to read list", bookId, username));
     }
 
+    @Override
+    public boolean checkBookExistsByTitle(String title) {
+        final String sql_query = env.getProperty("book.getByTitle");
+
+        List<Book> result = template.query(sql_query, bookMapper, title);
+
+        if (result.isEmpty()) {
+            log.debug(String.format("Didn't find any books by title '%s'", title));
+            return false;
+        } else if (result.size() == 1) {
+            log.debug(String.format("Found a book by title '%s'", title));
+            return true;
+        } else {
+            log.error(String.format("Found more than one book by title '%s'", title));
+            throw new DataBaseSQLException(String.format("Found more than one book by title '%s'", title));
+        }
+    }
+
+
+    @Override
+    public Collection<Book> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("book.getUnpublished");
+
+        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
+
+        if (books.isEmpty()) {
+            log.debug(String.format("Didn't find any unpublished books "));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d unpublished book(s) by amount '%d' and offset '%d'", books.size(), amount, offset));
+            return books;
+        }
+    }
+
+
+    @Override
+    public Integer getUnpublishedCount() throws DataBaseSQLException {
+        String sql_query = env.getProperty("book.getUnpublishedCount");
+
+        Integer count = template.queryForObject(sql_query, Integer.class);
+
+        log.debug(String.format("Found %d unpublished books", count));
+        return count;
+    }
+
+
+    @Override
+    public void addGenre(Integer bookId, Integer genreId) throws DataBaseSQLException {
+        String sql_query = env.getProperty("book.addGenre");
+
+        int result = template.update(sql_query, bookId, genreId);
+
+        if (result == 0) {
+            log.error(String.format("Couldn't insert genre '%d' to book '%d'", genreId, bookId));
+            throw new DataBaseSQLException(String.format("Couldn't insert genre '%d' to book '%d'", genreId, bookId));
+        }
+        log.debug(String.format("Added genre '%d' to book '%d' ", genreId, bookId));
+    }
+
+
+    @Override
+    public void addAuthor(Integer bookId, Integer authorId) throws DataBaseSQLException {
+        String sql_query = env.getProperty("book.addAuthors");
+
+        int result = template.update(sql_query, bookId, authorId);
+
+        if (result == 0) {
+            log.error(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
+            throw new DataBaseSQLException(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
+        }
+        log.debug(String.format("Added author '%d' to book '%d' ", authorId, bookId));
+    }
+
     private void checkIfCollectionIsNull(Collection<Book> collection) {
         if (collection == null) {
             // unreachable, but who knows (:
@@ -657,7 +724,7 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    private PreparedStatementCreator creator(String sql, Book book) {
+    private PreparedStatementCreator creator(String sql, Book book) throws SQLException {
 
         PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(sql);
         factory.setReturnGeneratedKeys(true);
@@ -685,78 +752,4 @@ public class BookDaoImpl implements BookDao {
             return holder.getKey().intValue();
         }
     }
-
-
-	@Override
-	public boolean checkBookExistsByTitle(String title) {
-		 final String sql_query = env.getProperty("book.getByTitle");
-		 
-		 List<Book> result = template.query(sql_query,bookMapper,title);
-		 
-		 if (result.isEmpty()) {
-	            log.debug(String.format("Didn't find any books by title '%s'", title));
-	            return false;
-	     } else if (result.size() == 1) {
-	            log.debug(String.format("Found a book by title '%s'", title));
-	            return true;
-	     } else {
-	            log.error(String.format("Found more than one book by title '%s'", title));
-	            throw new DataBaseSQLException(String.format("Found more than one book by title '%s'", title));
-	     }
-	}
-
-
-	@Override
-	public Collection<Book> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("book.getUnpublished");
-
-        List<Book> books = template.query(sql_query, bookMapper, amount, offset);
-
-        if (books.isEmpty()) {
-            log.debug(String.format("Didn't find any unpublished books "));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d unpublished book(s) by amount '%d' and offset '%d'", books.size(), amount, offset));
-            return books;
-        }
-	}
-
-
-	@Override
-	public Integer getUnpublishedCount() throws DataBaseSQLException {
-		String sql_query = env.getProperty("book.getUnpublishedCount");
-
-        Integer count = template.queryForObject(sql_query, Integer.class);
-
-        log.debug(String.format("Found %d unpublished books", count));
-        return count;
-	}
-
-
-	@Override
-	public void addGenre(Integer bookId, Integer genreId) throws DataBaseSQLException {
-		String sql_query = env.getProperty("book.addGenre");
-		
-		int result = template.update(sql_query, bookId, genreId);
-		
-		if(result==0) {
-			log.error(String.format("Couldn't insert genre '%d' to book '%d'",genreId, bookId));
-            throw new DataBaseSQLException(String.format("Couldn't insert genre '%d' to book '%d'", genreId, bookId));
-		}
-		log.debug(String.format("Added genre '%d' to book '%d' ",genreId, bookId));
-	}
-
-
-	@Override
-	public void addAuthor(Integer bookId, Integer authorId) throws DataBaseSQLException {
-		String sql_query = env.getProperty("book.addAuthors");
-		
-		int result = template.update(sql_query, bookId, authorId);
-		
-		if(result==0) {
-			log.error(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
-            throw new DataBaseSQLException(String.format("Couldn't insert author '%d' to book '%d'", authorId, bookId));
-		}
-		log.debug(String.format("Added author '%d' to book '%d' ", authorId, bookId));
-	}
 }

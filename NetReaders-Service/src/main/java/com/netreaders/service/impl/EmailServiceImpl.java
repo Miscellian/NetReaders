@@ -4,6 +4,8 @@ import com.netreaders.models.RegistrationToken;
 import com.netreaders.models.User;
 import com.netreaders.service.EmailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,6 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
+@Log4j
 @AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
@@ -26,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             mailSender.send(constructEmailMessage(user, token));
         } catch (MailException | MessagingException e) {
-            e.printStackTrace();
+            log.error("Email couldn't be sent");
         }
     }
 

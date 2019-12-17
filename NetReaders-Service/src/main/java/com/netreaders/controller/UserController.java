@@ -71,8 +71,8 @@ public class UserController {
         if (userService.userExists(signUpForm.getUsername())) {
             return false;
         }
-        userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
-
+        User user = userService.registerPriviledgedUser(signUpForm, new String[]{"ADMIN"});
+        emailService.sendEmail(user);
         return true;
     }
 
@@ -92,8 +92,10 @@ public class UserController {
         signUpForm.setLastName(moderatorForm.getUser().getLastName());
         signUpForm.setUsername(moderatorForm.getUser().getUsername());
         signUpForm.setUserPassword(moderatorForm.getUser().getUserPassword());
-        userService.registerPriviledgedUser(signUpForm, moderatorForm.getRoles());
-
+        User user = userService.registerPriviledgedUser(signUpForm, moderatorForm.getRoles());
+        
+        emailService.sendEmail(user);
+        
         return true;
     }
 

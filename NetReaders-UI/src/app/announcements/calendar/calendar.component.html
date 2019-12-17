@@ -4,17 +4,25 @@
             <div class="btn-group">
                 <div
                         class="btn btn-secondary"
-                        (click)="decrement()">
+                        mwlCalendarPreviousView
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (click)="onPrevDayClicked()">
                     < Prev
                 </div>
                 <div
                         class="btn btn-outline-secondary"
-                        (click)="today()">
+                        mwlCalendarToday
+                        [(viewDate)]="viewDate"
+                        (click)="onTodayDayClicked()">
                     Today
                 </div>
                 <div
                         class="btn btn-secondary"
-                        (click)="increment()">
+                        mwlCalendarNextView
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (click)="onNextDayClicked()">
                     Next >
                 </div>
             </div>

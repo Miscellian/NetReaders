@@ -1,6 +1,7 @@
 package com.netreaders.dao.role;
 
 import com.netreaders.exception.classes.DataBaseSQLException;
+import com.netreaders.exception.classes.NotImplementedYetException;
 import com.netreaders.models.Role;
 import com.netreaders.models.User;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -19,9 +21,10 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleDaoImpl implements RoleDao {
 
-    private Environment env;
-    private RoleMapper roleMapper;
-    private JdbcTemplate template;
+    private final Environment env;
+    private final RoleMapper roleMapper;
+    private final JdbcTemplate template;
+    private final KeyHolder holder;
 
     @Override
     public Role create(Role newInstance) {
@@ -49,19 +52,19 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void update(Role role) {
         // TODO
-        throw new IllegalArgumentException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override
     public void delete(Role role) {
         // TODO
-        throw new IllegalArgumentException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override
     public Collection<Role> getAll() {
         // TODO
-        throw new IllegalArgumentException();
+        throw new NotImplementedYetException("This method have not implemented yet");
     }
 
     @Override

@@ -8,9 +8,9 @@ import java.util.Collection;
 
 public interface AnnouncementDao extends GenericDao<Announcement, Integer> {
 
-    Collection<Announcement> findByGenre(Integer genreId, Integer year, Integer month) throws DataBaseSQLException;
+    Collection<Announcement> findByGenre(Integer genreId, Integer year, Integer month);
 
-    Collection<Announcement> findByAuthor(Integer authorId, Integer year, Integer month) throws DataBaseSQLException;
+    Collection<Announcement> findByAuthor(Integer authorId, Integer year, Integer month);
 
-    Collection<Announcement> findAll(Integer year, Integer month) throws DataBaseSQLException;
+    Collection<Announcement> findAll(Integer year, Integer month);
 }

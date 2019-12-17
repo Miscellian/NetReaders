@@ -21,7 +21,7 @@ public interface GenericDao<E, PK extends Serializable> {
      *
      * @throws DataBaseSQLException
      */
-    E create(E entity) throws DataBaseSQLException, DuplicateModelException;
+    E create(E entity) throws DataBaseSQLException;
 
     /**
      * Retrieve an object that was previously persisted to the database using

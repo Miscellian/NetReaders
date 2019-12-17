@@ -1,18 +1,15 @@
 package com.netreaders.dao.review;
 
 import com.netreaders.exception.classes.DataBaseSQLException;
-import com.netreaders.exception.classes.DuplicateModelException;
 import com.netreaders.models.Review;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -32,13 +29,12 @@ public class ReviewDaoImpl implements ReviewDao {
     private final JdbcTemplate template;
     private final Environment env;
     private final ReviewMapper reviewMapper;
+    private final KeyHolder holder;
 
     @Override
     public Review create(Review review) {
 
         final String sql_query = env.getProperty("review.create");
-
-        KeyHolder holder = new GeneratedKeyHolder();
 
         // save object into DB and return auto generated PK via KeyHolder
         // or throws DuplicateKeyException if record exist in table
@@ -49,9 +45,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
             log.debug(String.format("Created a new review with id '%d'", review.getId()));
             return review;
-        } catch (DuplicateKeyException e) {
-            log.error(String.format("Review '%d' is already exist", review.getId()));
-            throw new DuplicateModelException(String.format("Review '%d' is already exist", review.getId()));
+
         } catch (SQLException e) {
             log.error("Review creation fail!");
             throw new DataBaseSQLException("Review creation fail!");
@@ -175,6 +169,51 @@ public class ReviewDaoImpl implements ReviewDao {
         }
     }
 
+
+    @Override
+    public Collection<Review> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException {
+        final String sql_query = env.getProperty("review.getUnpublished");
+
+        List<Review> reviews = template.query(sql_query, reviewMapper, amount, offset);
+        if (reviews.isEmpty()) {
+            log.debug(String.format("Didn't find any  unpublished reviews "));
+            return Collections.emptyList();
+        } else {
+            log.debug(String.format("Found %d unpublished review(s)", reviews.size()));
+            return reviews;
+        }
+    }
+
+    @Override
+    public Integer getReviewsPublishedByBookCount(Integer bookId) throws DataBaseSQLException {
+        String sql_query = env.getProperty("review.getPublishedByBookIdCount");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{bookId}, Integer.class);
+
+        log.debug(String.format("Found %d published reviews by bookid '%s'", count, bookId));
+        return count;
+    }
+
+    @Override
+    public Integer getReviewsUnpublishedByBookCount(Integer bookId) throws DataBaseSQLException {
+        String sql_query = env.getProperty("review.getUnpublishedByBookIdCount");
+
+        Integer count = template.queryForObject(sql_query, new Object[]{bookId}, Integer.class);
+
+        log.debug(String.format("Found %d unpublished reviews by bookid '%s'", count, bookId));
+        return count;
+    }
+
+    @Override
+    public Integer getUnpublishedReviewsCount() throws DataBaseSQLException {
+        String sql_query = env.getProperty("review.getUnpublishedCount");
+
+        Integer count = template.queryForObject(sql_query, null, Integer.class);
+
+        log.debug(String.format("Found %d unpublished reviews", count));
+        return count;
+    }
+
     private void checkIfCollectionIsNull(Collection<Review> collection) {
         if (collection == null) {
             // unreachable, but who knows (:
@@ -207,48 +246,4 @@ public class ReviewDaoImpl implements ReviewDao {
             return holder.getKey().intValue();
         }
     }
-
-	@Override
-	public Collection<Review> getUnpublished(Integer amount, Integer offset) throws DataBaseSQLException {
-		final String sql_query = env.getProperty("review.getUnpublished");
-
-        List<Review> reviews = template.query(sql_query, reviewMapper, amount, offset);
-        if (reviews.isEmpty()) {
-            log.debug(String.format("Didn't find any  unpublished reviews "));
-            return Collections.emptyList();
-        } else {
-            log.debug(String.format("Found %d unpublished review(s)", reviews.size()));
-            return reviews;
-        }
-	}
-
-	@Override
-	public Integer getReviewsPublishedByBookCount(Integer bookId) throws DataBaseSQLException {
-		String sql_query = env.getProperty("review.getPublishedByBookIdCount");
-
-        Integer count = template.queryForObject(sql_query, new Object[]{bookId}, Integer.class);
-
-        log.debug(String.format("Found %d published reviews by bookid '%s'", count, bookId));
-        return count;
-	}
-
-	@Override
-	public Integer getReviewsUnpublishedByBookCount(Integer bookId) throws DataBaseSQLException {
-		String sql_query = env.getProperty("review.getUnpublishedByBookIdCount");
-
-        Integer count = template.queryForObject(sql_query, new Object[]{bookId}, Integer.class);
-
-        log.debug(String.format("Found %d unpublished reviews by bookid '%s'", count, bookId));
-        return count;
-	}
-
-	@Override
-	public Integer getUnpublishedReviewsCount() throws DataBaseSQLException {
-		String sql_query = env.getProperty("review.getUnpublishedCount");
-
-        Integer count = template.queryForObject(sql_query, null, Integer.class);
-
-        log.debug(String.format("Found %d unpublished reviews", count));
-        return count;
-	}
 }
