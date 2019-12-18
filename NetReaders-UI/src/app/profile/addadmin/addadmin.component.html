@@ -6,28 +6,26 @@
                 <form (ngSubmit)="onSubmit()" [formGroup]="addAdminForm">
                     <div class="form-group">
                         <label class="formText" for="username">Username</label>
-                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.username.errors }"
+                        <input [ngClass]="{ 'is-invalid': getFormValue.username.touched && getFormValue.username.invalid }"
                                class="form-control" formControlName="username" id="username" type="text"/>
-                        <div *ngIf="submitted && getFormValue.username.errors" class="invalid-feedback">
+                        <div *ngIf="getFormValue.username.touched && getFormValue.username.invalid" class="invalid-feedback">
                             <div *ngIf="getFormValue.username.errors.required">Username is required</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="formText" for="email">Email</label>
-                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.email.errors }" class="form-control"
+                        <input [ngClass]="{ 'is-invalid': getFormValue.email.touched && getFormValue.email.invalid }" class="form-control"
                                formControlName="email" id="email" type="email"/>
-                        <div *ngIf="submitted && getFormValue.email.errors" class="invalid-feedback">
-                            <div *ngIf="getFormValue.email.errors.required">Username is required</div>
+                        <div *ngIf="getFormValue.email.touched && getFormValue.email.invalid" class="invalid-feedback">
+                            <div *ngIf="getFormValue.email.errors.required">Email is required</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="formText" for="password">Password</label>
-                        <input [ngClass]="{ 'is-invalid': submitted && getFormValue.password.errors }"
+                        <input [ngClass]="{ 'is-invalid': getFormValue.password.touched && getFormValue.password.invalid }"
                                class="form-control" formControlName="password" id="password" type="password"/>
-                        <div *ngIf="submitted && getFormValue.password.errors" class="invalid-feedback">
-                            <div *ngIf="getFormValue.password.errors.required">Password is required</div>
-                            <div *ngIf="getFormValue.password.errors.minlength">Password must be at least 6 characters
-                            </div>
+                        <div *ngIf="getFormValue.password.touched && getFormValue.password.invalid" class="invalid-feedback">
+                            <div>Password must be at least 6 characters long and contain at least one uppercase, lowercase characters and a number</div>
                         </div>
                     </div>
                     <div class="form-group">

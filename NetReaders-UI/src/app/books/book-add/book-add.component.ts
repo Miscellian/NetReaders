@@ -86,7 +86,7 @@ export class BookAddComponent implements OnInit {
               window.location.reload();
               this.router.navigate(['/books/range/1']);
             },
-            () => this.router.navigate(['/error'])
+            error => this.router.navigate(['/error'])
           );
         }
       }, () => this.router.navigate(['/error']));
