@@ -45,9 +45,7 @@
                           <input [ngClass]="{ 'is-invalid': getFormControls.password.touched && getFormControls.password.invalid }"
                                  class="form-control" formControlName="password" id="password" type="password"/>
                           <div *ngIf="getFormControls.password.touched && getFormControls.password.invalid" style="color: #dc3545">
-                              <div *ngIf="getFormControls.password.errors.required">Password is required</div>
-                              <div *ngIf="getFormControls.password.errors.minlength">Password must be at least 6 characters</div>
-                              <div *ngIf="!passwordIsValid()">Password must contain at least one number, capital and lowercase characters</div>
+                              <div *ngIf="!passwordIsValid()">Password must contain at least one number, capital and lowercase characters and be at least 8 characters long</div>
                           </div>
                       </div>
                       <div class="form-group">
