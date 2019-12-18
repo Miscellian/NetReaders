@@ -6,25 +6,25 @@
         <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="title" class="formText">Title</label>
-            <input class="form-control" id="title" type="text">
+            <input class="form-control" id="title" type="text" formControlName="title">
             <div *ngIf="bookForm.controls.title.touched && bookForm.controls.title.invalid" style="color: #dc3545">Title required</div>
           </div>
 
           <div class="form-group">
             <label for="description" class="formText">Description</label>
-            <input class="form-control" id="description" type="text">
+            <input class="form-control" id="description" type="text" formControlName="description">
             <div *ngIf="bookForm.controls.description.touched && bookForm.controls.description.invalid" style="color: #dc3545">Description required</div>
           </div>
 
           <div class="form-group">
             <label for="release_date" class="formText">Release Date</label>
-            <input class="form-control" id="release_date" type="date">
+            <input class="form-control" id="release_date" type="date" formControlName="release_date">
             <div *ngIf="bookForm.controls.release_date.touched && bookForm.controls.release_date.invalid" style="color: #dc3545">Release Date required</div>
           </div>
 
           <div class="form-group">
             <label for="book_language" class="formText">Book Language</label>
-            <input class="form-control" id="book_language" maxlength="2" type="text">
+            <input class="form-control" id="book_language" maxlength="2" type="text" formControlName="book_language">
             <div *ngIf="bookForm.controls.book_language.touched && bookForm.controls.book_language.invalid" style="color: #dc3545">Book Language required</div>
           </div>
 

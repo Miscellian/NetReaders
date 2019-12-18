@@ -43,7 +43,7 @@ export class BookAddComponent implements OnInit {
   authorsAndGenresProvided: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
     const genresExist = group.value.genres.length > 0;
     const authorsExist = group.value.authors.length > 0;
-    return genresExist && authorsExist ? null : {'noGenresOrAuthors': true}; 
+    return genresExist && authorsExist ? null : {'noGenresOrAuthors': true};
   }
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class BookAddComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.bookForm.invalid){
+    if (this.bookForm.invalid) {
       return;
     }
     const book: Book = {
@@ -79,6 +79,7 @@ export class BookAddComponent implements OnInit {
       response => {
         if (response) {
           alert('A book with such title already exists');
+          return;
         } else {
           this.bookService.createBook(book).subscribe(
             () => {
