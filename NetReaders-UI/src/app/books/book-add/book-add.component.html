@@ -7,45 +7,51 @@
           <div class="form-group">
             <label for="title" class="formText">Title</label>
             <input type="text" class="form-control" formControlName="title">
+            <div *ngIf="bookForm.controls.title.touched && bookForm.controls.title.invalid" style="color: #dc3545">Title required</div>
           </div>
 
           <div class="form-group">
             <label for="description" class="formText">Description</label>
             <input type="text" class="form-control" formControlName="description">
+            <div *ngIf="bookForm.controls.description.touched && bookForm.controls.description.invalid" style="color: #dc3545">Description required</div>
           </div>
 
           <div class="form-group">
             <label for="release_date" class="formText">Release Date</label>
             <input type="date" class="form-control" formControlName="release_date">
+            <div *ngIf="bookForm.controls.release_date.touched && bookForm.controls.release_date.invalid" style="color: #dc3545">Release Date required</div>
           </div>
 
           <div class="form-group">
             <label for="book_language" class="formText">Book Language</label>
             <input type="text" class="form-control" maxlength="2" formControlName="book_language">
+            <div *ngIf="bookForm.controls.book_language.touched && bookForm.controls.book_language.invalid" style="color: #dc3545">Book Language required</div>
           </div>
 
           <div formArrayName="genres">
             <h3 class="formText">Genres</h3>
             <div class="btn btn-info formBtn" (click)="addGenre()">Add Genres</div>
             <div *ngFor="let genre of genres.controls; let genreIndex=index;" style="display: flex">
-                <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">
-                  Genre:
-                </div>
-                <input type="text" [formControlName]="genreIndex">
-                <div class="btn btn-info formBtn" (click)="removeGenre(genreIndex)">Remove Genre</div>
+              <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">Genre:</div>
+              <input type="text" [formControlName]="genreIndex">
+              <div class="btn btn-info formBtn" (click)="removeGenre(genreIndex)">Remove Genre</div>
+              <div *ngIf="bookForm.controls.genres.controls[genreIndex].touched && bookForm.controls.genres.controls[genreIndex].invalid" style="color: #dc3545">Genre required</div>
             </div>
           </div>
+
           <br>
           <div formArrayName="authors">
             <h3 class="formText">Authors</h3>
             <div class="btn btn-info formBtn" (click)="addAuthor()">Add Author</div>
             <div *ngFor="let author of authors.controls; let authorIndex=index" style="display: flex">
-                <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">
-                    Author:
-                  </div>
-                <input type="text" [formControlName]="authorIndex">
-                <div class="btn btn-info formBtn" (click)="removeAuthor(authorIndex)">Remove Author</div>
+              <div class="formText" style="text-align: center; vertical-align: middle;height: 100%;">Author:</div>
+              <input type="text" [formControlName]="authorIndex">
+              <div class="btn btn-info formBtn" (click)="removeAuthor(authorIndex)">Remove Author</div>
+              <div *ngIf="bookForm.controls.authors.controls[authorIndex].touched && bookForm.controls.authors.controls[authorIndex].invalid" style="color: #dc3545">Author required</div>
             </div>
+          </div>
+          <div *ngIf="bookForm.errors !== null" style="color: #dc3545">
+            Add at least one genre and author
           </div>
           <br>
           <button type="submit" class="btn btn-primary formBtn">Submit</button>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Book } from '../../model';
 import { BookService } from '../../books/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,8 +25,8 @@ export class CreateReviewComponent implements OnInit {
   ngOnInit() {
     this.id = +this.activatedRoute.snapshot.paramMap.get('bookid');
     this.reviewForm = this.formBuilder.group({
-      rating: '',
-      description: ''
+      rating: ['0', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.max(100), Validators.min(0)]],
+      description: ['', [Validators.required]]
     });
     this.bookService.getById(this.id).subscribe(
       response => {
@@ -36,6 +36,9 @@ export class CreateReviewComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.reviewForm.invalid) {
+      return;
+    }
     const rating = this.reviewForm.value['rating'];
     if (isNull(rating)) {
       alert('Invalid rating');
@@ -47,7 +50,6 @@ export class CreateReviewComponent implements OnInit {
     }
     this.reviewService.createReview(this.reviewForm, this.book).subscribe(
       response => {
-          alert('Success');
           this.router.navigate([`/books/${this.book.id}`]);
       }, error => this.router.navigate(['/error']));
   }

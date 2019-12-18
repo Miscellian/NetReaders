@@ -54,9 +54,26 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .subscribe(response => {
-                let username = localStorage.getItem('UserName');
+                const username = localStorage.getItem('UserName');
                 this.router.navigateByUrl('/users/' + username);
-            }, error => this.router.navigate(['/error']));
+            }, error => {
+                if (error.status === 422) {
+                    alert('Invalid credentials');
+                    this.loading = false;
+                    return;
+                }
+                if (error.error === 'User doesn\'t exists') {
+                    alert('No such user');
+                    this.loading = false;
+                    return;
+                }
+                if (error.error === 'Finish your registration first') {
+                    alert('Confirm your email first');
+                    this.loading = false;
+                    return;
+                }
+                this.router.navigate(['/error']);
+            });
 
     }
 }

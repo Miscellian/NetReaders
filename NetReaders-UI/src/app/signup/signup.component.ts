@@ -12,7 +12,6 @@ import {UserService} from '../profile/user.service';
 export class SignupComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
-    submitted = false;
 
     constructor(private formBuilder: FormBuilder,
                 public router: Router,
@@ -63,8 +62,6 @@ export class SignupComponent implements OnInit {
     }
 
     onSubmit() {
-        this.submitted = true;
-
         const controls = this.registerForm.controls;
         let valid = true;
         for (const name in controls) {

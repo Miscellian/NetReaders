@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Book} from '../../model';
 import {BookService} from '../book.service';
 import {Router} from '@angular/router';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
 
 @Component({
   selector: 'app-book-add',
@@ -14,7 +14,7 @@ export class BookAddComponent implements OnInit {
 
   constructor(private bookService: BookService,
               private formBuilder: FormBuilder,
-              public router: Router) {
+              private router: Router) {
   }
 
   get genres() {
@@ -22,7 +22,7 @@ export class BookAddComponent implements OnInit {
   }
 
   addGenre() {
-    this.genres.push(this.formBuilder.control(''));
+    this.genres.push(this.formBuilder.control('', Validators.required));
   }
 
   removeGenre(index) {
@@ -34,24 +34,33 @@ export class BookAddComponent implements OnInit {
   }
 
   addAuthor() {
-    this.authors.push(this.formBuilder.control(''));
+    this.authors.push(this.formBuilder.control('', Validators.required));
   }
   removeAuthor(index) {
     this.authors.removeAt(index);
   }
 
+  authorsAndGenresProvided: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
+    const genresExist = group.value.genres.length > 0;
+    const authorsExist = group.value.authors.length > 0;
+    return genresExist && authorsExist ? null : {'noGenresOrAuthors': true}; 
+  }
+
   ngOnInit() {
     this.bookForm = this.formBuilder.group({
-      title: [''],
-      description: [''],
-      release_date: [''],
-      book_language: [''],
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      release_date: ['', Validators.required],
+      book_language: ['', Validators.required],
       genres: this.formBuilder.array([]),
       authors: this.formBuilder.array([])
-    });
+    }, {validators: this.authorsAndGenresProvided});
   }
 
   onSubmit() {
+    if(this.bookForm.invalid){
+      return;
+    }
     const book: Book = {
       title: this.bookForm.value.title,
       description: this.bookForm.value.description,
@@ -72,11 +81,13 @@ export class BookAddComponent implements OnInit {
           alert('A book with such title already exists');
         } else {
           this.bookService.createBook(book).subscribe(
-            () => this.router.navigate(['/books/range/1']),
+            () => {
+              window.location.reload();
+              this.router.navigate(['/books/range/1']);
+            },
             () => this.router.navigate(['/error'])
           );
         }
       }, () => this.router.navigate(['/error']));
   }
-
 }

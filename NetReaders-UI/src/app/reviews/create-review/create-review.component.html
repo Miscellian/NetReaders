@@ -33,10 +33,16 @@
                     <div class="form-group" style="display: flex">
                         <label for="rating" class="formText">Rating</label> 
                         <input id="rating" type="number" min="0" max="100" maxlength="3" formControlName="rating" class="form-control" />
+                        <div *ngIf="reviewForm.controls.rating.touched && reviewForm.controls.rating.invalid" style="color: #dc3545">
+                            Rating should be a number between 1 and 100
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="formText">Description</label>
                         <input id="description" type="text" class="form-control" formControlName="description" />
+                        <div *ngIf="reviewForm.controls.description.touched && reviewForm.controls.description.invalid" style="color: #dc3545">
+                                Description required
+                        </div>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">Create review</button>

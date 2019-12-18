@@ -23,6 +23,10 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loadGenres();
+    }
+
+    loadGenres() {
         this.navbarService.getAllGenres().subscribe(
             response => {
                 this.genres = response;
