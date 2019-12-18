@@ -251,7 +251,7 @@ public class BookServiceImpl implements BookService {
 				.flatMap(entry -> bookDao.findByGenre(entry.getKey().getId(), 2, 0).stream())
 				.collect(Collectors.toList());
 		
-		return pickedBooks;
+		return createDtoCollection(pickedBooks);
 	}
 
 	@Override
